@@ -1189,41 +1189,184 @@ export default UserList;</code></pre>
 
       <h2 id="react-router">React Router</h2>
       <hr />
-      <pre><code >El desarrollo de aplicaciones web con React a menudo comienza de manera simple, pero a medida que el proyecto crece, se vuelve esencial implementar una estructura organizada que permita la navegación entre diferentes vistas. Aquí es donde React Router se convierte en una herramienta vital. Cuando nuestra aplicación es demasiado complicada tanto funcional como estructuralmente, la organización en rutas no solo mejora la navegabilidad, sino que también hace que el código sea más estructurado y fácil de mantener.</code></pre>
+      <p>
+        React Router es la biblioteca estándar para manejar navegación y rutas
+        en aplicaciones React. Permite crear Single Page Applications (SPA) con
+        navegación entre diferentes vistas sin recargar la página completa.
+      </p>
+      <p>
+        A medida que una aplicación crece, se vuelve esencial implementar una
+        estructura organizada que permita la navegación entre diferentes vistas.
+        React Router transforma aplicaciones simples en sistemas complejos de
+        múltiples páginas, mejorando tanto la navegabilidad como la
+        mantenibilidad del código.
+      </p>
+
       <h3 id="estructura-de-un-react-router">Estructura de un react router</h3>
-      <pre><code >La estructura básica de un React Router implica varios componentes y conceptos que se repiten en sus versiones, lo cual es fundamental para comprender cómo funciona.</code></pre>
       <p>
-        Provider: Funciona muy parecido a React Context. Permite comunicar
-        propiedades, estados y actualizadores de estado entre componentes sin
-        Prop Drilling.
+        La estructura básica de React Router se compone de varios elementos
+        fundamentales que trabajan en conjunto:
       </p>
-      <pre><code >Link: En lugar de etiquetas &lt;a&gt;, se utiliza un componente Link que proviene de la dependencia React Router.
-Route: Define las rutas de la aplicación. Utilizando las propiedades path y render (o similar), se determina qué componentes deben renderizarse en cada ruta.
-Además, los Routers suelen permitir la inclusión de un Menú o Footer que se renderice en todas las vistas, asegurando una composición constante en la estructura de la aplicación.</code></pre>
+      <ul>
+        <li>
+          <strong>Router (Provider):</strong> El componente contenedor principal
+          (BrowserRouter, HashRouter, etc.) que proporciona el contexto de
+          navegación a toda la aplicación. Similar a React Context, permite que
+          los componentes hijos accedan a la información de rutas.
+        </li>
+        <li>
+          <strong>Routes:</strong> Contenedor que agrupa todas las rutas de la
+          aplicación. Solo renderiza la primera ruta que coincida con la URL
+          actual.
+        </li>
+        <li>
+          <strong>Route:</strong> Define una ruta específica usando las props
+          <code>path</code> (URL) y <code>element</code> (componente a
+          renderizar).
+        </li>
+        <li>
+          <strong>Link/NavLink:</strong> En lugar de etiquetas
+          <code>&lt;a&gt;</code>, React Router usa estos componentes para crear
+          enlaces que navegan sin recargar la página.
+        </li>
+        <li>
+          <strong>Outlet:</strong> Placeholder para renderizar rutas anidadas
+          dentro de un componente padre.
+        </li>
+      </ul>
+      <p>
+        Además, los Routers permiten incluir componentes persistentes como Menús
+        o Footers que se mantienen visibles en todas las vistas, asegurando una
+        estructura consistente en la aplicación.
+      </p>
+
       <h3 id="tipos-de-routers">Tipos de routers</h3>
-      <pre><code >En el fascinante mundo del desarrollo web, React Router DOM nos ofrece tres tipos de routers: browser router, hash router y memory router. Cada uno de ellos tiene un propósito específico y una manera particular de gestionar la navegación, lo que influye en cómo se estructuran y gestionan las rutas en diferentes escenarios.</code></pre>
       <p>
-        El browser router sigue la forma normal de navegación que encontramos en
-        la mayoría de las páginas web. Si alguna vez has navegado por sitios
-        como Platzi o Netflix, habrás notado que las URLs están estructuradas
-        con barras inclinadas (slashes) para separar rutas como /home, /blog o
-        /contact. Este tipo de router muestra la ruta completa en la barra de
-        direcciones y es ideal para aplicaciones web que requieren rutas
-        visibles y manejables directamente por el navegador.
+        React Router DOM ofrece tres tipos principales de routers, cada uno con
+        un propósito específico y una manera particular de gestionar la
+        navegación:
+      </p>
+
+      <h4>BrowserRouter</h4>
+      <p>
+        El router estándar para aplicaciones web modernas. Utiliza la API de
+        History del navegador para crear URLs limpias y legibles, como
+        <code>/home</code>, <code>/blog</code> o <code>/contact</code>.
       </p>
       <p>
-        El hash router utiliza el símbolo de hash (&#x27;#&#x27;) después del
-        dominio en la URL para gestionar las rutas. Así, una URL podría verse
-        como example.com/#/ruta/blog. Este método es particularmente útil cuando
-        se desea implementar rutas en una sola página (Single Page Application)
-        sin intervención del servidor para cada cambio de ruta.
+        <strong>Cuándo usarlo:</strong> En la mayoría de aplicaciones web
+        desplegadas en servidores que pueden manejar rutas dinámicas (como
+        Vercel, Netlify, o servidores con configuración SPA).
+      </p>
+      <pre><code>import { BrowserRouter, Routes, Route } from &#x27;react-router-dom&#x27;;
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;
+        &lt;Route path=&quot;/about&quot; element={&lt;About /&gt;} /&gt;
+        &lt;Route path=&quot;/contact&quot; element={&lt;Contact /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+// URLs resultantes:
+// https://example.com/
+// https://example.com/about
+// https://example.com/contact</code></pre>
+
+      <h4>HashRouter</h4>
+      <p>
+        Utiliza el símbolo de hash (<code>#</code>) en la URL para simular
+        diferentes rutas. Las URLs se ven como
+        <code>example.com/#/about</code> o <code>example.com/#/blog</code>.
       </p>
       <p>
-        El memory router es ideal para aplicaciones que no dependen de URLs
-        navegables, como las aplicaciones móviles. Su funcionamiento se basa en
-        mantener un array en memoria que rastrea las rutas, sin mostrar ninguna
-        URL específica al usuario.
+        <strong>Cuándo usarlo:</strong> En entornos donde no tienes control del
+        servidor (páginas estáticas, GitHub Pages) o cuando necesitas
+        compatibilidad con navegadores antiguos. El servidor solo ve la parte
+        antes del <code>#</code>, por lo que no necesita configuración especial.
       </p>
+      <pre><code>import { HashRouter, Routes, Route } from &#x27;react-router-dom&#x27;;
+
+function App() {
+  return (
+    &lt;HashRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;
+        &lt;Route path=&quot;/about&quot; element={&lt;About /&gt;} /&gt;
+        &lt;Route path=&quot;/contact&quot; element={&lt;Contact /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/HashRouter&gt;
+  );
+}
+
+// URLs resultantes:
+// https://example.com/#/
+// https://example.com/#/about
+// https://example.com/#/contact</code></pre>
+
+      <h4>MemoryRouter</h4>
+      <p>
+        Mantiene el historial de navegación en memoria sin reflejarlo en la URL
+        del navegador. La barra de direcciones no cambia al navegar entre rutas.
+      </p>
+      <p>
+        <strong>Cuándo usarlo:</strong> En aplicaciones móviles (React Native),
+        entornos de testing, o aplicaciones embebidas donde no se requiere
+        sincronización con la URL del navegador.
+      </p>
+      <pre><code>import { MemoryRouter, Routes, Route } from &#x27;react-router-dom&#x27;;
+
+function App() {
+  return (
+    &lt;MemoryRouter initialEntries={[&#x27;/&#x27;]} initialIndex={0}&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;
+        &lt;Route path=&quot;/about&quot; element={&lt;About /&gt;} /&gt;
+        &lt;Route path=&quot;/contact&quot; element={&lt;Contact /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/MemoryRouter&gt;
+  );
+}
+
+// La URL permanece igual: https://example.com/
+// Pero internamente el router navega entre rutas</code></pre>
+
+      <h4>Comparación</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Router</th>
+            <th>URL</th>
+            <th>Requiere configuración de servidor</th>
+            <th>Uso principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BrowserRouter</strong></td>
+            <td>/about</td>
+            <td>Sí</td>
+            <td>Aplicaciones web modernas</td>
+          </tr>
+          <tr>
+            <td><strong>HashRouter</strong></td>
+            <td>/#/about</td>
+            <td>No</td>
+            <td>Páginas estáticas, GitHub Pages</td>
+          </tr>
+          <tr>
+            <td><strong>MemoryRouter</strong></td>
+            <td>(no cambia)</td>
+            <td>No aplica</td>
+            <td>Testing, React Native</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h3 id="instalacion">Instalacion</h3>
       <p>
         Para instalar react router corremos el comando npm install
