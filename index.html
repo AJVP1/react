@@ -56,7 +56,7 @@
       <p>
         Para empezar a desarrollar nuestro frontend con react tenemos que estar
         parados en el root de nuestro proyecto y corremos el comando
-        <code>npm create vite@latest</code> aquí seleccionamos las
+        <code>pnpm create vite@latest</code> aquí seleccionamos las
         configuraciones para trabajar con react y esto nos creara la carpeta
         para el frontend.
       </p>
@@ -88,6 +88,10 @@
     &lt;/section&gt;
   );
 }</code></pre>
+      <p>
+        En este ejemplo, usamos map() para renderizar una lista de elementos de
+        forma declarativa, sin manipular el DOM manualmente.
+      </p>
       <p>Las ventajas de este enfoque son evidentes:</p>
       <ul>
         <li>Código más declarativo y legible</li>
@@ -100,60 +104,85 @@
       <hr />
       <p>
         React simplifica el desarrollo de aplicaciones web al dejarnos hacer
-        codigo en componentes reusables. Un componente en React es una función
+        código en componentes reusables. Un componente en React es una función
         que devuelve algo que queremos que se muestre en la pantalla. Usualmente
-        dichas funciones se crean como arrow functions para hacerllas más
-        sencillas, aunque de igual manera está bien. Tipicamente los componentes
-        comienza con una letra mayuscula para distinguirlos de las etiquetas de
+        dichas funciones se crean como arrow functions para hacerlas más
+        sencillas, aunque de igual manera está bien. Típicamente los componentes
+        comienzan con una letra mayuscula para distinguirlos de las etiquetas de
         HTML, veamos un ejemplo
       </p>
-      <pre><code >const MyComponent = () =&gt; { return “I’m a component”};</code></pre>
+      <pre><code>const MyComponent = () =&gt; { return "I'm a component"};</code></pre>
       <p>
-        En React, los componentes no solo pueden devolver texto plano, tambien
+        En React, los componentes no solo pueden devolver texto plano, también
         pueden devolver HTML. Por ejemplo
       </p>
-      <pre><code >const Bienvenida = () =&gt; {
+      <pre><code>const Bienvenida = () =&gt; {
   return &lt;h1&gt;Hola, mundo&lt;/h1&gt;
 };</code></pre>
       <p>
         A esto se le conoce como JSX, que parece HTML pero no lo es. Es una
-        sintaxis especial que React usa para escribir codigo como HTML dentro de
-        JavaScritp.
+        sintaxis especial que React usa para escribir código como HTML dentro de
+        JavaScript.
       </p>
-      <h2 id="props">Props</h2>
+      <p>
+        Para usar un componente dentro de otro, simplemente lo llamamos como si
+        fuera una etiqueta HTML. Por ejemplo
+      </p>
+      <pre><code>const App = () =&gt; {
+  return (
+    &lt;section&gt;
+      &lt;Bienvenida /&gt;
+    &lt;/section&gt;
+  );
+};</code></pre>
+      <p>
+        Esto hace que el componente Bienvenida se renderice dentro del
+        componente App.
+      </p>
+
+      <h3 id="props"><em>Props</em></h3>
       <p>
         Las props (abreviatura de &quot;properties&quot; o propiedades) son el
         mecanismo que React utiliza para pasar datos de un componente padre a un
         componente hijo. Funcionan como parámetros que permiten personalizar los
         componentes y hacerlos verdaderamente reutilizables. Por ejemplo
       </p>
-      <pre><code >const Card = ({ title, content }) =&gt; {
+      <pre><code>const Card = ({ title, content }) =&gt; {
   return (
     &lt;div&gt;
       &lt;h2&gt;{title}&lt;/h2&gt;
       &lt;p&gt;{content}&lt;/p&gt;
     &lt;/div&gt;
   );
-};</code></pre>
-      <pre><code >export default Card;</code></pre>
+};
+
+export default Card;</code></pre>
+
       <p>
         En este ejemplo creamos un componente, usamos las propiedades title y
-        description, y exportamos el componente.
+        content, y exportamos el componente.
       </p>
       <p>
         Para usar el componente lo usamos como si fuera una etiqueta html y
         definiendo en los atributos el contenido de las propiedades.
       </p>
-      <pre><code >import Card from &quot;./components/Card&quot;;</code></pre>
-      <pre><code >function App() {
+      <pre><code >import Card from &quot;./components/Card&quot;;
+
+function App() {
   return (
     &lt;section&gt;
       &lt;Card title=&quot;Cart uno&quot; content=&quot;Esta es una descripción&quot; /&gt;
     &lt;/section&gt;
   );
-}</code></pre>
-      <pre><code >export default App;</code></pre>
-      <h2 id="estados-usestate">Estados (useState)</h2>
+}
+
+export default App;</code></pre>
+      <p>
+        Aquí importamos el componente Card y lo usamos dentro del componente
+        App, pasando valores específicos para las props title y content.
+      </p>
+
+      <h3 id="estados-usestate"><em>Estados (useState) </em></h3>
       <p>
         El estado en React es un mecanismo para almacenar información que puede
         cambiar durante el ciclo de vida de un componente. Podemos visualizarlo
