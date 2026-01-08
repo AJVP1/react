@@ -621,60 +621,247 @@ const DataFetcher = ({ userId }) =&gt; {
         integrado directamente en React.
       </p>
       <p>La sintaxis básica de useReducer incluye:</p>
-      <pre><code >const [state, dispatch] = useReducer(reducer, initialState)</code></pre>
+      <pre><code>const [state, dispatch] = useReducer(reducer, initialState);</code></pre>
       <p>
-        state es el estado actual, dispatch es una función para enviar acciones
-        al reducer, reducer es una función que determina como actualizar el
-        estado basado en la accion, e initialState es el valor inicial.
+        Donde <code>state</code> es el estado actual, <code>dispatch</code> es
+        una función para enviar acciones al reducer, <code>reducer</code> es una
+        función que determina cómo actualizar el estado basado en la acción, e
+        <code>initialState</code> es el valor inicial.
       </p>
-      <p>Ejemplo</p>
+      <h4>¿Cuándo usar useReducer en lugar de useState?</h4>
+      <p>Usa useReducer cuando:</p>
+      <ul>
+        <li>El estado tiene múltiples valores relacionados entre sí</li>
+        <li>
+          La lógica de actualización es compleja o tiene muchas condiciones
+        </li>
+        <li>
+          El siguiente estado depende del estado anterior de forma compleja
+        </li>
+        <li>
+          Quieres optimizar el rendimiento en componentes grandes (dispatch no
+          cambia entre renders)
+        </li>
+        <li>Necesitas una lógica de estado más predecible y testeable</li>
+      </ul>
+      <p>Usa useState cuando:</p>
+      <ul>
+        <li>El estado es un valor simple (string, number, boolean)</li>
+        <li>Las actualizaciones son directas y simples</li>
+        <li>No hay mucha lógica condicional en las actualizaciones</li>
+      </ul>
+
+      <h4>Ejemplo básico: Contador</h4>
       <p>
-        Empezamos definiendo la función reducer, esta recibira dos argumentos,
-        el primero es el estado y el segundo es la accion.
+        Empezamos definiendo la función reducer, esta recibirá dos argumentos,
+        el primero es el estado y el segundo es la acción.
       </p>
-      <pre><code >const reducer = (state, action) =&gt; {</code></pre>
-      <p>// definimos acciones según el tipo de accion</p>
-      <pre><code >  Switch (action.type) {
-    case “increment”:
+      <pre><code>import { useReducer } from &#x27;react&#x27;;
+
+// Función reducer
+const reducer = (state, action) =&gt; {
+  // definimos acciones según el tipo de acción
+  switch (action.type) {
+    case "increment":
       return { count: state.count + 1 };
-    case “decrement”:
+    case "decrement":
       return { count: state.count - 1 };
+    case "reset":
+      return { count: 0 };
     default:
       return state;
   }
-}</code></pre>
-      <p>Ahora podemos usar el useReducer y renderizar el estado</p>
-      <pre><code >const [state, dispatch] = useReducer(reducer, { count: 0 });</code></pre>
-      <pre><code >  return (
+};
+
+// Componente
+const Counter = () =&gt; {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
     &lt;div&gt;
-      Contador: {state.count}
-      &lt;button onClick={() =&gt; dispatch({ type: &#x27;increment&#x27; })}&gt;</code></pre>
-      <p>Increment</p>
-      <pre><code >      &lt;/button&gt;
-      &lt;button onClick={() =&gt; dispatch({ type: &#x27;decrement&#x27; })}&gt;</code></pre>
-      <p>Decrement</p>
-      <pre><code >      &lt;/button&gt;
+      &lt;p&gt;Contador: {state.count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: &#x27;increment&#x27; })}&gt;
+        Incrementar
+      &lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: &#x27;decrement&#x27; })}&gt;
+        Decrementar
+      &lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: &#x27;reset&#x27; })}&gt;
+        Reiniciar
+      &lt;/button&gt;
     &lt;/div&gt;
-  );</code></pre>
+  );
+};
+
+export default Counter;</code></pre>
+
+      <h4>Ejemplo con payload: Carrito de compras</h4>
+      <p>
+        Las acciones pueden incluir datos adicionales (payload) para actualizar
+        el estado. Veamos un ejemplo más complejo con un carrito de compras:
+      </p>
+      <pre><code>import { useReducer } from &#x27;react&#x27;;
+
+// Mejores prácticas: usar constantes para los tipos de acción
+const ACTIONS = {
+  ADD_ITEM: &#x27;add_item&#x27;,
+  REMOVE_ITEM: &#x27;remove_item&#x27;,
+  UPDATE_QUANTITY: &#x27;update_quantity&#x27;,
+  CLEAR_CART: &#x27;clear_cart&#x27;
+};
+
+// Reducer con lógica compleja
+const cartReducer = (state, action) =&gt; {
+  switch (action.type) {
+    case ACTIONS.ADD_ITEM: {
+      const existingItem = state.items.find(
+        item =&gt; item.id === action.payload.id
+      );
+
+      if (existingItem) {
+        return {
+          ...state,
+          items: state.items.map(item =&gt;
+            item.id === action.payload.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        };
+      }
+
+      return {
+        ...state,
+        items: [...state.items, { ...action.payload, quantity: 1 }]
+      };
+    }
+
+    case ACTIONS.REMOVE_ITEM:
+      return {
+        ...state,
+        items: state.items.filter(item =&gt; item.id !== action.payload.id)
+      };
+
+    case ACTIONS.UPDATE_QUANTITY:
+      return {
+        ...state,
+        items: state.items.map(item =&gt;
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        )
+      };
+
+    case ACTIONS.CLEAR_CART:
+      return { items: [] };
+
+    default:
+      return state;
+  }
+};
+
+// Componente del carrito
+const ShoppingCart = () =&gt; {
+  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+
+  const addItem = (item) =&gt; {
+    dispatch({ type: ACTIONS.ADD_ITEM, payload: item });
+  };
+
+  const removeItem = (id) =&gt; {
+    dispatch({ type: ACTIONS.REMOVE_ITEM, payload: { id } });
+  };
+
+  const updateQuantity = (id, quantity) =&gt; {
+    dispatch({
+      type: ACTIONS.UPDATE_QUANTITY,
+      payload: { id, quantity }
+    });
+  };
+
+  const clearCart = () =&gt; {
+    dispatch({ type: ACTIONS.CLEAR_CART });
+  };
+
+  const total = state.items.reduce(
+    (sum, item) =&gt; sum + item.price * item.quantity,
+    0
+  );
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;Carrito de Compras&lt;/h2&gt;
+      &lt;ul&gt;
+        {state.items.map(item =&gt; (
+          &lt;li key={item.id}&gt;
+            {item.name} - ${item.price} x {item.quantity}
+            &lt;button onClick={() =&gt; updateQuantity(item.id, item.quantity + 1)}&gt;
+              +
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; updateQuantity(item.id, item.quantity - 1)}&gt;
+              -
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; removeItem(item.id)}&gt;
+              Eliminar
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;p&gt;Total: ${total.toFixed(2)}&lt;/p&gt;
+      &lt;button onClick={() =&gt; addItem({ id: 1, name: &#x27;Producto 1&#x27;, price: 10 })}&gt;
+        Agregar Producto 1
+      &lt;/button&gt;
+      &lt;button onClick={clearCart}&gt;Limpiar Carrito&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default ShoppingCart;</code></pre>
+
+      <h4>Mejores prácticas con useReducer</h4>
+      <ul>
+        <li>
+          Usa constantes para los tipos de acción: Evita errores de tipeo y
+          facilita el refactoring
+        </li>
+        <li>
+          El reducer debe ser puro: No debe tener efectos secundarios ni
+          mutaciones directas
+        </li>
+        <li>
+          Retorna siempre un nuevo objeto: Usa el spread operator (...) para
+          crear nuevos objetos en lugar de modificar el estado directamente
+        </li>
+        <li>
+          Incluye un caso default: Siempre retorna el estado actual si la acción
+          no coincide
+        </li>
+        <li>
+          Usa payload para datos adicionales: Envía información adicional en la
+          propiedad payload de la acción
+        </li>
+      </ul>
 
       <h2 id="fetch">Fetch</h2>
       <p>
         Podemos hacer un llamado a una api con fetch y renderizar el array que
-        nos regresa esta, un llamado simple seria
+        nos regresa esta, un llamado simple sería
       </p>
-      <pre><code >import { useState, useEffect } from &#x27;react&#x27;;</code></pre>
-      <pre><code >const UserList = () =&gt; {
-  const [users, setUsers] = useState([]);</code></pre>
-      <p>// obtenemos datos una sola vez con userEffect</p>
-      <pre><code >  useEffect(() =&gt; {</code></pre>
-      <p>fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;)</p>
-      <pre><code >      .then(response =&gt; response.json())</code></pre>
-      <p>// guardamos los datos con setUser</p>
-      <pre><code >      .then(data =&gt; setUsers(data))
+      <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+
+  // obtenemos datos una sola vez con useEffect
+  useEffect(() =&gt; {
+    fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;)
+      .then(response =&gt; response.json())
+      // guardamos los datos con setUsers
+      .then(data =&gt; setUsers(data))
       .catch(error =&gt; console.error(&#x27;Error fetching data:&#x27;, error));
-  }, []);</code></pre>
-      <p>// renderizamos</p>
-      <pre><code >  return (
+  }, []);
+
+  // renderizamos
+  return (
     &lt;div&gt;
       &lt;h1&gt;Usuarios&lt;/h1&gt;
       &lt;ul&gt;
@@ -684,8 +871,10 @@ const DataFetcher = ({ userId }) =&gt; {
       &lt;/ul&gt;
     &lt;/div&gt;
   );
-};</code></pre>
-      <pre><code >export default UserList;</code></pre>
+};
+
+export default UserList;</code></pre>
+
       <h2 id="manejo-de-errores-y-carga">Manejo de errores y carga</h2>
       <p>
         Para esto vamos a setear nuevas variables y vamos a ir modificando su
