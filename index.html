@@ -100,6 +100,78 @@
         <li>Mayor facilidad para mantener y actualizar</li>
       </ul>
 
+      <h3 id="tailwind-en-react-con-vite">
+        <em>Tailwind en react con vite</em>
+      </h3>
+      <p>
+        Existen dos formas de instalar Tailwind CSS en un proyecto de React con
+        Vite: la versión 3 (estándar y más utilizada) y la versión 4 (más nueva
+        y simplificada).
+      </p>
+
+      <h4>Tailwind CSS v3 (Instalación estándar)</h4>
+      <p>
+        Esta es la forma más común y estable. Primero instalamos las
+        dependencias necesarias:
+      </p>
+      <pre><code>pnpm install -D tailwindcss postcss autoprefixer
+pnpm dlx tailwindcss init -p</code></pre>
+      <p>
+        Esto creará dos archivos: <code>tailwind.config.js</code> y
+        <code>postcss.config.js</code>. Configuramos el
+        <code>tailwind.config.js</code> para indicar dónde están nuestros
+        archivos:
+      </p>
+      <pre><code>export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}</code></pre>
+      <p>
+        Luego, en el archivo <code>src/index.css</code> agregamos las directivas
+        de Tailwind:
+      </p>
+      <pre><code>@tailwind base;
+@tailwind components;
+@tailwind utilities;</code></pre>
+      <p>
+        Y listo, ya podemos empezar a usar tailwind dentro de nuestros
+        componentes en react.
+      </p>
+
+      <h4>Tailwind CSS v4 (Nueva versión simplificada)</h4>
+      <p>
+        La versión 4 simplifica el proceso de instalación. Instalamos tailwind
+        con:
+      </p>
+      <pre><code>pnpm install -D tailwindcss @tailwindcss/vite</code></pre>
+      <p>
+        Después lo agregamos a la configuración en
+        <code>vite.config.js</code>:
+      </p>
+      <pre><code>import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
+});</code></pre>
+      <p>
+        Y en el archivo <code>src/index.css</code> simplemente importamos
+        tailwind:
+      </p>
+      <pre><code>@import "tailwindcss";</code></pre>
+      <p>
+        Con cualquiera de las dos versiones ya podemos usar las clases de
+        Tailwind en nuestros componentes como si fuera HTML común.
+      </p>
+
       <h2 id="componentes">Componentes</h2>
       <hr />
       <p>
@@ -584,27 +656,7 @@ const DataFetcher = ({ userId }) =&gt; {
       <pre><code >      &lt;/button&gt;
     &lt;/div&gt;
   );</code></pre>
-      <h2 id="tailwind-en-react-con-vite">Tailwind en react con vite</h2>
-      <p>
-        Instalamos tailwind en nuestro proyecto con npm install tailwindcss
-        @tailwindcss/vite. Después lo agregamos a la configuracion en
-        vite.config.js
-      </p>
-      <pre><code >import { defineConfig } from &#x27;vite&#x27;
-import tailwindcss from &#x27;@tailwindcss/vite&#x27;</code></pre>
-      <pre><code >export default defineConfig({</code></pre>
-      <ul>
-        <li>plugins: [</li>
-        <li>tailwindcss(),</li>
-        <li>],</li>
-      </ul>
-      <pre><code >})</code></pre>
-      <p>
-        Importamos tailwind en el archivo index.css con @import
-        &quot;tailwindcss&quot;;. Y listo, ya podemos empezar a usar tailwind
-        dentro de nuestros componentes en react usando como si fuera un archivo
-        html comun.
-      </p>
+
       <h2 id="fetch">Fetch</h2>
       <p>
         Podemos hacer un llamado a una api con fetch y renderizar el array que
