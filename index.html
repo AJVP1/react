@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>React</title>
+  </head>
+  <body>
+    <!-- navegacion -->
+    <nav aria-label="Contenido">
+      <h2>Contenido</h2>
+      <ul>
+        <li><a href="#introduccion">Introducción</a></li>
+        <li><a href="#empezar-un-proyecto">Empezar un proyecto</a></li>
+        <li><a href="#componentes">Componentes</a></li>
+        <li><a href="#props">Props</a></li>
+        <li><a href="#estados-usestate">Estados (useState)</a></li>
+        <li>
+          <a href="#efectos-useeffect">Efectos secundarios (useEffect)</a>
+        </li>
+        <li>
+          <a href="#estados-useReducer">Estados complejos (useReducer)</a>
+        </li>
+        <li><a href="#tailwind-vite">Tailwind en React con Vite</a></li>
+        <li><a href="#fetch">Fetch</a></li>
+        <li><a href="#errores-carga">Manejo de errores y carga</a></li>
+        <li>
+          <a href="#react-router">React Router</a>
+          <ul>
+            <li>
+              <a href="#estructura-router">Estructura de un React Router</a>
+            </li>
+            <li><a href="#tipos-routers">Tipos de routers</a></li>
+            <li><a href="#instalacion-router">Instalación</a></li>
+            <li>
+              <a href="#rutas-estaticas">Rutas estáticas (HashRouter)</a>
+            </li>
+            <li><a href="#navegacion-navlink">Navegación (NavLink)</a></li>
+            <li>
+              <a href="#rutas-dinamicas">Rutas dinámicas (useParams)</a>
+            </li>
+            <li><a href="#rutas-anidadas">Rutas anidadas (Outlet)</a></li>
+            <li><a href="#autenticacion">Autenticación</a></li>
+            <li>
+              <a href="#proteger-rutas">Proteger rutas con autenticación</a>
+            </li>
+            <li>
+              <a href="#proteccion-redireccionamiento"
+                >Protección de rutas con redireccionamiento</a
+              >
+            </li>
+            <li><a href="#roles-autorizacion">Roles y autorización</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- contenido principal -->
+    <main>
+      <h1>React</h1>
+      <section id="introduccion">
+        <h2>Introducción</h2>
+        <hr />
+        <p>
+          <strong>React</strong> es una librería de JavaScript creada por Meta
+          (Facebook) para construir interfaces de usuario interactivas y
+          dinámicas. A diferencia de un framework completo, React se centra
+          específicamente en la capa de vista, dándote libertad para elegir
+          otras herramientas según tus necesidades.
+        </p>
+
+        <p>
+          React se basa en <strong>componentes</strong> reutilizables que
+          encapsulan la lógica y la interfaz. Utiliza <strong>JSX</strong>, una
+          sintaxis que permite escribir HTML dentro de JavaScript, y maneja el
+          <strong>estado</strong> de forma reactiva: cuando los datos cambian,
+          la interfaz se actualiza automáticamente. Esto es posible gracias al
+          Virtual DOM, que optimiza las actualizaciones del DOM real.
+        </p>
+
+        <p>
+          Comparado con JavaScript vanilla, React ofrece un código más
+          <strong>declarativo</strong> (describes qué quieres mostrar, no cómo
+          hacerlo), elimina la necesidad de manipular el DOM directamente con
+          <code>querySelector</code> o <code>innerHTML</code>, y facilita
+          enormemente el mantenimiento de aplicaciones grandes. El ecosistema de
+          React incluye herramientas como React Router, Redux, y Next.js que
+          complementan la librería base.
+        </p>
+
+        <p>
+          React es ideal para crear
+          <strong>aplicaciones de una sola página (SPAs)</strong>
+          donde la interfaz se actualiza dinámicamente sin recargar la página
+          completa. Se utiliza ampliamente en dashboards, redes sociales,
+          plataformas de e-commerce, aplicaciones empresariales, y cualquier
+          proyecto que requiera interfaces complejas e interactivas.
+        </p>
+      </section>
+
+      <section id="empezar-un-proyecto">
+        <h2>Empezar un proyecto</h2>
+        <p>
+          Para empezar a desarrollar el frontend con React, ubicarse en el root
+          del proyecto y ejecutar:
+        </p>
+        <pre><code>npm create vite@latest</code></pre>
+
+        <p>
+          Esto creará la carpeta del frontend con configuraciones típicas
+          (node_modules, public, src, etc.). Para producción:
+        </p>
+        <pre><code>npm run dev</code></pre>
+
+        <p>
+          Dentro de <code>src</code> se crea <code>assets</code> para imágenes y
+          archivos como <code>main.jsx</code> e
+          <code>index.css</code> (principales), y <code>app.jsx</code>/<code
+            >app.css</code
+          >
+          (secundarios).
+        </p>
+
+        <h3>Ejemplo</h3>
+        <pre><code>function App() {
+  const items = ["react", "javascript", "git"];
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Hola mundo&lt;/h1&gt;
+      &lt;ul&gt;
+        {items.map((item, index) =&gt; (
+          &lt;li key={index}&gt;{item}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+}</code></pre>
+
+        <h3>Ventajas</h3>
+        <ul>
+          <li>Código más declarativo y legible</li>
+          <li>No es necesario manipular el DOM directamente</li>
+          <li>Menos líneas de código para lograr el mismo resultado</li>
+          <li>Mayor facilidad para mantener y actualizar</li>
+        </ul>
+      </section>
+
+      <section id="componentes">
+        <h2>Componentes</h2>
+        <p>
+          Un componente en React es una función que devuelve lo que queremos que
+          se muestre en pantalla. Suelen escribirse como arrow functions y
+          típicamente empiezan con mayúscula.
+        </p>
+
+        <pre><code class="language-js">const MyComponent = () =&gt; {
+  return "I'm a component";
+};</code></pre>
+
+        <p>Los componentes también pueden devolver “HTML” vía JSX:</p>
+
+        <pre><code class="language-js">const Bienvenida = () =&gt; {
+  return &lt;h1&gt;Hola, mundo&lt;/h1&gt;;
+};</code></pre>
+
+        <p>
+          JSX parece HTML, pero es una sintaxis que React usa para escribir
+          estructuras tipo HTML dentro de JavaScript.
+        </p>
+      </section>
+
+      <section id="props">
+        <h2>Props</h2>
+        <p>
+          Las props (“properties”) permiten pasar datos de un componente padre a
+          uno hijo, como parámetros para personalizar y reutilizar componentes.
+        </p>
+
+        <pre><code class="language-js">const Card = ({ title, content }) =&gt; {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;p&gt;{content}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Card;</code></pre>
+
+        <p>Uso del componente:</p>
+
+        <pre><code class="language-js">import Card from "./components/Card";
+
+function App() {
+  return (
+    &lt;section&gt;
+      &lt;Card title="Card uno" content="Esta es una descripción" /&gt;
+    &lt;/section&gt;
+  );
+}
+
+export default App;</code></pre>
+      </section>
+
+      <section id="estados-usestate">
+        <h2>Estados (useState)</h2>
+        <p>
+          El estado en React almacena información que puede cambiar durante el
+          ciclo de vida de un componente.
+        </p>
+
+        <h3>Tipos principales</h3>
+        <ul>
+          <li>
+            <strong>Estado local:</strong> accesible solo dentro del componente
+            donde se define.
+          </li>
+          <li>
+            <strong>Estado global:</strong> compartido entre múltiples
+            componentes.
+          </li>
+        </ul>
+
+        <h3>Hook useState</h3>
+        <p>Devuelve:</p>
+        <ul>
+          <li>Una variable con el valor actual del estado</li>
+          <li>Una función para actualizar ese valor</li>
+        </ul>
+
+        <p>Sintaxis básica:</p>
+        <pre><code class="language-js">const [valor, setValor] = useState(valorInicial);</code></pre>
+
+        <h3>Ejemplo: contador</h3>
+        <pre><code class="language-js">const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;El contador está en: {count}&lt;/h2&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Incrementar&lt;/button&gt;
+      &lt;button onClick={() =&gt; setCount(count - 1)}&gt;Decrementar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+        <h3>Casos de uso comunes</h3>
+        <ul>
+          <li>Formularios</li>
+          <li>Toggles (activado/desactivado)</li>
+          <li>Filtros</li>
+          <li>Paginación</li>
+          <li>Cargas de datos (loading/success/error)</li>
+        </ul>
+
+        <h3>Ejemplo: toggle</h3>
+        <pre><code class="language-js">const ToggleButton = () =&gt; {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    &lt;button onClick={() =&gt; setIsActive(!isActive)}&gt;
+      {isActive ? "Activo" : "Inactivo"}
+    &lt;/button&gt;
+  );
+};</code></pre>
+
+        <h3>Ejemplo: formulario</h3>
+        <pre><code class="language-js">const NameForm = () =&gt; {
+  const [name, setName] = useState("");
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        type="text"
+        placeholder="Ingresa tu nombre"
+        onChange={(event) =&gt; setName(event.target.value)}
+      /&gt;
+      &lt;p&gt;Hola, {name ? name : "visitante"}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </section>
+
+      <section id="efectos-useeffect">
+        <h2>Efectos secundarios (useEffect)</h2>
+        <p>
+          Los efectos secundarios son operaciones fuera del flujo principal de
+          renderizado (APIs, suscripciones, manipulación del DOM,
+          temporizadores, localStorage, etc.).
+        </p>
+
+        <h3>Sintaxis</h3>
+        <pre><code class="language-js">useEffect(() =&gt; {
+  // efecto
+}, [dependencias]);</code></pre>
+
+        <p>
+          Si el array de dependencias está vacío (<code>[]</code>), se ejecuta
+          una vez tras el primer renderizado. Si contiene variables, se ejecuta
+          cuando alguna cambie.
+        </p>
+
+        <h3>Ejemplo</h3>
+        <pre><code class="language-js">const CounterWithEffect = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  useEffect(() =&gt; {
+    console.log(`El contador cambió a ${count}`);
+  }, [count]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Incrementar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+        <h3>Escenarios comunes</h3>
+        <ul>
+          <li>Obtención de datos (fetch a APIs)</li>
+          <li>Suscripciones (y limpieza al desmontar)</li>
+          <li>Manipulación del DOM (p. ej., título de la página)</li>
+          <li>Animaciones</li>
+          <li>Persistencia (localStorage)</li>
+        </ul>
+      </section>
+
+      <section id="estados-useReducer">
+        <h2>Estados complejos (useReducer)</h2>
+        <p>
+          <code>useReducer</code> permite definir un <em>reducer</em> que
+          describe cómo cambia el estado ante acciones, similar a Redux, pero
+          integrado en React.
+        </p>
+
+        <h3>Sintaxis</h3>
+        <pre><code class="language-js">const [state, dispatch] = useReducer(reducer, initialState);</code></pre>
+
+        <h3>Ejemplo</h3>
+        <pre><code class="language-js">const reducer = (state, action) =&gt; {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+return (
+  &lt;div&gt;
+    Contador: {state.count}
+    &lt;button onClick={() =&gt; dispatch({ type: "increment" })}&gt;
+      Increment
+    &lt;/button&gt;
+    &lt;button onClick={() =&gt; dispatch({ type: "decrement" })}&gt;
+      Decrement
+    &lt;/button&gt;
+  &lt;/div&gt;
+);</code></pre>
+      </section>
+
+      <section id="tailwind-vite">
+        <h2>Tailwind en React con Vite</h2>
+        <p>Instalación:</p>
+        <pre><code>npm install tailwindcss @tailwindcss/vite</code></pre>
+
+        <p>Configurar <code>vite.config.js</code>:</p>
+        <pre><code class="language-js">import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [tailwindcss()],
+});</code></pre>
+
+        <p>Importar en <code>index.css</code>:</p>
+        <pre><code>@import "tailwindcss";</code></pre>
+      </section>
+
+      <section id="fetch">
+        <h2>Fetch</h2>
+        <p>Ejemplo de llamado a una API y renderizado del array:</p>
+
+        <pre><code class="language-js">import { useState, useEffect } from "react";
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() =&gt; {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) =&gt; response.json())
+      .then((data) =&gt; setUsers(data))
+      .catch((error) =&gt; console.error("Error fetching data:", error));
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Usuarios&lt;/h1&gt;
+      &lt;ul&gt;
+        {users.map((user) =&gt; (
+          &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default UserList;</code></pre>
+      </section>
+
+      <section id="errores-carga">
+        <h2>Manejo de errores y carga</h2>
+        <p>Agregar estados de carga y error:</p>
+
+        <pre><code class="language-js">import { useState, useEffect } from "react";
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    const fetchUsers = async () =&gt; {
+      try {
+        const response = await fetch("https://api.example.com/users");
+        if (!response.ok) throw new Error("Error al obtener los datos");
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (isLoading) return &lt;p&gt;Cargando...&lt;/p&gt;;
+  if (error) return &lt;p&gt;Error: {String(error)}&lt;/p&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Usuarios&lt;/h1&gt;
+      &lt;ul&gt;
+        {users.map((user) =&gt; (
+          &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default UserList;</code></pre>
+      </section>
+
+      <section id="react-router">
+        <h2>React Router</h2>
+        <p>
+          React Router organiza la navegación entre vistas cuando la aplicación
+          crece, mejorando estructura y mantenibilidad.
+        </p>
+
+        <section id="estructura-router">
+          <h3>Estructura de un React Router</h3>
+          <ul>
+            <li>
+              <strong>Provider:</strong> similar a Context; evita prop drilling.
+            </li>
+            <li>
+              <strong>Link:</strong> reemplaza a <code>&lt;a&gt;</code> para
+              navegar sin recargar.
+            </li>
+            <li>
+              <strong>Route:</strong> define rutas con <code>path</code> y el
+              componente a renderizar.
+            </li>
+          </ul>
+          <p>
+            Suele incluirse un Menú o Footer que se renderiza en todas las
+            vistas.
+          </p>
+        </section>
+
+        <section id="tipos-routers">
+          <h3>Tipos de routers</h3>
+          <ul>
+            <li>
+              <strong>Browser Router:</strong> URLs “normales” tipo
+              <code>/home</code>, <code>/blog</code>.
+            </li>
+            <li>
+              <strong>Hash Router:</strong> usa <code>#</code> en la URL, ej.
+              <code>example.com/#/ruta/blog</code>.
+            </li>
+            <li>
+              <strong>Memory Router:</strong> mantiene rutas en memoria; útil
+              cuando no se depende de URLs.
+            </li>
+          </ul>
+        </section>
+
+        <section id="instalacion-router">
+          <h3>Instalación</h3>
+          <pre><code>npm install react-router-dom@latest</code></pre>
+        </section>
+
+        <section id="rutas-estaticas">
+          <h3>Rutas estáticas (HashRouter)</h3>
+          <pre><code class="language-js">function App() {
+  return (
+    &lt;&gt;
+      &lt;HashRouter&gt;
+        &lt;Menu /&gt;
+
+        &lt;Routes&gt;
+          &lt;Route path="/" element={&lt;HomePage /&gt;} /&gt;
+          &lt;Route path="/profile" element={&lt;ProfilePage /&gt;} /&gt;
+          &lt;Route path="/blog" element={&lt;BlogPage /&gt;} /&gt;
+          &lt;Route
+            path="*"
+            element={&lt;h1 className="text-3xl font-bold"&gt;Not Found&lt;/h1&gt;}
+          /&gt;
+        &lt;/Routes&gt;
+      &lt;/HashRouter&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+        </section>
+
+        <section id="navegacion-navlink">
+          <h3>Navegación (NavLink)</h3>
+          <pre><code class="language-js">const routes = [
+  { to: "/", text: "Home" },
+  { to: "/blog", text: "Blog" },
+  { to: "/profile", text: "Profile" },
+];
+
+&lt;ul&gt;
+  {routes.map((route) =&gt; (
+    &lt;li key={route.to}&gt;
+      &lt;NavLink
+        to={route.to}
+        style={({ isActive }) =&gt; ({ color: isActive ? "red" : "blue" })}
+      &gt;
+        {route.text}
+      &lt;/NavLink&gt;
+    &lt;/li&gt;
+  ))}
+&lt;/ul&gt;</code></pre>
+        </section>
+
+        <section id="rutas-dinamicas">
+          <h3>Rutas dinámicas (useParams)</h3>
+          <p>
+            El <em>slug</em> es parte de la URL que identifica contenido (p.
+            ej., <code>/blog/que-es-react</code>).
+          </p>
+
+          <h4>Datos</h4>
+          <pre><code class="language-js">const blogData = [
+  {
+    title: "¿Qué es React?",
+    slug: "que-es-react",
+    content: "React es el mejor framework de JavaScript.",
+    author: "Juan de Sen",
+  },
+  {
+    title: "¿Qué es Vue?",
+    slug: "que-es-vue",
+    content: "Vue es un framework progresivo.",
+    author: "Otro autor",
+  },
+];</code></pre>
+
+          <h4>Lista de posts</h4>
+          <pre><code class="language-js">const BlogPage = () =&gt; {
+  return (
+    &lt;ul&gt;
+      {blogData.map((post) =&gt; (
+        &lt;li key={post.slug}&gt;
+          &lt;Link to={`/blog/${post.slug}`}&gt;{post.title}&lt;/Link&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+};</code></pre>
+
+          <h4>Rutas</h4>
+          <pre><code class="language-js">function App() {
+  return (
+    &lt;Router&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/blog" element={&lt;BlogPage /&gt;} /&gt;
+        &lt;Route path="/blog/:slug" element={&lt;BlogPost /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/Router&gt;
+  );
+}</code></pre>
+
+          <h4>Detalle (useParams)</h4>
+          <pre><code class="language-js">const BlogPost = () =&gt; {
+  const { slug } = useParams();
+  const post = blogData.find((post) =&gt; post.slug === slug);
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{post.title}&lt;/h2&gt;
+      &lt;p&gt;{post.content}&lt;/p&gt;
+      &lt;p&gt;{post.author}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+        </section>
+
+        <section id="rutas-anidadas">
+          <h3>Rutas anidadas (Outlet)</h3>
+          <pre><code class="language-js">&lt;Route path="/blog" element={&lt;BlogPage /&gt;}&gt;
+  &lt;Route path="post/:postId" element={&lt;BlogPost /&gt;} /&gt;
+&lt;/Route&gt;</code></pre>
+
+          <pre><code class="language-js">function BlogPage() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Blog&lt;/h1&gt;
+      &lt;Outlet /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </section>
+
+        <section id="autenticacion">
+          <h3>Autenticación</h3>
+
+          <h4>Página de login</h4>
+          <pre><code class="language-js">import { useState } from "react";
+import { useAuth } from "../auth/auth.jsx";
+
+export default function LoginPage() {
+  const auth = useAuth();
+  const [username, setUsername] = useState("");
+
+  function login(event) {
+    event.preventDefault();
+    auth.login({ username });
+  }
+
+  return (
+    &lt;&gt;
+      &lt;h1 className="text-3xl font-bold"&gt;Login&lt;/h1&gt;
+
+      &lt;form onSubmit={login} className="flex flex-col gap-1.5"&gt;
+        &lt;label htmlFor="username"&gt;Escribe tu nombre de usuario&lt;/label&gt;
+        &lt;input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) =&gt; setUsername(e.target.value)}
+          className="bg-gray-200 rounded-md"
+        /&gt;
+        &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+          <h4>Rutas</h4>
+          <pre><code class="language-js">&lt;Route path="/login" element={&lt;LoginPage /&gt;} /&gt;
+&lt;Route path="/logout" element={&lt;LogoutPage /&gt;} /&gt;
+&lt;Route path="/profile" element={&lt;ProfilePage /&gt;} /&gt;</code></pre>
+
+          <h4>AuthProvider (Context)</h4>
+          <pre><code class="language-js">import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const AuthContext = React.createContext();
+
+function AuthProvider({ children }) {
+  const navigate = useNavigate();
+  const [user, setUser] = React.useState(null);
+
+  const login = ({ username }) =&gt; {
+    setUser({ username });
+    navigate("/profile");
+  };
+
+  const logout = () =&gt; {
+    setUser(null);
+    navigate("/");
+  };
+
+  const auth = { user, login, logout };
+  return &lt;AuthContext.Provider value={auth}&gt;{children}&lt;/AuthContext.Provider&gt;;
+}
+
+function useAuth() {
+  return React.useContext(AuthContext);
+}
+
+export { useAuth, AuthProvider };</code></pre>
+        </section>
+
+        <section id="proteger-rutas">
+          <h3>Proteger rutas con autenticación</h3>
+          <p>Agregar propiedad <code>private</code>:</p>
+          <pre><code class="language-js">const routes = [
+  { to: "/", text: "Home", private: false },
+  { to: "/profile", text: "Profile", private: true },
+  { to: "/blog", text: "Blog", private: false },
+  { to: "/login", text: "Login", private: false },
+  { to: "/logout", text: "Logout", private: true },
+];</code></pre>
+
+          <p>Ocultar rutas en el menú según autenticación:</p>
+          <pre><code class="language-js">export default function Menu() {
+  const auth = useAuth();
+
+  return (
+    &lt;nav&gt;
+      &lt;ul className="flex flex-row gap-4"&gt;
+        {routes.map((route) =&gt; {
+          if (route.private &amp;&amp; !auth.user) return null;
+          if (route.to === "/login" &amp;&amp; auth.user) return null;
+
+          return (
+            &lt;li key={route.text}&gt;
+              &lt;NavLink
+                style={({ isActive }) =&gt; ({ color: isActive ? "red" : "blue" })}
+                to={route.to}
+              &gt;
+                {route.text}
+              &lt;/NavLink&gt;
+            &lt;/li&gt;
+          );
+        })}
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  );
+}</code></pre>
+        </section>
+
+        <section id="proteccion-redireccionamiento">
+          <h3>Protección de rutas con redireccionamiento</h3>
+          <p>
+            Para evitar acceso por URL directa, usar un componente de ruta
+            protegida con <code>Navigate</code>.
+          </p>
+
+          <pre><code class="language-js">const AuthRoute = ({ children }) =&gt; {
+  const auth = useAuth();
+
+  if (!auth.user) {
+    return &lt;Navigate to="/login" /&gt;;
+  }
+
+  return children;
+};</code></pre>
+
+          <p>Proteger rutas:</p>
+          <pre><code class="language-js">&lt;Route
+  path="/logout"
+  element={
+    &lt;AuthRoute&gt;
+      &lt;LogoutPage /&gt;
+    &lt;/AuthRoute&gt;
+  }
+/&gt;
+
+&lt;Route
+  path="/profile"
+  element={
+    &lt;AuthRoute&gt;
+      &lt;ProfilePage /&gt;
+    &lt;/AuthRoute&gt;
+  }
+/&gt;</code></pre>
+
+          <p>Evitar volver al login si ya hay sesión:</p>
+          <pre><code class="language-js">if (auth.user) {
+  return &lt;p&gt;Ya has iniciado sesion como {auth.user.username}&lt;/p&gt;;
+}</code></pre>
+        </section>
+
+        <section id="roles-autorizacion">
+          <h3>Roles y autorización</h3>
+          <p>Lista de admins:</p>
+          <pre><code class="language-js">export const adminList = ["admin1", "admin2", "admin3"];</code></pre>
+
+          <p>Marcar admin al hacer login:</p>
+          <pre><code class="language-js">const login = ({ username }) =&gt; {
+  const isAdmin = adminList.includes(username);
+  setUser({ username, isAdmin });
+  navigate("/profile");
+};</code></pre>
+
+          <p>Ejemplo de permiso (solo admins):</p>
+          <pre><code class="language-js">export default function BlogPost() {
+  const auth = useAuth();
+  const { slug } = useParams();
+  const post = blogData.find((post) =&gt; post.slug === slug);
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{post.title}&lt;/h2&gt;
+      &lt;p&gt;{post.content}&lt;/p&gt;
+      &lt;p&gt;{post.author}&lt;/p&gt;
+
+      {auth.user?.isAdmin &amp;&amp; &lt;button&gt;Eliminar Post&lt;/button&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
