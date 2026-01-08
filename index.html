@@ -365,7 +365,9 @@ const NameForm = () =&gt; {
   );
 };</code></pre>
 
-      <h4>Múltiples estados en un componente</h4>
+      <h4 id="multiples-estados-en-un-componente">
+        Múltiples estados en un componente
+      </h4>
       <p>
         En la mayoría de los casos, un componente necesita más de una variable
         de estado. Podemos utilizar múltiples llamadas a useState dentro del
@@ -402,7 +404,9 @@ const UserProfile = () =&gt; {
     &lt;/div&gt;
   );
 };</code></pre>
-      <h4>Actualización basada en el estado anterior</h4>
+      <h4 id="actualizacion-basada-en-el-estado-anterior">
+        Actualización basada en el estado anterior
+      </h4>
       <p>
         A veces necesitamos actualizar el estado basándonos en su valor
         anterior. En lugar de pasar un valor directamente, podemos pasar una
@@ -522,7 +526,7 @@ const CounterWithEffect = () =&gt; {
         </li>
       </ul>
 
-      <h4>Función cleanup en useEffect</h4>
+      <h4 id="funcion-cleanup-useeffect">Función cleanup en useEffect</h4>
       <p>
         Cuando necesitamos limpiar recursos (suscripciones, timers, listeners),
         podemos retornar una función desde useEffect que se ejecutará al
@@ -557,7 +561,9 @@ const SubscriptionExample = () =&gt; {
   );
 };</code></pre>
 
-      <h4>useEffect sin dependencias (monta y desmonta)</h4>
+      <h4 id="useeffect-sin-dependencias-monta-y-desmonta">
+        useEffect sin dependencias (monta y desmonta)
+      </h4>
       <pre><code>import { useState, useEffect } from 'react';
 
 const TimerExample = () =&gt; {
@@ -576,7 +582,7 @@ const TimerExample = () =&gt; {
   return &lt;p&gt;Tiempo: {seconds} segundos&lt;/p&gt;;
 };</code></pre>
 
-      <h4>useEffect para obtener datos</h4>
+      <h4 id="useeffect-para-obtener-datos">useEffect para obtener datos</h4>
       <pre><code>import { useState, useEffect } from 'react';
 
 const DataFetcher = ({ userId }) =&gt; {
@@ -628,7 +634,9 @@ const DataFetcher = ({ userId }) =&gt; {
         función que determina cómo actualizar el estado basado en la acción, e
         <code>initialState</code> es el valor inicial.
       </p>
-      <h4>¿Cuándo usar useReducer en lugar de useState?</h4>
+      <h4 id="cuando-usar-usereducer">
+        ¿Cuándo usar useReducer en lugar de useState?
+      </h4>
       <p>Usa useReducer cuando:</p>
       <ul>
         <li>El estado tiene múltiples valores relacionados entre sí</li>
@@ -651,7 +659,7 @@ const DataFetcher = ({ userId }) =&gt; {
         <li>No hay mucha lógica condicional en las actualizaciones</li>
       </ul>
 
-      <h4>Ejemplo básico: Contador</h4>
+      <h4 id="ejemplo-basico-contador">Ejemplo básico: Contador</h4>
       <p>
         Empezamos definiendo la función reducer, esta recibirá dos argumentos,
         el primero es el estado y el segundo es la acción.
@@ -695,7 +703,9 @@ const Counter = () =&gt; {
 
 export default Counter;</code></pre>
 
-      <h4>Ejemplo con payload: Carrito de compras</h4>
+      <h4 id="ejemplo-con-payload-carrito-de-compras">
+        Ejemplo con payload: Carrito de compras
+      </h4>
       <p>
         Las acciones pueden incluir datos adicionales (payload) para actualizar
         el estado. Veamos un ejemplo más complejo con un carrito de compras:
@@ -817,7 +827,9 @@ const ShoppingCart = () =&gt; {
 
 export default ShoppingCart;</code></pre>
 
-      <h4>Mejores prácticas con useReducer</h4>
+      <h4 id="mejores-practicas-usereducer">
+        Mejores prácticas con useReducer
+      </h4>
       <ul>
         <li>
           Usa constantes para los tipos de acción: Evita errores de tipeo y
@@ -843,24 +855,36 @@ export default ShoppingCart;</code></pre>
 
       <h2 id="fetch">Fetch</h2>
       <p>
-        Podemos hacer un llamado a una api con fetch y renderizar el array que
-        nos regresa esta, un llamado simple sería
+        Fetch es la API nativa de JavaScript para realizar peticiones HTTP a
+        servidores externos. En React, estas peticiones se realizan típicamente
+        dentro de useEffect, ya que son efectos secundarios que deben ejecutarse
+        después del renderizado inicial del componente.
       </p>
+      <p>
+        La combinación de useState para almacenar los datos y useEffect para
+        obtenerlos es el patrón fundamental para trabajar con APIs en React.
+      </p>
+
+      <h3 id="ejemplo-basico-then">Ejemplo básico con .then()</h3>
+      <p>Un llamado simple a una API se vería así:</p>
       <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
 
 const UserList = () =&gt; {
+  // Estado para almacenar los usuarios
   const [users, setUsers] = useState([]);
 
-  // obtenemos datos una sola vez con useEffect
   useEffect(() =&gt; {
+    // Realizamos la petición HTTP
     fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;)
+      // Convertimos la respuesta a JSON
       .then(response =&gt; response.json())
-      // guardamos los datos con setUsers
+      // Guardamos los datos en el estado
       .then(data =&gt; setUsers(data))
+      // Manejamos errores básicos
       .catch(error =&gt; console.error(&#x27;Error fetching data:&#x27;, error));
-  }, []);
+  }, []); // Array vacío = solo se ejecuta al montar
 
-  // renderizamos
+  // Renderizamos la lista
   return (
     &lt;div&gt;
       &lt;h1&gt;Usuarios&lt;/h1&gt;
@@ -875,7 +899,100 @@ const UserList = () =&gt; {
 
 export default UserList;</code></pre>
 
-      <h2 id="manejo-de-errores-y-carga">Manejo de errores y carga</h2>
+      <h3 id="ejemplo-moderno-async-await">Ejemplo moderno con async/await</h3>
+      <p>
+        La sintaxis moderna con async/await es más legible y fácil de mantener.
+        Sin embargo, como useEffect no puede ser directamente async, debemos
+        crear una función interna:
+      </p>
+      <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() =&gt; {
+    // Función async dentro de useEffect
+    const fetchUsers = async () =&gt; {
+      try {
+        const response = await fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error(&#x27;Error fetching data:&#x27;, error);
+      }
+    };
+
+    // Ejecutamos la función
+    fetchUsers();
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Usuarios&lt;/h1&gt;
+      &lt;ul&gt;
+        {users.map(user =&gt; (
+          &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+      <h3 id="cleanup-abort-controller">Cleanup con AbortController</h3>
+      <p>
+        Cuando un componente se desmonta mientras una petición está en curso,
+        puede causar memory leaks o errores al intentar actualizar el estado.
+        AbortController nos permite cancelar peticiones pendientes:
+      </p>
+      <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() =&gt; {
+    // Creamos un controlador para abortar la petición
+    const controller = new AbortController();
+
+    const fetchUsers = async () =&gt; {
+      try {
+        const response = await fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;, {
+          signal: controller.signal // Conectamos el signal
+        });
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        // Ignoramos errores de abort
+        if (error.name !== &#x27;AbortError&#x27;) {
+          console.error(&#x27;Error fetching data:&#x27;, error);
+        }
+      }
+    };
+
+    fetchUsers();
+
+    // Cleanup: cancelamos la petición si el componente se desmonta
+    return () =&gt; controller.abort();
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Usuarios&lt;/h1&gt;
+      &lt;ul&gt;
+        {users.map(user =&gt; (
+          &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+      <p>
+        <strong>Nota:</strong> Estos ejemplos básicos no incluyen estados de
+        carga ni manejo de errores para el usuario. En la siguiente sección
+        veremos cómo implementar una solución más completa y profesional.
+      </p>
+
+      <h3 id="manejo-de-errores-y-carga">Manejo de errores y carga</h3>
       <p>
         Para esto vamos a setear nuevas variables y vamos a ir modificando su
         estado dependiendo del estado que ellas tengan.
