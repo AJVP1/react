@@ -854,6 +854,7 @@ export default ShoppingCart;</code></pre>
       </ul>
 
       <h2 id="fetch">Fetch</h2>
+      <hr />
       <p>
         Fetch es la API nativa de JavaScript para realizar peticiones HTTP a
         servidores externos. En React, estas peticiones se realizan típicamente
@@ -994,43 +995,74 @@ const UserList = () =&gt; {
 
       <h3 id="manejo-de-errores-y-carga">Manejo de errores y carga</h3>
       <p>
-        Para esto vamos a setear nuevas variables y vamos a ir modificando su
-        estado dependiendo del estado que ellas tengan.
+        En aplicaciones reales, es crucial comunicar al usuario el estado de las
+        peticiones HTTP. Para esto, utilizamos tres estados que trabajan en
+        conjunto:
       </p>
-      <pre><code >import { useState, useEffect } from &#x27;react&#x27;;</code></pre>
-      <pre><code >const UserList = () =&gt; {
-  const [users, setUsers] = useState([]);</code></pre>
-      <p>// nuevas variables</p>
-      <pre><code >  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);</code></pre>
-      <pre><code >  useEffect(() =&gt; {</code></pre>
-      <p>// buscamos los datos</p>
-      <pre><code >    const fetchUsers = async () =&gt; {
-  	try {
-  	  const response = await fetch(&#x27;https://api.example.com/users&#x27;);</code></pre>
-      <p>// arrojamos error</p>
-      <pre><code >  	  if (!response.ok) {</code></pre>
-      <p>throw new Error(&#x27;Error al obtener los datos&#x27;);</p>
-      <pre><code >  	  }</code></pre>
-      <p>// guardamos los datos</p>
-      <pre><code >  	  const data = await response.json();</code></pre>
-      <p>setUsers(data);</p>
-      <pre><code >  	} catch (error) {</code></pre>
-      <p>setError(error);</p>
-      <pre><code >  	} finally {</code></pre>
-      <p>setIsLoading(false);</p>
-      <pre><code >  	}
-  };  }, []);</code></pre>
-      <p>// renderiza la carga</p>
-      <pre><code >  if (isLoading) {
-  return &lt;p&gt;Cargando...&lt;/p&gt;;
-  }</code></pre>
-      <p>// renderiza el error</p>
-      <pre><code >  if (error) {
-  	return &lt;p&gt;Error: {error}&lt;/p&gt;;
-  }</code></pre>
-      <p>// renderizamos la lista</p>
-      <pre><code >  return (
+      <ul>
+        <li><strong>data</strong> (users): Los datos obtenidos de la API</li>
+        <li>
+          <strong>loading</strong> (isLoading): Indica si la petición está en
+          curso
+        </li>
+        <li>
+          <strong>error</strong>: Almacena cualquier error que ocurra durante la
+          petición
+        </li>
+      </ul>
+      <p>
+        Estos tres estados forman el patrón estándar de manejo de peticiones
+        asíncronas en React.
+      </p>
+
+      <h4>Implementación básica</h4>
+      <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
+
+const UserList = () =&gt; {
+  // Estado para los datos
+  const [users, setUsers] = useState([]);
+  // Estado para la carga
+  const [isLoading, setIsLoading] = useState(true);
+  // Estado para errores
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    const fetchUsers = async () =&gt; {
+      try {
+        const response = await fetch(&#x27;https://jsonplaceholder.typicode.com/users&#x27;);
+
+        // Verificamos si la respuesta fue exitosa
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        // Guardamos el mensaje de error
+        setError(error.message);
+      } finally {
+        // Siempre desactivamos el loading
+        setIsLoading(false);
+      }
+    };
+
+    // IMPORTANTE: Ejecutamos la función
+    fetchUsers();
+  }, []);
+
+  // Renderizado condicional: mostramos loading
+  if (isLoading) {
+    return &lt;p&gt;Cargando usuarios...&lt;/p&gt;;
+  }
+
+  // Renderizado condicional: mostramos error
+  if (error) {
+    return &lt;p&gt;Error: {error}&lt;/p&gt;;
+  }
+
+  // Renderizado normal: mostramos los datos
+  return (
     &lt;div&gt;
       &lt;h1&gt;Usuarios&lt;/h1&gt;
       &lt;ul&gt;
@@ -1040,9 +1072,123 @@ const UserList = () =&gt; {
       &lt;/ul&gt;
     &lt;/div&gt;
   );
-};</code></pre>
-      <pre><code >export default UserList;</code></pre>
+};
+
+export default UserList;</code></pre>
+
+      <h4>Implementación profesional con cleanup</h4>
+      <p>
+        Una implementación más robusta incluye AbortController para cancelar
+        peticiones pendientes y evitar actualizaciones de estado en componentes
+        desmontados:
+      </p>
+      <pre><code>import { useState, useEffect } from &#x27;react&#x27;;
+
+const UserList = () =&gt; {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    const controller = new AbortController();
+
+    const fetchUsers = async () =&gt; {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          &#x27;https://jsonplaceholder.typicode.com/users&#x27;,
+          { signal: controller.signal }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        // Ignoramos errores de cancelación
+        if (error.name !== &#x27;AbortError&#x27;) {
+          setError(error.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+
+    // Cleanup: cancelamos la petición al desmontar
+    return () =&gt; controller.abort();
+  }, []);
+
+  if (isLoading) {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;Usuarios&lt;/h1&gt;
+        &lt;p&gt;Cargando usuarios...&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (error) {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;Usuarios&lt;/h1&gt;
+        &lt;p style={{ color: &#x27;red&#x27; }}&gt;Error: {error}&lt;/p&gt;
+        &lt;button onClick={() =&gt; window.location.reload()}&gt;
+          Reintentar
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Usuarios ({users.length})&lt;/h1&gt;
+      {users.length === 0 ? (
+        &lt;p&gt;No hay usuarios disponibles&lt;/p&gt;
+      ) : (
+        &lt;ul&gt;
+          {users.map(user =&gt; (
+            &lt;li key={user.id}&gt;{user.name}&lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default UserList;</code></pre>
+
+      <h4>Patrón de estados y flujo</h4>
+      <p>El flujo de estados sigue este patrón:</p>
+      <ol>
+        <li>
+          <strong>Estado inicial:</strong> isLoading = true, error = null, data
+          = []
+        </li>
+        <li>
+          <strong>Durante la petición:</strong> isLoading permanece en true
+        </li>
+        <li>
+          <strong>Si tiene éxito:</strong> isLoading = false, data se actualiza
+        </li>
+        <li>
+          <strong>Si falla:</strong> isLoading = false, error contiene el
+          mensaje
+        </li>
+      </ol>
+      <p>
+        <strong>Importante:</strong> El bloque <code>finally</code> garantiza
+        que isLoading siempre se desactive, independientemente de si la petición
+        fue exitosa o falló.
+      </p>
+
       <h2 id="react-router">React Router</h2>
+      <hr />
       <pre><code >El desarrollo de aplicaciones web con React a menudo comienza de manera simple, pero a medida que el proyecto crece, se vuelve esencial implementar una estructura organizada que permita la navegación entre diferentes vistas. Aquí es donde React Router se convierte en una herramienta vital. Cuando nuestra aplicación es demasiado complicada tanto funcional como estructuralmente, la organización en rutas no solo mejora la navegabilidad, sino que también hace que el código sea más estructurado y fácil de mantener.</code></pre>
       <h3 id="estructura-de-un-react-router">Estructura de un react router</h3>
       <pre><code >La estructura básica de un React Router implica varios componentes y conceptos que se repiten en sus versiones, lo cual es fundamental para comprender cómo funciona.</code></pre>
