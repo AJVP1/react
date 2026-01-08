@@ -59,6 +59,11 @@ hr {
   margin-bottom: 1.5rem;
 }
 
+h4 {
+  font-weight: 400;
+  font-style: italic;
+}
+
 /* Paragraphs */
 p {
   margin-bottom: 1.2rem;

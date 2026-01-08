@@ -190,34 +190,47 @@ export default App;</code></pre>
         nuestros componentes necesitan para funcionar correctamente.
       </p>
       <p>Existen dos tipos principales de estados:</p>
-      <p>
-        Estado local: Información almacenada a nivel de componente, accesible
-        solo dentro del componente donde se define.
-      </p>
-      <p>
-        Estado global: Información compartida entre múltiples componentes de la
-        aplicación.
-      </p>
+
+      <ul>
+        <li>
+          Estado local: Información almacenada a nivel de componente, accesible
+          solo dentro del componente donde se define.
+        </li>
+        <li>
+          Estado global: Información compartida entre múltiples componentes de
+          la aplicación.
+        </li>
+      </ul>
+
       <p>
         React proporciona una herramienta especial llamada useState, que es un
         hook que nos permite implementar estados locales en nuestros componentes
         funcionales. Este hook nos devuelve:
       </p>
+
       <ul>
         <li>Una variable para leer el valor actual del estado</li>
         <li>Una función para actualizar ese valor</li>
-        <li>La sintaxis basica es</li>
+        <li>El valor inicial del estado</li>
       </ul>
-      <pre><code >const [valor, setValor] = useState(valorInicial);</code></pre>
+
+      <p>La sintaxis básica es</p>
+      <pre><code>const [valor, setValor] = useState(valorInicial);</code></pre>
+
       <p>
-        donde valor es la variable que contiene el estado actual, setValor es la
-        función que nos permite actualizar ese estado y valorInicial es el valor
-        que con el que comienza el estado.
+        donde <code>valor</code> es la variable que contiene el estado actual,
+        <code>setValor</code> es la función que nos permite actualizar ese
+        estado y <code>valorInicial</code> es el valor que con el que comienza
+        el estado.
       </p>
+
       <p>Ejemplo</p>
-      <pre><code >const Counter = () =&gt; {
-  const [count, setCount] = useState(0);</code></pre>
-      <pre><code >  return (
+      <pre><code>import { useState } from 'react';
+
+const Counter = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  return (
     &lt;div&gt;
       &lt;h2&gt;El contador está en: {count}&lt;/h2&gt;
       &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Incrementar&lt;/button&gt;
@@ -246,32 +259,117 @@ export default App;</code></pre>
           Cargas de datos: Para indicar si los datos están cargando, se han
           cargado correctamente o ha ocurrido un error
         </li>
-        <li>Ejemplo de toggle button</li>
       </ul>
-      <pre><code >const ToggleButton = () =&gt; {
-  const [isActive, setIsActive] = useState(false);</code></pre>
-      <pre><code >  return (
+
+      <h4>Ejemplo de toggle button</h4>
+      <pre><code>import { useState } from 'react';
+
+const ToggleButton = () =&gt; {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
     &lt;button onClick={() =&gt; setIsActive(!isActive)}&gt;
       {isActive ? &#x27;Activo&#x27; : &#x27;Inactivo&#x27;}
     &lt;/button&gt;
   );
 };</code></pre>
-      <p>Ejemplo de variable en formulario</p>
-      <pre><code >const NameForm = () =&gt; {
-  const [name, setName] = useState(&#x27;&#x27;);</code></pre>
-      <pre><code >  return (
+
+      <h4>Ejemplo de variable en formulario</h4>
+      <pre><code>import { useState } from 'react';
+
+const NameForm = () =&gt; {
+  const [name, setName] = useState(&#x27;&#x27;);
+
+  return (
     &lt;div&gt;
-      &lt;input</code></pre>
-      <ul>
-        <li>type=&quot;text&quot;</li>
-        <li>placeholder=&quot;Ingresa tu nombre&quot;</li>
-      </ul>
-      <pre><code >        onChange={(event) =&gt; setName(event.target.value)}
+      &lt;input
+        type=&quot;text&quot;
+        placeholder=&quot;Ingresa tu nombre&quot;
+        onChange={(event) =&gt; setName(event.target.value)}
       /&gt;
       &lt;p&gt;Hola, {name ? name : &#x27;visitante&#x27;}&lt;/p&gt;
     &lt;/div&gt;
   );
 };</code></pre>
+
+      <h4>Múltiples estados en un componente</h4>
+      <p>
+        En la mayoría de los casos, un componente necesita más de una variable
+        de estado. Podemos utilizar múltiples llamadas a useState dentro del
+        mismo componente:
+      </p>
+      <pre><code>import { useState } from 'react';
+
+const UserProfile = () =&gt; {
+  const [name, setName] = useState(&#x27;&#x27;);
+  const [email, setEmail] = useState(&#x27;&#x27;);
+  const [age, setAge] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        type=&quot;text&quot;
+        placeholder=&quot;Nombre&quot;
+        value={name}
+        onChange={(e) =&gt; setName(e.target.value)}
+      /&gt;
+      &lt;input
+        type=&quot;email&quot;
+        placeholder=&quot;Email&quot;
+        value={email}
+        onChange={(e) =&gt; setEmail(e.target.value)}
+      /&gt;
+      &lt;input
+        type=&quot;number&quot;
+        placeholder=&quot;Edad&quot;
+        value={age}
+        onChange={(e) =&gt; setAge(Number(e.target.value))}
+      /&gt;
+      &lt;p&gt;Perfil: {name} ({age} años) - {email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      <h4>Actualización basada en el estado anterior</h4>
+      <p>
+        A veces necesitamos actualizar el estado basándonos en su valor
+        anterior. En lugar de pasar un valor directamente, podemos pasar una
+        función que recibe el estado anterior y retorna el nuevo estado:
+      </p>
+      <pre><code>import { useState } from 'react';
+
+const CounterAdvanced = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  // Forma correcta: pasar una función
+  const increment = () =&gt; {
+    setCount((prevCount) =&gt; prevCount + 1);
+  };
+
+  const decrement = () =&gt; {
+    setCount((prevCount) =&gt; prevCount - 1);
+  };
+
+  const reset = () =&gt; {
+    setCount(0);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Contador: {count}&lt;/p&gt;
+      &lt;button onClick={increment}&gt;Incrementar&lt;/button&gt;
+      &lt;button onClick={decrement}&gt;Decrementar&lt;/button&gt;
+      &lt;button onClick={reset}&gt;Reiniciar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      <p>
+        Esta forma de actualizar es especialmente importante cuando realizas
+        múltiples actualizaciones del estado en rápida sucesión o cuando la
+        actualización depende del estado anterior. React agrupa las
+        actualizaciones (batching) para optimizar el rendimiento, por lo que
+        siempre es recomendable usar la función callback cuando el nuevo estado
+        depende del anterior.
+      </p>
       <h2 id="efectos-secundarios-useeffect">
         Efectos secundarios (useEffect)
       </h2>
