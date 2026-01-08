@@ -284,6 +284,7 @@ const NameForm = () =&gt; {
     &lt;div&gt;
       &lt;input
         type=&quot;text&quot;
+        value={name}
         placeholder=&quot;Ingresa tu nombre&quot;
         onChange={(event) =&gt; setName(event.target.value)}
       /&gt;
@@ -370,9 +371,10 @@ const CounterAdvanced = () =&gt; {
         siempre es recomendable usar la función callback cuando el nuevo estado
         depende del anterior.
       </p>
-      <h2 id="efectos-secundarios-useeffect">
-        Efectos secundarios (useEffect)
-      </h2>
+
+      <h3 id="efectos-secundarios-useeffect">
+        <em>Efectos secundarios (useEffect)</em>
+      </h3>
       <p>
         Los efectos secundarios son operaciones que ocurren fuera del flujo
         principal de renderizado de React. Estos incluyen:
@@ -397,27 +399,30 @@ const CounterAdvanced = () =&gt; {
           el efecto
         </li>
       </ul>
-      <pre><code >useEffect(() =&gt; {}, [dependencias]);</code></pre>
+      <pre><code>useEffect(() =&gt; {}, [dependencias]);</code></pre>
       <p>
         Si el array de dependencias está vacío [], el efecto se ejecutará solo
         una vez después del primer renderizado. Si incluimos variables en el
         array, el efecto se ejecutará cada vez que alguna de esas variables
         cambie de valor.
       </p>
-      <pre><code >const CounterWithEffect = () =&gt; {
-  const [count, setCount] = useState(0);</code></pre>
-      <pre><code >  useEffect(() =&gt; {
+      <p>Ejemplo básico con dependencias:</p>
+      <pre><code>import { useState, useEffect } from 'react';
+
+const CounterWithEffect = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  useEffect(() =&gt; {
     console.log(`El contador cambió a ${count}`);
-  }, [count]);</code></pre>
-      <pre><code >  return (
+  }, [count]);
+
+  return (
     &lt;div&gt;
       &lt;p&gt;Count: {count}&lt;/p&gt;
-      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;</code></pre>
-      <p>Incrementar</p>
-      <pre><code >      &lt;/button&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Incrementar&lt;/button&gt;
     &lt;/div&gt;
   );
-}</code></pre>
+};</code></pre>
       <p>
         El hook useEffect es extremadamente versátil y puede utilizarse en
         numerosos escenarios:
@@ -444,7 +449,98 @@ const CounterAdvanced = () =&gt; {
           cambian ciertos valores
         </li>
       </ul>
-      <h2 id="estados-complejos-usereducer">Estados complejos (useReducer)</h2>
+
+      <h4>Función cleanup en useEffect</h4>
+      <p>
+        Cuando necesitamos limpiar recursos (suscripciones, timers, listeners),
+        podemos retornar una función desde useEffect que se ejecutará al
+        desmontar el componente o antes de ejecutar el efecto nuevamente:
+      </p>
+      <pre><code>import { useState, useEffect } from 'react';
+
+const SubscriptionExample = () =&gt; {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() =&gt; {
+    // Setup: ejecuta cuando el componente monta
+    if (isSubscribed) {
+      console.log('Suscrito a eventos');
+      const handleEvent = () =&gt; console.log('Evento disparado');
+      window.addEventListener('scroll', handleEvent);
+
+      // Cleanup: se ejecuta antes de desmontar o antes del siguiente efecto
+      return () =&gt; {
+        console.log('Desuscrito de eventos');
+        window.removeEventListener('scroll', handleEvent);
+      };
+    }
+  }, [isSubscribed]);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setIsSubscribed(!isSubscribed)}&gt;
+        {isSubscribed ? 'Desuscribirse' : 'Suscribirse'}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+      <h4>useEffect sin dependencias (monta y desmonta)</h4>
+      <pre><code>import { useState, useEffect } from 'react';
+
+const TimerExample = () =&gt; {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() =&gt; {
+    // Corre una sola vez cuando el componente monta
+    const interval = setInterval(() =&gt; {
+      setSeconds((prev) =&gt; prev + 1);
+    }, 1000);
+
+    // Cleanup: se ejecuta cuando el componente desmonta
+    return () =&gt; clearInterval(interval);
+  }, []); // Array vacío = solo al montar/desmontar
+
+  return &lt;p&gt;Tiempo: {seconds} segundos&lt;/p&gt;;
+};</code></pre>
+
+      <h4>useEffect para obtener datos</h4>
+      <pre><code>import { useState, useEffect } from 'react';
+
+const DataFetcher = ({ userId }) =&gt; {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    // Reset states
+    setLoading(true);
+    setError(null);
+
+    // Fetch de datos
+    fetch(`https://api.example.com/users/${userId}`)
+      .then((response) =&gt; {
+        if (!response.ok) throw new Error('Error en la API');
+        return response.json();
+      })
+      .then((data) =&gt; setUser(data))
+      .catch((err) =&gt; setError(err.message))
+      .finally(() =&gt; setLoading(false));
+  }, [userId]); // Se ejecuta cada vez que userId cambia
+
+  if (loading) return &lt;p&gt;Cargando...&lt;/p&gt;;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;;
+  return &lt;div&gt;&lt;h2&gt;{user?.name}&lt;/h2&gt;&lt;/div&gt;;
+};</code></pre>
+      <p>
+        <strong>Importante:</strong> La función cleanup retornada desde
+        useEffect es esencial para evitar memory leaks. Siempre limpia
+        listeners, timers, o suscripciones que hayas establecido en el efecto.
+      </p>
+
+      <h3 id="estados-complejos-usereducer">
+        <em>Estados complejos (useReducer)</em>
+      </h3>
       <p>
         A diferencia de useState, que simplemente reemplaza el estado anterior,
         useReducer permite definir una función reductora (reducer) que
