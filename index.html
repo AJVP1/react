@@ -1367,51 +1367,83 @@ function App() {
         </tbody>
       </table>
 
-      <h3 id="instalacion">Instalacion</h3>
+      <h3 id="instalacion">Instalación</h3>
       <p>
-        Para instalar react router corremos el comando npm install
-        react-router-dom@latest. Podemos asegurarnos que este todo bien
-        corriendo la aplicación con npm run dev.
+        Para instalar React Router corremos el comando
+        <code>pnpm install react-router-dom@latest</code>. Podemos asegurarnos
+        que esté todo bien corriendo la aplicación con <code>npm run dev</code>.
       </p>
-      <h3 id="rutas-estaticas-hashrouter">Rutas estaticas (HashRouter)</h3>
-      <pre><code >Podemos colocar rutas estaticas con hash dentro de nuestro documento vamos a usar el componente HashRouter react router. Para esto dentro de nuestro archivo app.jsx colocamos
+
+      <h3 id="rutas-estaticas-hashrouter">Rutas estáticas (HashRouter)</h3>
+      <p>
+        Podemos colocar rutas estáticas con hash dentro de nuestro documento
+        usando el componente HashRouter de React Router. Para esto, dentro de
+        nuestro archivo app.jsx colocamos:
+      </p>
+      <pre><code>import { HashRouter, Routes, Route } from 'react-router-dom';
+
 function App() {
   return (
     &lt;&gt;
       &lt;HashRouter&gt;
-        &lt;Menu /&gt;</code></pre>
-      <pre><code >        &lt;Routes&gt;
+        &lt;Menu /&gt;
+        &lt;Routes&gt;
           &lt;Route path=&quot;/&quot; element={&lt;HomePage /&gt;} /&gt;
           &lt;Route path=&quot;/profile&quot; element={&lt;ProfilePage /&gt;} /&gt;
           &lt;Route path=&quot;/blog&quot; element={&lt;BlogPage /&gt;} /&gt;
-          &lt;Route</code></pre>
-      <p>path=&quot;*&quot;</p>
-      <pre><code >            element={&lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Not Found&lt;/h1&gt;}
+          &lt;Route
+            path=&quot;*&quot;
+            element={&lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Not Found&lt;/h1&gt;}
           /&gt;
         &lt;/Routes&gt;
       &lt;/HashRouter&gt;
     &lt;/&gt;
   );
-}
-Y dentro de este componente tendremos las paginas/rutas que vamos a renderizar dentro del componente Routes, y cada ruta por separado va a usar el componente Route. Dicho componente va a tener un atributo path que es el hash que va a leer, como tambien va a tener el atributo element que hara referencia a lo que se va a renderizar.</code></pre>
-      <h3 id="navegacion-navlink">Navegacion (NavLink)</h3>
-      <pre><code >Podemos usar la etiqueta NavLink en vez de la eliqueta a para crear links. Esta etiqueta nos permite cambiar la url de la app sin necesidad de recargar la pagina. Asi tendremos algo como
+}</code></pre>
+      <p>
+        Dentro de este componente tendremos las páginas/rutas que vamos a
+        renderizar dentro del componente Routes, y cada ruta por separado va a
+        usar el componente Route. Dicho componente va a tener un atributo path
+        que es el hash que va a leer, como también va a tener el atributo
+        element que hará referencia a lo que se va a renderizar.
+      </p>
+
+      <h3 id="navegacion-navlink">Navegación (NavLink)</h3>
+      <p>
+        Podemos usar el componente NavLink en vez de la etiqueta a para crear
+        links. Este componente nos permite cambiar la URL de la app sin
+        necesidad de recargar la página. Así tendremos algo como:
+      </p>
+      <pre><code>import { NavLink } from 'react-router-dom';
+
 const routes = [
-  { to: &#x27;/&#x27;, text: &#x27;Home&#x27; },
-  { to: &#x27;/blog&#x27;, text: &#x27;Blog&#x27; },
-  { to: &#x27;/profile&#x27;, text: &#x27;Profile&#x27; }</code></pre>
-      <p>];</p>
-      <pre><code >&lt;ul&gt;
-  {routes.map(route =&gt; (
-    &lt;li key={route.to}&gt;
-      &lt;NavLink to={route.to} style={({ isActive }) =&gt; ({ color: isActive ? &#x27;red&#x27; : &#x27;blue&#x27; })}&gt;
-        {route.text}
-      &lt;/NavLink&gt;
-    &lt;/li&gt;
-  ))}
-&lt;/ul&gt;
-Que nos dara como resultado una lista ul con etiquetas NavLink relacionadas a las rutas definidas en la constante routes. Ademas, si estamos ubicados sobre esa opción se va a colocar en rojo.</code></pre>
-      <h3 id="rutas-dinamicas-useparams">Rutas dinamicas (UseParams)</h3>
+  { to: '/', text: 'Home' },
+  { to: '/blog', text: 'Blog' },
+  { to: '/profile', text: 'Profile' }
+];
+
+function Menu() {
+  return (
+    &lt;ul&gt;
+      {routes.map(route =&gt; (
+        &lt;li key={route.to}&gt;
+          &lt;NavLink to={route.to} style={({ isActive }) =&gt; ({ color: isActive ? 'red' : 'blue' })}&gt;
+            {route.text}
+          &lt;/NavLink&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+export default Menu;</code></pre>
+      <p>
+        Esto nos dará como resultado una lista ul con componentes NavLink
+        relacionados a las rutas definidas en la constante routes. Además, si
+        estamos ubicados sobre esa opción se va a colocar en rojo.
+      </p>
+
+      <h3 id="rutas-dinamicas-useparams">Rutas dinámicas (useParams)</h3>
       <p>
         El slug es una parte de la URL que actúa como un identificador único
         para las páginas o elementos de contenido en una aplicación,
@@ -1424,29 +1456,43 @@ Que nos dara como resultado una lista ul con etiquetas NavLink relacionadas a la
         qué datos cargar y cómo consultar el backend para obtener información
         diferente para cada vista.
       </p>
-      <pre><code >Empezamos creando una lista de publicaciones para un blog. El componente base será similar para cada entrada de blog, cambiando solo su contenido dependiendo del slug. Este componente se llamará BlogPost y hará uso del React hook useParams para este objetivo. Veamos cómo se hace, comencemos definifiendo los datos de cada blog.
-const blogData = [
-  {</code></pre>
-      <ul>
-        <li>title: &quot;¿Qué es React?&quot;,</li>
-        <li>slug: &quot;que-es-react&quot;,</li>
-        <li>
-          content: &quot;React es el mejor framework de JavaScript.&quot;,
-        </li>
-        <li>author: &quot;Juan de Sen&quot;</li>
-      </ul>
-      <pre><code >  },
-  {</code></pre>
-      <ul>
-        <li>title: &quot;¿Qué es Vue?&quot;,</li>
-        <li>slug: &quot;que-es-vue&quot;,</li>
-        <li>content: &quot;Vue es un framework progresivo.&quot;,</li>
-        <li>author: &quot;Otro autor&quot;</li>
-      </ul>
-      <pre><code >  }</code></pre>
-      <p>];</p>
-      <pre><code >Después diremos que la parte de pagina de blogs va a mostrar una lista con los distintos post para leer, y en la parte de to en el Link es donde vamos a colocar la parte dinamica
-const BlogPage = () =&gt; {
+      <p>
+        Empezamos creando una lista de publicaciones para un blog. El componente
+        base será similar para cada entrada de blog, cambiando solo su contenido
+        dependiendo del slug. Este componente se llamará BlogPost y hará uso del
+        React hook useParams para este objetivo. Veamos cómo se hace.
+      </p>
+      <p>
+        Primero, creamos un archivo separado para los datos del blog
+        (blogData.js) y los exportamos para que puedan ser usados por otros
+        componentes:
+      </p>
+      <pre><code>// blogData.js
+export const blogData = [
+  {
+    title: "¿Qué es React?",
+    slug: "que-es-react",
+    content: "React es el mejor framework de JavaScript.",
+    author: "Juan de Sen"
+  },
+  {
+    title: "¿Qué es Vue?",
+    slug: "que-es-vue",
+    content: "Vue es un framework progresivo.",
+    author: "Otro autor"
+  }
+];</code></pre>
+      <p>
+        Después creamos el componente BlogPage que va a mostrar una lista con
+        los distintos posts para leer. Importamos los datos desde blogData.js y
+        en la prop <code>to</code> del componente Link es donde vamos a colocar
+        la parte dinámica:
+      </p>
+      <pre><code>// BlogPage.jsx
+import { Link } from 'react-router-dom';
+import { blogData } from './blogData';
+
+const BlogPage = () => {
   return (
     &lt;ul&gt;
       {blogData.map(post =&gt; (
@@ -1456,57 +1502,129 @@ const BlogPage = () =&gt; {
       ))}
     &lt;/ul&gt;
   );
-};</code></pre>
+};
+
+export default BlogPage;</code></pre>
       <p>
-        Después en nuestro archivo app.jsx definimos que se va a renderizar
-        cuando entremos a esa ruta dinamica, en este caso vamos a renderizar un
-        componente llamado BlogPost.
+        Después en nuestro archivo app.jsx definimos qué se va a renderizar
+        cuando entremos a esa ruta dinámica. En este caso vamos a renderizar un
+        componente llamado BlogPost:
       </p>
-      <pre><code >function App() {
+      <pre><code>// App.jsx
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import BlogPage from './BlogPage';
+import BlogPost from './BlogPost';
+
+function App() {
   return (
-    &lt;Router&gt;
+    &lt;HashRouter&gt;
       &lt;Routes&gt;
         &lt;Route path=&quot;/blog&quot; element={&lt;BlogPage /&gt;} /&gt;
         &lt;Route path=&quot;/blog/:slug&quot; element={&lt;BlogPost /&gt;} /&gt;
       &lt;/Routes&gt;
-    &lt;/Router&gt;
+    &lt;/HashRouter&gt;
   );
-}</code></pre>
+}
+
+export default App;</code></pre>
       <p>
-        Por ultimo, creamos el componente BlogPost que va a tener la estructura
-        del los blogs pero cuya información va a variar dependiendo del post.
+        Por último, creamos el componente BlogPost que va a tener la estructura
+        de los blogs pero cuya información va a variar dependiendo del post.
+        Importamos blogData y useParams, y agregamos un manejo de error por si
+        el slug no existe:
       </p>
-      <pre><code >const BlogPost = () =&gt; {
-  const { slug } = useParams();  // Obtiene el slug desde la URL</code></pre>
-      <p>// Lógica para obtener el post correcto basado en el slug</p>
-      <pre><code >  const post = blogData.find(post =&gt; post.slug === slug);</code></pre>
-      <pre><code >  return (
+      <pre><code>// BlogPost.jsx
+import { useParams } from 'react-router-dom';
+import { blogData } from './blogData';
+
+const BlogPost = () => {
+  const { slug } = useParams(); // Obtiene el slug desde la URL
+
+  // Lógica para obtener el post correcto basado en el slug
+  const post = blogData.find(post =&gt; post.slug === slug);
+
+  // Manejo de error si no se encuentra el post
+  if (!post) {
+    return &lt;h2&gt;Post no encontrado&lt;/h2&gt;;
+  }
+
+  return (
     &lt;div&gt;
       &lt;h2&gt;{post.title}&lt;/h2&gt;
       &lt;p&gt;{post.content}&lt;/p&gt;
       &lt;p&gt;{post.author}&lt;/p&gt;
     &lt;/div&gt;
   );
-};</code></pre>
+};
+
+export default BlogPost;</code></pre>
+
       <h3 id="rutas-anidadas-outlet">Rutas anidadas (Outlet)</h3>
-      <pre><code >Las Nested Routes, como su nombre lo indica, son rutas anidadas dentro de otras. Imagina tener una aplicación web donde una ruta principal tiene subrutas que se exploran sin perder el contenido original de la ruta principal.</code></pre>
       <p>
-        Dentro del archivo app.jsx vamos a encapsular las rutas dinamicas de los
-        post dentro de la ruta de BlogPage
+        Las Nested Routes (rutas anidadas), como su nombre lo indica, son rutas
+        anidadas dentro de otras. Esto permite tener una ruta principal que
+        mantiene su contenido visible mientras se navega por subrutas. Por
+        ejemplo, una página de blog que mantiene su título y menú mientras
+        muestra diferentes posts.
       </p>
-      <pre><code >&lt;Route path=&quot;/blog&quot; element={&lt;BlogPage /&gt;}&gt;
-  &lt;Route path=&quot;post/:postId&quot; element={&lt;BlogPost /&gt;} /&gt;
-&lt;/Route&gt;
-Después dentro del componente BlogPage.jsx agregamos la etiqueta Outlet
+      <p>
+        El componente <code>Outlet</code> actúa como un marcador de posición
+        donde se renderizarán las rutas hijas anidadas.
+      </p>
+      <p>
+        Dentro del archivo app.jsx vamos a encapsular las rutas dinámicas de los
+        posts dentro de la ruta de BlogPage:
+      </p>
+      <pre><code>// App.jsx
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import BlogPage from './BlogPage';
+import BlogPost from './BlogPost';
+
+function App() {
+  return (
+    &lt;HashRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&quot;/blog&quot; element={&lt;BlogPage /&gt;}&gt;
+          &lt;Route path=&quot;:slug&quot; element={&lt;BlogPost /&gt;} /&gt;
+        &lt;/Route&gt;
+      &lt;/Routes&gt;
+    &lt;/HashRouter&gt;
+  );
+}
+
+export default App;</code></pre>
+      <p>
+        Después dentro del componente BlogPage.jsx agregamos el componente
+        Outlet, que es donde se renderizarán las rutas hijas:
+      </p>
+      <pre><code>// BlogPage.jsx
+import { Link, Outlet } from 'react-router-dom';
+import { blogData } from './blogData';
+
 function BlogPage() {
   return (
     &lt;div&gt;
       &lt;h1&gt;Blog&lt;/h1&gt;
+      &lt;ul&gt;
+        {blogData.map(post =&gt; (
+          &lt;li key={post.slug}&gt;
+            &lt;Link to={`/blog/${post.slug}`}&gt;{post.title}&lt;/Link&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
       &lt;Outlet /&gt;
     &lt;/div&gt;
   );
 }
-Al hacer esto, cuando navegas a una ruta secundaria, como un post de blog específico, el contenido de esa ruta se renderiza en el lugar donde está ubicado el Outlet.</code></pre>
+
+export default BlogPage;</code></pre>
+      <p>
+        Al hacer esto, cuando navegas a una ruta secundaria como
+        <code>/blog/que-es-react</code>, el contenido del BlogPost se renderiza
+        en el lugar donde está ubicado el Outlet, manteniendo visible el título
+        "Blog" y la lista de posts.
+      </p>
+
       <h2 id="autenticacion">Autenticacion</h2>
       <p>
         Vamos a crear un sistema de autenticación ficticio para ilustrar cómo se
