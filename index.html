@@ -37,6 +37,11 @@
                 >Estados complejos (useReducer)</a
               >
             </li>
+            <li>
+              <a href="#context-api-usecontext"
+                >Context API (useContext)</a
+              >
+            </li>
           </ul>
         </li>
         <li>
@@ -945,6 +950,358 @@ export default ShoppingCart;</code></pre>
           propiedad payload de la acción
         </li>
       </ul>
+
+      <h3 id="context-api-usecontext"><em>Context API (useContext)</em></h3>
+      <p>
+        Context API es una funcionalidad nativa de React que permite compartir datos
+        entre componentes sin tener que pasar props manualmente a través de cada nivel
+        del árbol de componentes. Resuelve el problema conocido como "prop drilling".
+      </p>
+
+      <h4 id="problema-prop-drilling">El problema: Prop Drilling</h4>
+      <p>
+        Cuando necesitas pasar datos a un componente profundamente anidado, tienes que
+        pasar props a través de todos los componentes intermedios, incluso si esos
+        componentes no usan esos datos:
+      </p>
+      <pre><code>function App() {
+  const [user, setUser] = useState({ name: &quot;Juan&quot; });
+
+  return &lt;Header user={user} /&gt;;
+}
+
+function Header({ user }) {
+  // Header no usa user, solo lo pasa
+  return &lt;Navbar user={user} /&gt;;
+}
+
+function Navbar({ user }) {
+  // Navbar tampoco usa user, solo lo pasa
+  return &lt;UserMenu user={user} /&gt;;
+}
+
+function UserMenu({ user }) {
+  // Finalmente, UserMenu sí usa user
+  return &lt;p&gt;Hola, {user.name}&lt;/p&gt;;
+}</code></pre>
+      <p>
+        Este patrón se vuelve problemático en aplicaciones grandes donde los datos
+        deben atravesar muchos niveles de componentes.
+      </p>
+
+      <h4 id="componentes-context-api">Componentes de Context API</h4>
+      <p>
+        Context API se compone de tres elementos principales:
+      </p>
+
+      <h5>1. createContext - Crear el contexto</h5>
+      <p>
+        Primero creamos un contexto que actuará como el "contenedor" de nuestros datos:
+      </p>
+      <pre><code>import React from &#x27;react&#x27;;
+
+const UserContext = React.createContext();</code></pre>
+
+      <h5>2. Provider - Proveer los valores</h5>
+      <p>
+        El Provider envuelve los componentes que necesitan acceso al contexto y
+        les proporciona el valor:
+      </p>
+      <pre><code>function App() {
+  const [user, setUser] = useState({ name: &quot;Juan&quot; });
+
+  return (
+    &lt;UserContext.Provider value={{ user, setUser }}&gt;
+      &lt;Header /&gt;
+    &lt;/UserContext.Provider&gt;
+  );
+}</code></pre>
+
+      <h5>3. useContext - Consumir los valores</h5>
+      <p>
+        Los componentes hijos pueden acceder al valor directamente con el hook
+        <code>useContext</code>, sin importar qué tan profundo estén en el árbol:
+      </p>
+      <pre><code>function UserMenu() {
+  const { user } = useContext(UserContext);
+
+  return &lt;p&gt;Hola, {user.name}&lt;/p&gt;;
+}</code></pre>
+
+      <h4 id="ejemplo-completo-context">Ejemplo completo: Sistema de temas</h4>
+      <p>
+        Vamos a crear un sistema de temas (claro/oscuro) usando Context API:
+      </p>
+      <pre><code>import React, { createContext, useContext, useState } from &#x27;react&#x27;;
+
+// 1. Crear el contexto
+const ThemeContext = createContext();
+
+// 2. Crear el Provider personalizado
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(&#x27;light&#x27;);
+
+  const toggleTheme = () =&gt; {
+    setTheme(prev =&gt; prev === &#x27;light&#x27; ? &#x27;dark&#x27; : &#x27;light&#x27;);
+  };
+
+  const value = { theme, toggleTheme };
+
+  return (
+    &lt;ThemeContext.Provider value={value}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// 3. Crear un hook personalizado para facilitar el uso
+function useTheme() {
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error(&#x27;useTheme debe usarse dentro de ThemeProvider&#x27;);
+  }
+
+  return context;
+}
+
+// 4. Exportar
+export { ThemeProvider, useTheme };</code></pre>
+
+      <p>Ahora podemos usar este contexto en nuestra aplicación:</p>
+      <pre><code>// App.jsx
+import { ThemeProvider } from &#x27;./ThemeContext&#x27;;
+
+function App() {
+  return (
+    &lt;ThemeProvider&gt;
+      &lt;Header /&gt;
+      &lt;MainContent /&gt;
+      &lt;Footer /&gt;
+    &lt;/ThemeProvider&gt;
+  );
+}
+
+// Header.jsx
+import { useTheme } from &#x27;./ThemeContext&#x27;;
+
+function Header() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    &lt;header style={{ background: theme === &#x27;light&#x27; ? &#x27;#fff&#x27; : &#x27;#333&#x27; }}&gt;
+      &lt;h1&gt;Mi App&lt;/h1&gt;
+      &lt;button onClick={toggleTheme}&gt;
+        Cambiar a {theme === &#x27;light&#x27; ? &#x27;oscuro&#x27; : &#x27;claro&#x27;}
+      &lt;/button&gt;
+    &lt;/header&gt;
+  );
+}
+
+// MainContent.jsx
+function MainContent() {
+  const { theme } = useTheme();
+
+  return (
+    &lt;main style={{
+      background: theme === &#x27;light&#x27; ? &#x27;#f0f0f0&#x27; : &#x27;#222&#x27;,
+      color: theme === &#x27;light&#x27; ? &#x27;#000&#x27; : &#x27;#fff&#x27;
+    }}&gt;
+      &lt;p&gt;Contenido principal&lt;/p&gt;
+    &lt;/main&gt;
+  );
+}</code></pre>
+
+      <h4 id="context-con-usereducer">Combinando Context API con useReducer</h4>
+      <p>
+        Para estado más complejo, es común combinar Context API con useReducer.
+        Esto nos da las ventajas de ambos: estado global con lógica de actualización
+        compleja y predecible:
+      </p>
+      <pre><code>import React, { createContext, useContext, useReducer } from &#x27;react&#x27;;
+
+// Definimos las acciones
+const ACTIONS = {
+  ADD_ITEM: &#x27;add_item&#x27;,
+  REMOVE_ITEM: &#x27;remove_item&#x27;,
+  CLEAR_CART: &#x27;clear_cart&#x27;
+};
+
+// Reducer
+function cartReducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.ADD_ITEM:
+      return {
+        ...state,
+        items: [...state.items, action.payload]
+      };
+    case ACTIONS.REMOVE_ITEM:
+      return {
+        ...state,
+        items: state.items.filter(item =&gt; item.id !== action.payload.id)
+      };
+    case ACTIONS.CLEAR_CART:
+      return { items: [] };
+    default:
+      return state;
+  }
+}
+
+// Context
+const CartContext = createContext();
+
+// Provider
+function CartProvider({ children }) {
+  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+
+  // Funciones helper que usan dispatch
+  const addItem = (item) =&gt; {
+    dispatch({ type: ACTIONS.ADD_ITEM, payload: item });
+  };
+
+  const removeItem = (id) =&gt; {
+    dispatch({ type: ACTIONS.REMOVE_ITEM, payload: { id } });
+  };
+
+  const clearCart = () =&gt; {
+    dispatch({ type: ACTIONS.CLEAR_CART });
+  };
+
+  const value = {
+    items: state.items,
+    addItem,
+    removeItem,
+    clearCart
+  };
+
+  return &lt;CartContext.Provider value={value}&gt;{children}&lt;/CartContext.Provider&gt;;
+}
+
+// Hook personalizado
+function useCart() {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error(&#x27;useCart debe usarse dentro de CartProvider&#x27;);
+  }
+  return context;
+}
+
+export { CartProvider, useCart };</code></pre>
+
+      <p>Usando el carrito en componentes:</p>
+      <pre><code>// App.jsx
+function App() {
+  return (
+    &lt;CartProvider&gt;
+      &lt;ProductList /&gt;
+      &lt;Cart /&gt;
+    &lt;/CartProvider&gt;
+  );
+}
+
+// ProductList.jsx
+function ProductList() {
+  const { addItem } = useCart();
+
+  const products = [
+    { id: 1, name: &#x27;Laptop&#x27;, price: 999 },
+    { id: 2, name: &#x27;Mouse&#x27;, price: 29 }
+  ];
+
+  return (
+    &lt;div&gt;
+      {products.map(product =&gt; (
+        &lt;div key={product.id}&gt;
+          &lt;h3&gt;{product.name}&lt;/h3&gt;
+          &lt;p&gt;${product.price}&lt;/p&gt;
+          &lt;button onClick={() =&gt; addItem(product)}&gt;
+            Agregar al carrito
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// Cart.jsx
+function Cart() {
+  const { items, removeItem, clearCart } = useCart();
+
+  const total = items.reduce((sum, item) =&gt; sum + item.price, 0);
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;Carrito ({items.length} items)&lt;/h2&gt;
+      {items.map(item =&gt; (
+        &lt;div key={item.id}&gt;
+          &lt;span&gt;{item.name} - ${item.price}&lt;/span&gt;
+          &lt;button onClick={() =&gt; removeItem(item.id)}&gt;Eliminar&lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+      &lt;p&gt;Total: ${total}&lt;/p&gt;
+      &lt;button onClick={clearCart}&gt;Limpiar carrito&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+      <h4 id="mejores-practicas-context">Mejores prácticas con Context API</h4>
+      <ul>
+        <li>
+          <strong>Crea un hook personalizado:</strong> En lugar de exportar el contexto
+          directamente, crea un hook como <code>useTheme()</code> o <code>useCart()</code>
+          que valide que se esté usando dentro del Provider correcto.
+        </li>
+        <li>
+          <strong>Separa contextos por dominio:</strong> No pongas todo el estado de la
+          app en un solo contexto. Crea contextos separados para diferentes áreas
+          (auth, theme, cart, etc.).
+        </li>
+        <li>
+          <strong>Evita re-renders innecesarios:</strong> Si el valor del contexto cambia
+          frecuentemente, considera dividirlo en múltiples contextos más pequeños.
+        </li>
+        <li>
+          <strong>Memoriza el valor del Provider:</strong> Usa <code>useMemo</code> para
+          el objeto value si contiene funciones o cálculos costosos.
+        </li>
+        <li>
+          <strong>Coloca el Provider lo más cerca posible:</strong> No envuelvas toda la
+          app si solo algunos componentes necesitan el contexto.
+        </li>
+      </ul>
+
+      <h4 id="cuando-usar-context">¿Cuándo usar Context API?</h4>
+      <p><strong>✅ USA Context API cuando:</strong></p>
+      <ul>
+        <li>Necesitas evitar prop drilling (pasar props por muchos niveles)</li>
+        <li>El estado debe ser accesible por muchos componentes en diferentes niveles</li>
+        <li>Manejas estado global simple (tema, idioma, usuario autenticado)</li>
+        <li>Quieres evitar instalar librerías externas como Redux</li>
+      </ul>
+
+      <p><strong>❌ NO uses Context API cuando:</strong></p>
+      <ul>
+        <li>El estado es local y solo lo usa un componente</li>
+        <li>Solo necesitas pasar props a 1-2 niveles (usa props normales)</li>
+        <li>El estado cambia muy frecuentemente (puede causar muchos re-renders)</li>
+        <li>Necesitas características avanzadas como time-travel debugging o middleware</li>
+      </ul>
+
+      <h4 id="casos-uso-context">Casos de uso comunes</h4>
+      <ul>
+        <li><strong>Autenticación:</strong> Usuario logueado, tokens, permisos</li>
+        <li><strong>Tema:</strong> Dark mode, colores, preferencias visuales</li>
+        <li><strong>Idioma:</strong> Internacionalización (i18n)</li>
+        <li><strong>Configuración:</strong> Ajustes del usuario</li>
+        <li><strong>Notificaciones:</strong> Sistema global de alertas/toasts</li>
+        <li><strong>Carrito de compras:</strong> En aplicaciones de e-commerce</li>
+      </ul>
+
+      <p>
+        <strong>Nota:</strong> En la sección de autenticación de esta documentación,
+        verás un ejemplo real de Context API combinado con React Router para crear
+        un sistema de login/logout completo.
+      </p>
 
       <h2 id="fetch">Fetch</h2>
       <hr />
