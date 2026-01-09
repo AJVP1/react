@@ -38,9 +38,7 @@
               >
             </li>
             <li>
-              <a href="#context-api-usecontext"
-                >Context API (useContext)</a
-              >
+              <a href="#context-api-usecontext">Context API (useContext)</a>
             </li>
           </ul>
         </li>
@@ -953,16 +951,17 @@ export default ShoppingCart;</code></pre>
 
       <h3 id="context-api-usecontext"><em>Context API (useContext)</em></h3>
       <p>
-        Context API es una funcionalidad nativa de React que permite compartir datos
-        entre componentes sin tener que pasar props manualmente a través de cada nivel
-        del árbol de componentes. Resuelve el problema conocido como "prop drilling".
+        Context API es una funcionalidad nativa de React que permite compartir
+        datos entre componentes sin tener que pasar props manualmente a través
+        de cada nivel del árbol de componentes. Resuelve el problema conocido
+        como "prop drilling".
       </p>
 
       <h4 id="problema-prop-drilling">El problema: Prop Drilling</h4>
       <p>
-        Cuando necesitas pasar datos a un componente profundamente anidado, tienes que
-        pasar props a través de todos los componentes intermedios, incluso si esos
-        componentes no usan esos datos:
+        Cuando necesitas pasar datos a un componente profundamente anidado,
+        tienes que pasar props a través de todos los componentes intermedios,
+        incluso si esos componentes no usan esos datos:
       </p>
       <pre><code>function App() {
   const [user, setUser] = useState({ name: &quot;Juan&quot; });
@@ -985,18 +984,17 @@ function UserMenu({ user }) {
   return &lt;p&gt;Hola, {user.name}&lt;/p&gt;;
 }</code></pre>
       <p>
-        Este patrón se vuelve problemático en aplicaciones grandes donde los datos
-        deben atravesar muchos niveles de componentes.
+        Este patrón se vuelve problemático en aplicaciones grandes donde los
+        datos deben atravesar muchos niveles de componentes.
       </p>
 
       <h4 id="componentes-context-api">Componentes de Context API</h4>
-      <p>
-        Context API se compone de tres elementos principales:
-      </p>
+      <p>Context API se compone de tres elementos principales:</p>
 
       <h5>1. createContext - Crear el contexto</h5>
       <p>
-        Primero creamos un contexto que actuará como el "contenedor" de nuestros datos:
+        Primero creamos un contexto que actuará como el "contenedor" de nuestros
+        datos:
       </p>
       <pre><code>import React from &#x27;react&#x27;;
 
@@ -1020,7 +1018,8 @@ const UserContext = React.createContext();</code></pre>
       <h5>3. useContext - Consumir los valores</h5>
       <p>
         Los componentes hijos pueden acceder al valor directamente con el hook
-        <code>useContext</code>, sin importar qué tan profundo estén en el árbol:
+        <code>useContext</code>, sin importar qué tan profundo estén en el
+        árbol:
       </p>
       <pre><code>function UserMenu() {
   const { user } = useContext(UserContext);
@@ -1115,8 +1114,8 @@ function MainContent() {
       <h4 id="context-con-usereducer">Combinando Context API con useReducer</h4>
       <p>
         Para estado más complejo, es común combinar Context API con useReducer.
-        Esto nos da las ventajas de ambos: estado global con lógica de actualización
-        compleja y predecible:
+        Esto nos da las ventajas de ambos: estado global con lógica de
+        actualización compleja y predecible:
       </p>
       <pre><code>import React, { createContext, useContext, useReducer } from &#x27;react&#x27;;
 
@@ -1247,60 +1246,81 @@ function Cart() {
       <h4 id="mejores-practicas-context">Mejores prácticas con Context API</h4>
       <ul>
         <li>
-          <strong>Crea un hook personalizado:</strong> En lugar de exportar el contexto
-          directamente, crea un hook como <code>useTheme()</code> o <code>useCart()</code>
+          <strong>Crea un hook personalizado:</strong> En lugar de exportar el
+          contexto directamente, crea un hook como <code>useTheme()</code> o
+          <code>useCart()</code>
           que valide que se esté usando dentro del Provider correcto.
         </li>
         <li>
-          <strong>Separa contextos por dominio:</strong> No pongas todo el estado de la
-          app en un solo contexto. Crea contextos separados para diferentes áreas
-          (auth, theme, cart, etc.).
+          <strong>Separa contextos por dominio:</strong> No pongas todo el
+          estado de la app en un solo contexto. Crea contextos separados para
+          diferentes áreas (auth, theme, cart, etc.).
         </li>
         <li>
-          <strong>Evita re-renders innecesarios:</strong> Si el valor del contexto cambia
-          frecuentemente, considera dividirlo en múltiples contextos más pequeños.
+          <strong>Evita re-renders innecesarios:</strong> Si el valor del
+          contexto cambia frecuentemente, considera dividirlo en múltiples
+          contextos más pequeños.
         </li>
         <li>
-          <strong>Memoriza el valor del Provider:</strong> Usa <code>useMemo</code> para
-          el objeto value si contiene funciones o cálculos costosos.
+          <strong>Memoriza el valor del Provider:</strong> Usa
+          <code>useMemo</code> para el objeto value si contiene funciones o
+          cálculos costosos.
         </li>
         <li>
-          <strong>Coloca el Provider lo más cerca posible:</strong> No envuelvas toda la
-          app si solo algunos componentes necesitan el contexto.
+          <strong>Coloca el Provider lo más cerca posible:</strong> No envuelvas
+          toda la app si solo algunos componentes necesitan el contexto.
         </li>
       </ul>
 
       <h4 id="cuando-usar-context">¿Cuándo usar Context API?</h4>
-      <p><strong>✅ USA Context API cuando:</strong></p>
+      <p>Usar Context API cuando:</p>
       <ul>
         <li>Necesitas evitar prop drilling (pasar props por muchos niveles)</li>
-        <li>El estado debe ser accesible por muchos componentes en diferentes niveles</li>
-        <li>Manejas estado global simple (tema, idioma, usuario autenticado)</li>
+        <li>
+          El estado debe ser accesible por muchos componentes en diferentes
+          niveles
+        </li>
+        <li>
+          Manejas estado global simple (tema, idioma, usuario autenticado)
+        </li>
         <li>Quieres evitar instalar librerías externas como Redux</li>
       </ul>
 
-      <p><strong>❌ NO uses Context API cuando:</strong></p>
+      <p>No usar Context API cuando:</p>
       <ul>
         <li>El estado es local y solo lo usa un componente</li>
         <li>Solo necesitas pasar props a 1-2 niveles (usa props normales)</li>
-        <li>El estado cambia muy frecuentemente (puede causar muchos re-renders)</li>
-        <li>Necesitas características avanzadas como time-travel debugging o middleware</li>
+        <li>
+          El estado cambia muy frecuentemente (puede causar muchos re-renders)
+        </li>
+        <li>
+          Necesitas características avanzadas como time-travel debugging o
+          middleware
+        </li>
       </ul>
 
       <h4 id="casos-uso-context">Casos de uso comunes</h4>
       <ul>
-        <li><strong>Autenticación:</strong> Usuario logueado, tokens, permisos</li>
-        <li><strong>Tema:</strong> Dark mode, colores, preferencias visuales</li>
+        <li>
+          <strong>Autenticación:</strong> Usuario logueado, tokens, permisos
+        </li>
+        <li>
+          <strong>Tema:</strong> Dark mode, colores, preferencias visuales
+        </li>
         <li><strong>Idioma:</strong> Internacionalización (i18n)</li>
         <li><strong>Configuración:</strong> Ajustes del usuario</li>
-        <li><strong>Notificaciones:</strong> Sistema global de alertas/toasts</li>
-        <li><strong>Carrito de compras:</strong> En aplicaciones de e-commerce</li>
+        <li>
+          <strong>Notificaciones:</strong> Sistema global de alertas/toasts
+        </li>
+        <li>
+          <strong>Carrito de compras:</strong> En aplicaciones de e-commerce
+        </li>
       </ul>
 
       <p>
-        <strong>Nota:</strong> En la sección de autenticación de esta documentación,
-        verás un ejemplo real de Context API combinado con React Router para crear
-        un sistema de login/logout completo.
+        <strong>Nota:</strong> En la sección de autenticación de esta
+        documentación, verás un ejemplo real de Context API combinado con React
+        Router para crear un sistema de login/logout completo.
       </p>
 
       <h2 id="fetch">Fetch</h2>
@@ -2242,15 +2262,17 @@ function useAuth() {
 export { useAuth, AuthProvider };</code></pre>
 
       <p>
-        Con esto hemos creado un sistema de autenticación básico que nos permite:
-        (1) Crear páginas de Login y Logout con formularios funcionales, (2) Usar
-        React Context para compartir el estado de autenticación en toda la aplicación,
-        (3) Navegar automáticamente a diferentes rutas después de hacer login o logout,
-        y (4) Acceder al estado del usuario desde cualquier componente usando el hook
-        <code>useAuth()</code>. Sin embargo, este sistema aún tiene limitaciones: las
-        rutas privadas son accesibles directamente desde la URL, no hay persistencia
-        de sesión al recargar la página, y falta manejo de roles. En las siguientes
-        secciones veremos cómo resolver estas limitaciones.
+        Con esto hemos creado un sistema de autenticación básico que nos
+        permite: (1) Crear páginas de Login y Logout con formularios
+        funcionales, (2) Usar React Context para compartir el estado de
+        autenticación en toda la aplicación, (3) Navegar automáticamente a
+        diferentes rutas después de hacer login o logout, y (4) Acceder al
+        estado del usuario desde cualquier componente usando el hook
+        <code>useAuth()</code>. Sin embargo, este sistema aún tiene
+        limitaciones: las rutas privadas son accesibles directamente desde la
+        URL, no hay persistencia de sesión al recargar la página, y falta manejo
+        de roles. En las siguientes secciones veremos cómo resolver estas
+        limitaciones.
       </p>
 
       <h3 id="proteger-rutas-con-autenticacion">
@@ -2303,15 +2325,17 @@ export { useAuth, AuthProvider };</code></pre>
 }</code></pre>
 
       <p>
-        Con esta implementación hemos logrado ocultar rutas del menú según el estado
-        de autenticación del usuario. Agregamos una propiedad <code>private</code> a
-        cada ruta para identificar cuáles requieren autenticación, y usamos renderizado
-        condicional en el componente Menu para mostrar u ocultar enlaces dinámicamente:
-        las rutas privadas (Profile, Logout) solo aparecen si hay un usuario autenticado,
-        y el enlace de Login desaparece cuando ya iniciaste sesión. Sin embargo, esto
-        solo oculta los enlaces del menú; un usuario puede seguir accediendo a estas
-        rutas escribiendo la URL directamente en el navegador. Para solucionar esto,
-        necesitamos implementar protección de rutas con redireccionamiento.
+        Con esta implementación hemos logrado ocultar rutas del menú según el
+        estado de autenticación del usuario. Agregamos una propiedad
+        <code>private</code> a cada ruta para identificar cuáles requieren
+        autenticación, y usamos renderizado condicional en el componente Menu
+        para mostrar u ocultar enlaces dinámicamente: las rutas privadas
+        (Profile, Logout) solo aparecen si hay un usuario autenticado, y el
+        enlace de Login desaparece cuando ya iniciaste sesión. Sin embargo, esto
+        solo oculta los enlaces del menú; un usuario puede seguir accediendo a
+        estas rutas escribiendo la URL directamente en el navegador. Para
+        solucionar esto, necesitamos implementar protección de rutas con
+        redireccionamiento.
       </p>
 
       <h3 id="proteccion-de-rutas-con-redireccionamiento">
@@ -2377,16 +2401,18 @@ export { useAuth, AuthProvider };</code></pre>
       </p>
 
       <p>
-        Con esta implementación hemos resuelto el problema de seguridad crítico de la
-        sección anterior. Creamos el componente <code>AuthRoute</code> que actúa como
-        guardián de las rutas privadas: verifica si existe un usuario autenticado y, en
-        caso contrario, redirige automáticamente a la página de login usando
-        <code>Navigate</code>. Envolvimos las rutas sensibles (Profile, Logout) con este
-        componente, garantizando que aunque alguien intente acceder directamente por URL,
-        será redirigido. Además, agregamos protección bidireccional en LoginPage para
-        evitar que usuarios ya autenticados vean el formulario de login innecesariamente.
-        Ahora nuestro sistema de autenticación es robusto y seguro. En la siguiente sección
-        veremos cómo extenderlo para manejar diferentes niveles de acceso mediante roles.
+        Con esta implementación hemos resuelto el problema de seguridad crítico
+        de la sección anterior. Creamos el componente <code>AuthRoute</code> que
+        actúa como guardián de las rutas privadas: verifica si existe un usuario
+        autenticado y, en caso contrario, redirige automáticamente a la página
+        de login usando <code>Navigate</code>. Envolvimos las rutas sensibles
+        (Profile, Logout) con este componente, garantizando que aunque alguien
+        intente acceder directamente por URL, será redirigido. Además, agregamos
+        protección bidireccional en LoginPage para evitar que usuarios ya
+        autenticados vean el formulario de login innecesariamente. Ahora nuestro
+        sistema de autenticación es robusto y seguro. En la siguiente sección
+        veremos cómo extenderlo para manejar diferentes niveles de acceso
+        mediante roles.
       </p>
 
       <h3 id="roles-y-autorizacion">Roles y autorización</h3>
