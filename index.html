@@ -87,19 +87,19 @@
           </ul>
         </li>
         <li>
-          <a href="#autenticacion">Autenticacion</a>
+          <a href="#autenticacion">Autenticación</a>
           <ul>
             <li>
               <a href="#proteger-rutas-con-autenticacion"
-                >proteger rutas con autenticacion</a
+                >proteger rutas con autenticación</a
               >
             </li>
             <li>
               <a href="#proteccion-de-rutas-con-redireccionamiento"
-                >Proteccion de rutas con redireccionamiento</a
+                >Protección de rutas con redireccionamiento</a
               >
             </li>
-            <li><a href="#roles-y-autorizacion">Roles y autorizacion</a></li>
+            <li><a href="#roles-y-autorizacion">Roles y autorización</a></li>
           </ul>
         </li>
       </ul>
@@ -1751,35 +1751,37 @@ export default BlogPage;</code></pre>
         resolverá automáticamente como <code>/blog/que-es-react</code>.
       </p>
 
-      <h2 id="autenticacion">Autenticacion</h2>
+      <h2 id="autenticacion">Autenticación</h2>
+      <hr />
       <p>
         Vamos a crear un sistema de autenticación ficticio para ilustrar cómo se
         podría implementar un flujo de autenticación.
       </p>
       <p>
-        Primero creamos las paginas de login y logout que queremos crear, para
-        la pagina del Login tendremos
+        Primero creamos las páginas de login y logout que queremos crear. Para
+        la página del Login tendremos:
       </p>
-      <pre><code >import { useState } from &quot;react&quot;;
-import { useAuth } from &quot;../auth/auth.jsx&quot;;</code></pre>
-      <pre><code >export default function LoginPage() {
-  const auth = useAuth();</code></pre>
-      <pre><code >  const [username, setUsername] = useState(&quot;&quot;);</code></pre>
-      <pre><code >  function login(event) {</code></pre>
-      <p>event.preventDefault();</p>
-      <pre><code >    auth.login({ username });
-  }</code></pre>
-      <pre><code >  return (
+      <pre><code>import { useState } from &quot;react&quot;;
+import { useAuth } from &quot;../auth/auth.jsx&quot;;
+
+export default function LoginPage() {
+  const auth = useAuth();
+  const [username, setUsername] = useState(&quot;&quot;);
+
+  function login(event) {
+    event.preventDefault();
+    auth.login({ username });
+  }
+
+  return (
     &lt;&gt;
-      &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Login&lt;/h1&gt;</code></pre>
-      <pre><code >      &lt;form onSubmit={login} className=&quot;flex flex-col gap-1.5&quot;&gt;
+      &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Login&lt;/h1&gt;
+      &lt;form onSubmit={login} className=&quot;flex flex-col gap-1.5&quot;&gt;
         &lt;label htmlFor=&quot;username&quot;&gt;Escribe tu nombre de usuario&lt;/label&gt;
-        &lt;input</code></pre>
-      <ul>
-        <li>type=&quot;text&quot;</li>
-        <li>id=&quot;username&quot;</li>
-      </ul>
-      <pre><code >          value={username}
+        &lt;input
+          type=&quot;text&quot;
+          id=&quot;username&quot;
+          value={username}
           onChange={(e) =&gt; setUsername(e.target.value)}
           className=&quot;bg-gray-200 rounded-md&quot;
         /&gt;
@@ -1788,137 +1790,152 @@ import { useAuth } from &quot;../auth/auth.jsx&quot;;</code></pre>
     &lt;/&gt;
   );
 }</code></pre>
-      <p>Para la pagina del logout tendremos</p>
-      <pre><code >import { useState } from &quot;react&quot;;
-import { useAuth } from &quot;../auth/auth.jsx&quot;;</code></pre>
-      <pre><code >export default function LoginPage() {
-  const auth = useAuth();</code></pre>
-      <pre><code >  const [username, setUsername] = useState(&quot;&quot;);</code></pre>
-      <pre><code >  function login(event) {</code></pre>
-      <p>event.preventDefault();</p>
-      <pre><code >    auth.login({ username });
-  }</code></pre>
-      <pre><code >  return (
+
+      <p>Para la página del Logout tendremos:</p>
+      <pre><code>import { useAuth } from &quot;../auth/auth.jsx&quot;;
+
+export default function LogoutPage() {
+  const auth = useAuth();
+
+  function logout() {
+    auth.logout();
+  }
+
+  return (
     &lt;&gt;
-      &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Login&lt;/h1&gt;</code></pre>
-      <pre><code >      &lt;form onSubmit={login} className=&quot;flex flex-col gap-1.5&quot;&gt;
-        &lt;label htmlFor=&quot;username&quot;&gt;Escribe tu nombre de usuario&lt;/label&gt;
-        &lt;input</code></pre>
-      <ul>
-        <li>type=&quot;text&quot;</li>
-        <li>id=&quot;username&quot;</li>
-      </ul>
-      <pre><code >          value={username}
-          onChange={(e) =&gt; setUsername(e.target.value)}
-          className=&quot;bg-gray-200 rounded-md&quot;
-        /&gt;
-        &lt;button type=&quot;submit&quot;&gt;Enviar&lt;/button&gt;
-      &lt;/form&gt;
+      &lt;h1 className=&quot;text-3xl font-bold&quot;&gt;Logout&lt;/h1&gt;
+      &lt;p&gt;¿Estás seguro de que quieres cerrar sesión?&lt;/p&gt;
+      &lt;button onClick={logout}&gt;Cerrar sesión&lt;/button&gt;
     &lt;/&gt;
   );
-}
-Tenemos que añadir estas paginas en el HashRouter
-&lt;Route path=&quot;/login&quot; element={&lt;LoginPage /&gt;} /&gt;
+}</code></pre>
+
+      <p>Tenemos que añadir estas páginas en el HashRouter:</p>
+      <pre><code>&lt;Route path=&quot;/login&quot; element={&lt;LoginPage /&gt;} /&gt;
 &lt;Route path=&quot;/logout&quot; element={&lt;LogoutPage /&gt;} /&gt;
 &lt;Route path=&quot;/profile&quot; element={&lt;ProfilePage /&gt;} /&gt;</code></pre>
-      <p>Como tambien agregarlas al menu</p>
-      <pre><code >const routes = [
+
+      <p>Como también agregarlas al menú:</p>
+      <pre><code>const routes = [
   { to: &quot;/&quot;, text: &quot;Home&quot; },
   { to: &quot;/profile&quot;, text: &quot;Profile&quot; },
   { to: &quot;/blog&quot;, text: &quot;Blog&quot; },
   { to: &quot;/login&quot;, text: &quot;Login&quot; },
-  { to: &quot;/logout&quot;, text: &quot;Logout&quot; },</code></pre>
-      <p>];</p>
+  { to: &quot;/logout&quot;, text: &quot;Logout&quot; },
+];</code></pre>
       <p>
-        Después, vamos a querer usar metodos y estados en toda la aplicación,
-        por lo que vamos a necesitar un archivo de autenticacion que use un
-        reactContext y envie estos valores a traves de un provider. Empezemos
-        diciendole a la aplicación que va a usar valores del provider,
-        modificamos nuestro archivo app.jsx
+        Después, vamos a querer usar métodos y estados en toda la aplicación,
+        por lo que vamos a necesitar un archivo de autenticación que use un
+        reactContext y envíe estos valores a través de un provider. Empezemos
+        diciéndole a la aplicación que va a usar valores del provider,
+        modificamos nuestro archivo app.jsx:
       </p>
-      <pre><code >&lt;HashRouter&gt;
-   &lt;AuthProvider&gt;
-      &lt;Menu /&gt;</code></pre>
-      <pre><code >      &lt;Routes&gt;
-        &lt;Route path=&quot;/&quot; element={&lt;HomePage /&gt;} /&gt;</code></pre>
-      <ul>
-        <li>…</li>
-        <li>…</li>
-      </ul>
-      <pre><code >      &lt;/Routes&gt;
-   &lt;/AuthProvider&gt;
+      <pre><code>&lt;HashRouter&gt;
+  &lt;AuthProvider&gt;
+    &lt;Menu /&gt;
+    &lt;Routes&gt;
+      &lt;Route path=&quot;/&quot; element={&lt;HomePage /&gt;} /&gt;
+      {/* ... más rutas ... */}
+    &lt;/Routes&gt;
+  &lt;/AuthProvider&gt;
 &lt;/HashRouter&gt;</code></pre>
+
       <p>
         Ahora tenemos que crear nuestro archivo auth.jsx que es donde vamos a
-        crear el contexto y los valores que va a enviar el provider
+        crear el contexto y los valores que va a enviar el provider:
       </p>
-      <pre><code >import React from &quot;react&quot;;
-import { useNavigate } from &quot;react-router-dom&quot;;</code></pre>
-      <p>// context</p>
-      <pre><code >const AuthContext = React.createContext();</code></pre>
-      <p>// provider</p>
-      <pre><code >function AuthProvider({ children }) {</code></pre>
-      <p>// navigation</p>
-      <pre><code >  const navigate = useNavigate();</code></pre>
-      <p>// state</p>
-      <pre><code >  const [user, setUser] = React.useState(null);</code></pre>
-      <p>// methods</p>
-      <pre><code >  const login = ({ username }) =&gt; {
-    setUser({ username });</code></pre>
-      <p>navigate(&quot;/profile&quot;);</p>
-      <pre><code >  };
-  const logout = () =&gt; {</code></pre>
-      <p>setUser(null);</p>
-      <p>navigate(&quot;/&quot;);</p>
-      <pre><code >  };</code></pre>
-      <p>// values</p>
-      <pre><code >  const auth = { user, login, logout };</code></pre>
-      <p>// send values to provider</p>
-      <pre><code >  return &lt;AuthContext.Provider value={auth}&gt;{children}&lt;/AuthContext.Provider&gt;;
-}</code></pre>
-      <p>// hook</p>
-      <pre><code >function useAuth() {
+      <pre><code>import React from &quot;react&quot;;
+import { useNavigate } from &quot;react-router-dom&quot;;
+
+// context
+const AuthContext = React.createContext();
+
+// provider
+function AuthProvider({ children }) {
+  // navigation
+  const navigate = useNavigate();
+
+  // state
+  const [user, setUser] = React.useState(null);
+
+  // methods
+  const login = ({ username }) =&gt; {
+    setUser({ username });
+    navigate(&quot;/profile&quot;);
+  };
+
+  const logout = () =&gt; {
+    setUser(null);
+    navigate(&quot;/&quot;);
+  };
+
+  // values
+  const auth = { user, login, logout };
+
+  // send values to provider
+  return &lt;AuthContext.Provider value={auth}&gt;{children}&lt;/AuthContext.Provider&gt;;
+}
+
+// hook
+function useAuth() {
   const auth = React.useContext(AuthContext);
   return auth;
-}</code></pre>
-      <pre><code >export { useAuth, AuthProvider };</code></pre>
+}
+
+export { useAuth, AuthProvider };</code></pre>
+
+      <p>
+        Con esto hemos creado un sistema de autenticación básico que nos permite:
+        (1) Crear páginas de Login y Logout con formularios funcionales, (2) Usar
+        React Context para compartir el estado de autenticación en toda la aplicación,
+        (3) Navegar automáticamente a diferentes rutas después de hacer login o logout,
+        y (4) Acceder al estado del usuario desde cualquier componente usando el hook
+        <code>useAuth()</code>. Sin embargo, este sistema aún tiene limitaciones: las
+        rutas privadas son accesibles directamente desde la URL, no hay persistencia
+        de sesión al recargar la página, y falta manejo de roles. En las siguientes
+        secciones veremos cómo resolver estas limitaciones.
+      </p>
+
       <h3 id="proteger-rutas-con-autenticacion">
-        proteger rutas con autenticacion
+        Proteger rutas con autenticación
       </h3>
       <p>
-        primero tenemos que definir que rutas seran publicas y cuales seran
-        privadas, para esto vamos a crear una tercera propiedad de las rutas
+        Primero tenemos que definir qué rutas serán públicas y cuáles serán
+        privadas. Para esto vamos a crear una tercera propiedad en las rutas:
       </p>
-      <pre><code >const routes = [
+      <pre><code>const routes = [
   { to: &quot;/&quot;, text: &quot;Home&quot;, private: false },
   { to: &quot;/profile&quot;, text: &quot;Profile&quot;, private: true },
   { to: &quot;/blog&quot;, text: &quot;Blog&quot;, private: false },
   { to: &quot;/login&quot;, text: &quot;Login&quot;, private: false },
-  { to: &quot;/logout&quot;, text: &quot;Logout&quot;, private: true },</code></pre>
-      <p>];</p>
+  { to: &quot;/logout&quot;, text: &quot;Logout&quot;, private: true },
+];</code></pre>
+
       <p>
-        Después en nuestro menus donde renderizamos las rutas vamos a usar un
-        condicional, tal que si existe un usuario vamos a mostrar la ruta
+        Después, en nuestro menú donde renderizamos las rutas vamos a usar un
+        condicional, tal que si existe un usuario vamos a mostrar la ruta:
       </p>
-      <pre><code >export default function Menu() {
-  const auth = useAuth();</code></pre>
-      <pre><code >  return (
+      <pre><code>export default function Menu() {
+  const auth = useAuth();
+
+  return (
     &lt;nav&gt;
       &lt;ul className=&quot;flex flex-row gap-4&quot;&gt;
         {routes.map((route) =&gt; {
           if (route.private &amp;&amp; !auth.user) return null;
-          if(route.to == &#x27;/login&#x27; &amp;&amp; auth.user){
-            return null
-          }</code></pre>
-      <pre><code >          return (
+          if (route.to === &#x27;/login&#x27; &amp;&amp; auth.user) {
+            return null;
+          }
+
+          return (
             &lt;li key={route.text}&gt;
               &lt;NavLink
-                style={({ isActive }) =&gt; ({</code></pre>
-      <p>color: isActive ? &quot;red&quot; : &quot;blue&quot;,</p>
-      <pre><code >                })}
-                to={route.to}</code></pre>
-      <p>&gt;</p>
-      <pre><code >                {route.text}
+                style={({ isActive }) =&gt; ({
+                  color: isActive ? &quot;red&quot; : &quot;blue&quot;,
+                })}
+                to={route.to}
+              &gt;
+                {route.text}
               &lt;/NavLink&gt;
             &lt;/li&gt;
           );
@@ -1927,8 +1944,21 @@ import { useNavigate } from &quot;react-router-dom&quot;;</code></pre>
     &lt;/nav&gt;
   );
 }</code></pre>
+
+      <p>
+        Con esta implementación hemos logrado ocultar rutas del menú según el estado
+        de autenticación del usuario. Agregamos una propiedad <code>private</code> a
+        cada ruta para identificar cuáles requieren autenticación, y usamos renderizado
+        condicional en el componente Menu para mostrar u ocultar enlaces dinámicamente:
+        las rutas privadas (Profile, Logout) solo aparecen si hay un usuario autenticado,
+        y el enlace de Login desaparece cuando ya iniciaste sesión. Sin embargo, esto
+        solo oculta los enlaces del menú; un usuario puede seguir accediendo a estas
+        rutas escribiendo la URL directamente en el navegador. Para solucionar esto,
+        necesitamos implementar protección de rutas con redireccionamiento.
+      </p>
+
       <h3 id="proteccion-de-rutas-con-redireccionamiento">
-        Proteccion de rutas con redireccionamiento
+        Protección de rutas con redireccionamiento
       </h3>
       <p>
         Cuando desarrollamos aplicaciones web, uno de los aspectos más cruciales
@@ -1944,65 +1974,88 @@ import { useNavigate } from &quot;react-router-dom&quot;;</code></pre>
         Crear un componente reutilizable es la mejor estrategia para evitar la
         repetición de código.
       </p>
-      <p>Dentro de nuestro archivo auth.jsx vamos a crear el componente</p>
-      <pre><code >const AuthRoute = ({ children }) =&gt; {
-  const auth = useAuth();</code></pre>
-      <pre><code >  if (!auth.user) {
+      <p>Dentro de nuestro archivo auth.jsx vamos a crear el componente:</p>
+      <pre><code>const AuthRoute = ({ children }) =&gt; {
+  const auth = useAuth();
+
+  if (!auth.user) {
     return &lt;Navigate to=&quot;/login&quot; /&gt;;
-  }</code></pre>
-      <pre><code >  return children;
+  }
+
+  return children;
 };</code></pre>
+
       <p>
-        Después, en nuestro archivo app.jsx protegemos las rutas privadas dentro
-        usando el componente
+        Después, en nuestro archivo app.jsx protegemos las rutas privadas usando
+        el componente:
       </p>
-      <pre><code >&lt;Route</code></pre>
-      <p>path=&quot;/logout&quot;</p>
-      <pre><code >        element={
-        &lt;AuthRoute&gt;
-          &lt;LogoutPage /&gt;
-        &lt;/AuthRoute&gt;
-        }
+      <pre><code>&lt;Route
+  path=&quot;/logout&quot;
+  element={
+    &lt;AuthRoute&gt;
+      &lt;LogoutPage /&gt;
+    &lt;/AuthRoute&gt;
+  }
 /&gt;
-&lt;Route</code></pre>
-      <p>path=&quot;/profile&quot;</p>
-      <pre><code >        element={
-        &lt;AuthRoute&gt;
-         &lt;ProfilePage /&gt;
-        &lt;/AuthRoute&gt;
-         }
- /&gt;</code></pre>
+
+&lt;Route
+  path=&quot;/profile&quot;
+  element={
+    &lt;AuthRoute&gt;
+      &lt;ProfilePage /&gt;
+    &lt;/AuthRoute&gt;
+  }
+/&gt;</code></pre>
+
       <p>
-        Por ultimo, si ya iniciamos sesion no deberiamos poder ir denuevo a la
-        pagina de login, por lo que en el archivo LoginPage agregamos
+        Por último, si ya iniciamos sesión no deberíamos poder ir de nuevo a la
+        página de login, por lo que en el archivo LoginPage agregamos:
       </p>
-      <pre><code >if (auth.user) {
-    return &lt;p&gt;Ya has iniciado sesion como {auth.user.username}&lt;/p&gt;;
-  }</code></pre>
+      <pre><code>if (auth.user) {
+  return &lt;p&gt;Ya has iniciado sesión como {auth.user.username}&lt;/p&gt;;
+}</code></pre>
+
       <p>
         Para que nos regrese ese mensaje y no el formulario para hacer login.
       </p>
-      <h3 id="roles-y-autorizacion">Roles y autorizacion</h3>
-      <p>Empezamos creando una lista de administradores</p>
-      <pre><code >export const adminList = [&quot;admin1&quot;, &quot;admin2&quot;, &quot;admin3&quot;];</code></pre>
+
       <p>
-        y cuando hacemos login, ya no solo mandamos el username, sino que
-        tambien verificamos si es admin o no
+        Con esta implementación hemos resuelto el problema de seguridad crítico de la
+        sección anterior. Creamos el componente <code>AuthRoute</code> que actúa como
+        guardián de las rutas privadas: verifica si existe un usuario autenticado y, en
+        caso contrario, redirige automáticamente a la página de login usando
+        <code>Navigate</code>. Envolvimos las rutas sensibles (Profile, Logout) con este
+        componente, garantizando que aunque alguien intente acceder directamente por URL,
+        será redirigido. Además, agregamos protección bidireccional en LoginPage para
+        evitar que usuarios ya autenticados vean el formulario de login innecesariamente.
+        Ahora nuestro sistema de autenticación es robusto y seguro. En la siguiente sección
+        veremos cómo extenderlo para manejar diferentes niveles de acceso mediante roles.
       </p>
-      <pre><code >const login = ({ username }) =&gt; {
-    const isAdmin = adminList.includes(username);
-    setUser({ username, isAdmin });</code></pre>
-      <p>navigate(&quot;/profile&quot;);</p>
-      <pre><code >  };</code></pre>
+
+      <h3 id="roles-y-autorizacion">Roles y autorización</h3>
+      <p>Empezamos creando una lista de administradores:</p>
+      <pre><code>export const adminList = [&quot;admin1&quot;, &quot;admin2&quot;, &quot;admin3&quot;];</code></pre>
+
+      <p>
+        Y cuando hacemos login, ya no solo mandamos el username, sino que
+        también verificamos si es admin o no:
+      </p>
+      <pre><code>const login = ({ username }) =&gt; {
+  const isAdmin = adminList.includes(username);
+  setUser({ username, isAdmin });
+  navigate(&quot;/profile&quot;);
+};</code></pre>
+
       <p>
         Ahora podemos agregar una funcionalidad para los admins, como eliminar
-        un blog, para esto en nuestro archivo BlogPost.jsx agregamos
+        un blog. Para esto en nuestro archivo BlogPost.jsx agregamos:
       </p>
-      <pre><code >export default function BlogPost() {
+      <pre><code>export default function BlogPost() {
   const auth = useAuth();
   const { slug } = useParams();
-  const post = blogData.find((post) =&gt; post.slug === slug);</code></pre>
-      <pre><code >  return (
+  const post = blogData.find((post) =&gt; post.slug === slug);
+
+  return (
     &lt;div&gt;
       &lt;h2&gt;{post.title}&lt;/h2&gt;
       &lt;p&gt;{post.content}&lt;/p&gt;
