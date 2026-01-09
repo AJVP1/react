@@ -11,11 +11,15 @@
     <nav>
       <h2>Indice</h2>
       <ul>
-        <li><a href="#introduccion">Introduccion</a></li>
+        <li><a href="#introduccion">Introducción</a></li>
         <li>
           <a href="#empezar-un-proyecto">Empezar un proyecto</a>
           <ul>
-            <li><a href="#tailwind-en-react-con-vite">Tailwind en react con vite</a></li>
+            <li>
+              <a href="#tailwind-en-react-con-vite"
+                >Tailwind en react con vite</a
+              >
+            </li>
           </ul>
         </li>
         <li>
@@ -23,36 +27,78 @@
           <ul>
             <li><a href="#props">Props</a></li>
             <li><a href="#estados-usestate">Estados (useState)</a></li>
-            <li><a href="#efectos-secundarios-useeffect">Efectos secundarios (useEffect)</a></li>
-            <li><a href="#estados-complejos-usereducer">Estados complejos (useReducer)</a></li>
+            <li>
+              <a href="#efectos-secundarios-useeffect"
+                >Efectos secundarios (useEffect)</a
+              >
+            </li>
+            <li>
+              <a href="#estados-complejos-usereducer"
+                >Estados complejos (useReducer)</a
+              >
+            </li>
           </ul>
         </li>
         <li>
           <a href="#fetch">Fetch</a>
           <ul>
-            <li><a href="#ejemplo-basico-then">Ejemplo básico con .then()</a></li>
-            <li><a href="#ejemplo-moderno-async-await">Ejemplo moderno con async/await</a></li>
-            <li><a href="#cleanup-abort-controller">Cleanup con AbortController</a></li>
-            <li><a href="#manejo-de-errores-y-carga">Manejo de errores y carga</a></li>
+            <li>
+              <a href="#ejemplo-basico-then">Ejemplo básico con .then()</a>
+            </li>
+            <li>
+              <a href="#ejemplo-moderno-async-await"
+                >Ejemplo moderno con async/await</a
+              >
+            </li>
+            <li>
+              <a href="#cleanup-abort-controller"
+                >Cleanup con AbortController</a
+              >
+            </li>
+            <li>
+              <a href="#manejo-de-errores-y-carga">Manejo de errores y carga</a>
+            </li>
           </ul>
         </li>
         <li>
           <a href="#react-router">React Router</a>
           <ul>
-            <li><a href="#estructura-de-un-react-router">Estructura de un react router</a></li>
+            <li>
+              <a href="#estructura-de-un-react-router"
+                >Estructura de un react router</a
+              >
+            </li>
             <li><a href="#tipos-de-routers">Tipos de routers</a></li>
             <li><a href="#instalacion">Instalación</a></li>
-            <li><a href="#rutas-estaticas-hashrouter">Rutas estáticas (HashRouter)</a></li>
+            <li>
+              <a href="#rutas-estaticas-hashrouter"
+                >Rutas estáticas (HashRouter)</a
+              >
+            </li>
             <li><a href="#navegacion-navlink">Navegación (NavLink)</a></li>
-            <li><a href="#rutas-dinamicas-useparams">Rutas dinámicas (useParams)</a></li>
-            <li><a href="#rutas-anidadas-outlet">Rutas anidadas (Outlet)</a></li>
+            <li>
+              <a href="#rutas-dinamicas-useparams"
+                >Rutas dinámicas (useParams)</a
+              >
+            </li>
+            <li>
+              <a href="#rutas-anidadas-outlet">Rutas anidadas (Outlet)</a>
+            </li>
           </ul>
         </li>
         <li>
           <a href="#autenticacion">Autenticacion</a>
           <ul>
-            <li><a href="#proteger-rutas-con-autenticacion">proteger rutas con autenticacion</a></li>
-            <li><a href="#proteccion-de-rutas-con-redireccionamiento">Proteccion de rutas con redireccionamiento</a></li>
+            <li>
+              <a href="#proteger-rutas-con-autenticacion"
+                >proteger rutas con autenticacion</a
+              >
+            </li>
+            <li>
+              <a href="#proteccion-de-rutas-con-redireccionamiento"
+                >Proteccion de rutas con redireccionamiento</a
+              >
+            </li>
             <li><a href="#roles-y-autorizacion">Roles y autorizacion</a></li>
           </ul>
         </li>
@@ -62,7 +108,7 @@
     <!-- contenido principal -->
     <main>
       <h1>React</h1>
-      <h2 id="introduccion">Introduccion</h2>
+      <h2 id="introduccion">Introducción</h2>
       <hr />
 
       <p>
@@ -1612,7 +1658,14 @@ export default BlogPost;</code></pre>
 
       <h3 id="rutas-anidadas-outlet">Rutas anidadas (Outlet)</h3>
       <p>
-        <strong>Nota:</strong> Esta sección muestra un enfoque diferente al anterior. En la sección de "Rutas dinámicas" vimos cómo crear páginas completamente separadas: cuando navegas a <code>/blog/que-es-react</code>, solo ves el contenido del BlogPost. Con rutas anidadas, el BlogPost se renderiza <strong>dentro de</strong> BlogPage, manteniendo visible el título y la lista de posts. Usa rutas anidadas cuando quieras mantener un layout persistente.
+        <strong>Nota:</strong> Esta sección muestra un enfoque diferente al
+        anterior. En la sección de "Rutas dinámicas" vimos cómo crear páginas
+        completamente separadas: cuando navegas a
+        <code>/blog/que-es-react</code>, solo ves el contenido del BlogPost. Con
+        rutas anidadas, el BlogPost se renderiza
+        <strong>dentro de</strong> BlogPage, manteniendo visible el título y la
+        lista de posts. Usa rutas anidadas cuando quieras mantener un layout
+        persistente.
       </p>
       <p>
         Las Nested Routes (rutas anidadas), como su nombre lo indica, son rutas
@@ -1649,10 +1702,16 @@ function App() {
 
 export default App;</code></pre>
       <p>
-        <strong>Importante:</strong> Nota que el path de la ruta hija es <code>":slug"</code> (sin el prefijo <code>/blog</code>). En rutas anidadas, los paths son <strong>relativos al padre</strong>. Como ya estamos dentro de <code>path="/blog"</code>, la ruta completa será automáticamente <code>/blog/:slug</code>.
+        <strong>Importante:</strong> Nota que el path de la ruta hija es
+        <code>":slug"</code> (sin el prefijo <code>/blog</code>). En rutas
+        anidadas, los paths son <strong>relativos al padre</strong>. Como ya
+        estamos dentro de <code>path="/blog"</code>, la ruta completa será
+        automáticamente <code>/blog/:slug</code>.
       </p>
       <p>
-        La ruta con <code>index</code> se renderiza cuando estás exactamente en <code>/blog</code> (sin ningún slug). Esto muestra un mensaje mientras el usuario selecciona un post, en lugar de dejar el Outlet vacío.
+        La ruta con <code>index</code> se renderiza cuando estás exactamente en
+        <code>/blog</code> (sin ningún slug). Esto muestra un mensaje mientras
+        el usuario selecciona un post, en lugar de dejar el Outlet vacío.
       </p>
       <p>
         Después dentro del componente BlogPage.jsx agregamos el componente
@@ -1686,7 +1745,10 @@ export default BlogPage;</code></pre>
         "Blog" y la lista de posts.
       </p>
       <p>
-        <strong>Nota:</strong> Los links usan <code>to={post.slug}</code> (sin <code>/blog/</code>) porque son relativos a la ruta actual. Como estamos dentro de <code>/blog</code>, un link a <code>"que-es-react"</code> se resolverá automáticamente como <code>/blog/que-es-react</code>.
+        <strong>Nota:</strong> Los links usan <code>to={post.slug}</code> (sin
+        <code>/blog/</code>) porque son relativos a la ruta actual. Como estamos
+        dentro de <code>/blog</code>, un link a <code>"que-es-react"</code> se
+        resolverá automáticamente como <code>/blog/que-es-react</code>.
       </p>
 
       <h2 id="autenticacion">Autenticacion</h2>
