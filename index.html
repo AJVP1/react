@@ -1380,7 +1380,8 @@ function App() {
         usando el componente HashRouter de React Router. Para esto, dentro de
         nuestro archivo app.jsx colocamos:
       </p>
-      <pre><code>import { HashRouter, Routes, Route } from 'react-router-dom';
+      <pre><code>// App.jsx
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
@@ -1399,7 +1400,9 @@ function App() {
       &lt;/HashRouter&gt;
     &lt;/&gt;
   );
-}</code></pre>
+}
+
+export default App;</code></pre>
       <p>
         Dentro de este componente tendremos las páginas/rutas que vamos a
         renderizar dentro del componente Routes, y cada ruta por separado va a
@@ -1414,7 +1417,8 @@ function App() {
         links. Este componente nos permite cambiar la URL de la app sin
         necesidad de recargar la página. Así tendremos algo como:
       </p>
-      <pre><code>import { NavLink } from 'react-router-dom';
+      <pre><code>// Menu.jsx
+import { NavLink } from 'react-router-dom';
 
 const routes = [
   { to: '/', text: 'Home' },
@@ -1561,6 +1565,9 @@ export default BlogPost;</code></pre>
 
       <h3 id="rutas-anidadas-outlet">Rutas anidadas (Outlet)</h3>
       <p>
+        <strong>Nota:</strong> Esta sección muestra un enfoque diferente al anterior. En la sección de "Rutas dinámicas" vimos cómo crear páginas completamente separadas: cuando navegas a <code>/blog/que-es-react</code>, solo ves el contenido del BlogPost. Con rutas anidadas, el BlogPost se renderiza <strong>dentro de</strong> BlogPage, manteniendo visible el título y la lista de posts. Usa rutas anidadas cuando quieras mantener un layout persistente.
+      </p>
+      <p>
         Las Nested Routes (rutas anidadas), como su nombre lo indica, son rutas
         anidadas dentro de otras. Esto permite tener una ruta principal que
         mantiene su contenido visible mientras se navega por subrutas. Por
@@ -1585,6 +1592,7 @@ function App() {
     &lt;HashRouter&gt;
       &lt;Routes&gt;
         &lt;Route path=&quot;/blog&quot; element={&lt;BlogPage /&gt;}&gt;
+          &lt;Route index element={&lt;p&gt;Selecciona un post para leer&lt;/p&gt;} /&gt;
           &lt;Route path=&quot;:slug&quot; element={&lt;BlogPost /&gt;} /&gt;
         &lt;/Route&gt;
       &lt;/Routes&gt;
@@ -1593,6 +1601,12 @@ function App() {
 }
 
 export default App;</code></pre>
+      <p>
+        <strong>Importante:</strong> Nota que el path de la ruta hija es <code>":slug"</code> (sin el prefijo <code>/blog</code>). En rutas anidadas, los paths son <strong>relativos al padre</strong>. Como ya estamos dentro de <code>path="/blog"</code>, la ruta completa será automáticamente <code>/blog/:slug</code>.
+      </p>
+      <p>
+        La ruta con <code>index</code> se renderiza cuando estás exactamente en <code>/blog</code> (sin ningún slug). Esto muestra un mensaje mientras el usuario selecciona un post, en lugar de dejar el Outlet vacío.
+      </p>
       <p>
         Después dentro del componente BlogPage.jsx agregamos el componente
         Outlet, que es donde se renderizarán las rutas hijas:
@@ -1608,7 +1622,7 @@ function BlogPage() {
       &lt;ul&gt;
         {blogData.map(post =&gt; (
           &lt;li key={post.slug}&gt;
-            &lt;Link to={`/blog/${post.slug}`}&gt;{post.title}&lt;/Link&gt;
+            &lt;Link to={post.slug}&gt;{post.title}&lt;/Link&gt;
           &lt;/li&gt;
         ))}
       &lt;/ul&gt;
@@ -1623,6 +1637,9 @@ export default BlogPage;</code></pre>
         <code>/blog/que-es-react</code>, el contenido del BlogPost se renderiza
         en el lugar donde está ubicado el Outlet, manteniendo visible el título
         "Blog" y la lista de posts.
+      </p>
+      <p>
+        <strong>Nota:</strong> Los links usan <code>to={post.slug}</code> (sin <code>/blog/</code>) porque son relativos a la ruta actual. Como estamos dentro de <code>/blog</code>, un link a <code>"que-es-react"</code> se resolverá automáticamente como <code>/blog/que-es-react</code>.
       </p>
 
       <h2 id="autenticacion">Autenticacion</h2>
