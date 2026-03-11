@@ -13,6 +13,7 @@ import { UseContext } from "./pages/Contexto";
 import { UseRef } from "./pages/Referencia";
 import { Renderizado } from "./pages/Renderizado";
 import { Rutas } from "./pages/Rutas";
+import { Formularios } from "./pages/Formularios";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/use-ref" element={<UseRef />} />
         <Route path="/renderizado" element={<Renderizado />} />
         <Route path="/rutas" element={<Rutas />} />
+        <Route path="/formularios" element={<Formularios />}></Route>
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>
