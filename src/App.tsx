@@ -12,6 +12,7 @@ import { UseEffect } from "./pages/Efectos";
 import { UseContext } from "./pages/Contexto";
 import { UseRef } from "./pages/Referencia";
 import { Renderizado } from "./pages/Renderizado";
+import { Rutas } from "./pages/Rutas";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/use-context" element={<UseContext />} />
         <Route path="/use-ref" element={<UseRef />} />
         <Route path="/renderizado" element={<Renderizado />} />
+        <Route path="/rutas" element={<Rutas />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>
