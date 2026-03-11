@@ -5,10 +5,10 @@ import modulosData from "../data/modulos.json";
 import Note from "../components/Notes.tsx";
 import Codeblock from "../components/Codeblock.tsx";
 
-const crearProyectoCode = `npm create vite@latest mi-proyecto-react
-cd mi-proyecto-react
-npm install
-npm run dev`;
+const verificarNode = `node -v # Verificar versión de Node.js
+pnpm -v # Verificar versión de pnpm`;
+
+const crearProyectoCode = `pnpm create vite@latest mi-proyecto-react`;
 
 const estructuraInicialCode = `mi-proyecto-react/
 ├── public/
@@ -21,6 +21,25 @@ const estructuraInicialCode = `mi-proyecto-react/
 ├── package.json
 ├── tsconfig.json
 └── vite.config.ts`;
+
+const envFileCode = `# .env
+VITE_API_URL=https://api.ejemplo.com
+VITE_APP_TITLE=Mi Aplicación`;
+
+const envUsageCode = `<span class="keyword">const</span> apiUrl = import.meta.env.<span class="string">VITE_API_URL</span>;
+<span class="keyword">const</span> title = import.meta.env.<span class="string">VITE_APP_TITLE</span>;`;
+
+const twInstallCode = `pnpm install -D tailwindcss @tailwindcss/vite`;
+
+const twViteConfigCode = `<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> 'vite'
+<span class="keyword">import</span> react <span class="keyword">from</span> '@vitejs/plugin-react'
+<span class="keyword">import</span> tailwindcss <span class="keyword">from</span> '@tailwindcss/vite'
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  plugins: [<span class="function">react</span>(), <span class="function">tailwindcss</span>()],
+})`;
+
+const twCssCode = `<span class="keyword">@import</span> <span class="string">"tailwindcss"</span>;`;
 
 export const Instalacion = () => {
   return (
@@ -51,6 +70,12 @@ export const Instalacion = () => {
         <span className="font-semibold">npm</span>, el administrador de paquetes
         que permite instalar dependencias y ejecutar scripts.
       </p>
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Asegúrate de tener instalado Node.js (versión 18 o superior) y un gestor
+        de paquetes como pnpm, npm o yarn. Puedes verificarlo ejecutando estos
+        comandos en tu terminal:
+      </p>
+      <Codeblock code={verificarNode} title="Terminal" />
 
       <p className="text-base leading-7 text-[#141414] my-6">
         También es recomendable contar con un editor de código moderno como
@@ -77,7 +102,7 @@ export const Instalacion = () => {
       </p>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Puedes crear un nuevo proyecto ejecutando estos comandos en la terminal:
+        Puedes crear un nuevo proyecto ejecutando este comando en la terminal:
       </p>
 
       <Codeblock code={crearProyectoCode} title="Terminal" />
@@ -189,10 +214,103 @@ export const Instalacion = () => {
       </p>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Algunas extensiones habituales son Prettier, ESLint y las relacionadas
-        con React o Tailwind CSS, ya que ayudan a mejorar la productividad y la
-        calidad del código.
+        Algunas extensiones recomendadas para trabajar con React son:
       </p>
+
+      <ul className="list-disc list-inside space-y-2 text-base leading-7 text-[#141414] my-6 ml-4">
+        <li>
+          <span className="font-semibold">Prettier</span> — formatea el código
+          automáticamente al guardar, manteniendo un estilo consistente.
+        </li>
+        <li>
+          <span className="font-semibold">ESLint</span> — detecta errores y
+          malas prácticas en el código JavaScript y TypeScript.
+        </li>
+        <li>
+          <span className="font-semibold">
+            ES7+ React/Redux/React-Native snippets
+          </span>{" "}
+          — aporta atajos para generar componentes, hooks y otras estructuras de
+          React rápidamente.
+        </li>
+        <li>
+          <span className="font-semibold">Tailwind CSS IntelliSense</span> —
+          ofrece autocompletado, vista previa de colores y documentación de las
+          clases de Tailwind.
+        </li>
+        <li>
+          <span className="font-semibold">Auto Rename Tag</span> — renombra
+          automáticamente la etiqueta de cierre al modificar la de apertura en
+          JSX y HTML.
+        </li>
+        <li>
+          <span className="font-semibold">Path Intellisense</span> —
+          autocompleta rutas de archivos al escribir importaciones.
+        </li>
+        <li>
+          <span className="font-semibold">GitLens</span> — enriquece la
+          integración con Git mostrando el historial y la autoría de cada línea
+          de código.
+        </li>
+      </ul>
+
+      <h2
+        id="tailwind"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Tailwind CSS v4
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        La versión 4 simplifica el proceso de instalación:
+      </p>
+
+      <Codeblock code={twInstallCode} title="Terminal" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Luego registra el plugin en{" "}
+        <span className="font-semibold">vite.config.ts</span>:
+      </p>
+
+      <Codeblock title="vite.config.ts" code={twViteConfigCode} />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Finalmente, en tu archivo CSS principal (por ejemplo{" "}
+        <span className="font-semibold">index.css</span>), añade la siguiente
+        directiva en lugar de las tres anteriores de Tailwind v3:
+      </p>
+
+      <Codeblock title="index.css" code={twCssCode} />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Con esto ya puedes usar las clases de Tailwind en todos tus componentes
+        de React sin configuración adicional.
+      </p>
+
+      <h2
+        id="variables-de-entorno"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Variables de entorno
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Vite permite usar variables de entorno mediante archivos{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">.env</code>
+        . Las variables deben comenzar con el prefijo{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          VITE_
+        </code>{" "}
+        para ser accesibles en el cliente:
+      </p>
+
+      <Codeblock title=".env" code={envFileCode} />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Para acceder a estas variables en tu código:
+      </p>
+
+      <Codeblock code={envUsageCode} />
     </DocsLayout>
   );
 };
