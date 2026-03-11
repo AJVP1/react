@@ -7,6 +7,7 @@ import { Instalacion } from "./pages/Instalacion";
 import { JSX } from "./pages/Jsx";
 import { Componentes } from "./pages/Componentes";
 import { Estado } from "./pages/Estado";
+import { Eventos } from "./pages/Eventos";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/jsx" element={<JSX />} />
         <Route path="/componentes" element={<Componentes />} />
         <Route path="/estado" element={<Estado />} />
+        <Route path="/eventos" element={<Eventos />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>
