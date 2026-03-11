@@ -63,6 +63,10 @@
               "title": "Componentes funcionales"
             },
             { "id": "props", "title": "Props" },
+            {
+              "id": "valores-por-defecto",
+              "title": "Valores por defecto"
+            },
             { "id": "children", "title": "Children" },
             { "id": "composicion", "title": "Composición de componentes" }
           ]

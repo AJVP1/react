@@ -9,18 +9,30 @@ const componenteBasicoCode = `<span class="keyword">function</span> Saludo() {
   <span class="keyword">return</span> &lt;h1&gt;Hola React&lt;/h1&gt;;
 }`;
 
-const componentePropsCode = `<span class="keyword">function</span> Saludo(props) {
-  <span class="keyword">return</span> &lt;h1&gt;Hola {props.nombre}&lt;/h1&gt;;
+const componentePropsCode = `<span class="keyword">function</span> Saludo({nombre, apellido}) {
+  <span class="keyword">return</span> &lt;h1&gt;Hola {apellido}, {nombre}&lt;/h1&gt;;
 }`;
 
 const usoComponenteCode = `<span class="keyword">function</span> App() {
   <span class="keyword">return</span> (
     &lt;div&gt;
-      &lt;Saludo nombre=<span class="string">"Armando"</span> /&gt;
-      &lt;Saludo nombre=<span class="string">"Ana"</span> /&gt;
+      &lt;Saludo nombre=<span class="string">"Armando"</span> apellido=<span class="string">"Pérez"</span> /&gt;
+      &lt;Saludo nombre=<span class="string">"Ana"</span> apellido=<span class="string">"Gómez"</span> /&gt;
     &lt;/div&gt;
   );
 }`;
+
+const valoresDefectoCode = `<span class="keyword">const</span> Button = ({
+  text = <span class="string">"Enviar"</span>,
+  variant = <span class="string">"primary"</span>,
+  disabled = <span class="keyword">false</span>
+}) =&gt; {
+  <span class="keyword">return</span> (
+    &lt;button className={variant} disabled={disabled}&gt;
+      {text}
+    &lt;/button&gt;
+  );
+};`;
 
 const childrenCode = `<span class="keyword">function</span> Card({ children }) {
   <span class="keyword">return</span> (
@@ -142,6 +154,20 @@ export const Componentes = () => {
       </p>
 
       <Codeblock code={usoComponenteCode} title="TSX" />
+
+      <h2
+        id="valores-por-defecto"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Valores por defecto
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Puedes definir valores por defecto para las props directamente en el
+        destructuring:
+      </p>
+
+      <Codeblock code={valoresDefectoCode} title="TSX" />
 
       <h2
         id="children"
