@@ -3,6 +3,16 @@ import { Sidebar } from "../components/Sidebar.tsx";
 import { TableOfContents } from "../components/TableOfContents.tsx";
 import modulosData from "../data/modulos.json";
 import Note from "../components/Notes.tsx";
+import Codeblock from "../components/Codeblock.tsx";
+
+const codeApp = `<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> &lt;h1&gt;Hola React&lt;/h1&gt;;
+}`;
+
+const codeRender = `<span class="keyword">import</span> { createRoot } <span class="keyword">from</span> <span class="string">"react-dom/client"</span>;
+<span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">"./App"</span>;
+
+<span class="function">createRoot</span>(document.<span class="function">getElementById</span>(<span class="string">"root"</span>)).render(&lt;App /&gt;);`;
 
 export const Introduccion = () => {
   return (
@@ -120,11 +130,7 @@ export const Introduccion = () => {
         es simplemente una función que devuelve JSX.
       </p>
 
-      <pre className="bg-[#f7f7f7] p-4 rounded-lg text-sm overflow-x-auto">
-        {`function App() {
-  return <h1>Hola React</h1>;
-}`}
-      </pre>
+      <Codeblock code={codeApp} title="React" />
 
       <p className="text-base leading-7 text-[#141414] my-6">
         Este componente devuelve un elemento JSX que React renderiza en el
@@ -145,12 +151,7 @@ export const Introduccion = () => {
         .
       </p>
 
-      <pre className="bg-[#f7f7f7] p-4 rounded-lg text-sm overflow-x-auto">
-        {`import { createRoot } from "react-dom/client";
-import App from "./App";
-
-createRoot(document.getElementById("root")).render(<App />);`}
-      </pre>
+      <Codeblock code={codeRender} title="React" />
     </DocsLayout>
   );
 };
