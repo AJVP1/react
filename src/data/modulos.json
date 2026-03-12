@@ -180,12 +180,12 @@
               "title": "Rutas dinámicas (useParams)"
             },
             {
-              "id": "direccionar-usenavigate",
-              "title": "Direccionar (useNavigate)"
-            },
-            {
               "id": "enlaces-link-y-navlink",
               "title": "Enlaces (Link y NavLink)"
+            },
+            {
+              "id": "direccionar-usenavigate",
+              "title": "Direccionar (useNavigate)"
             },
             {
               "id": "ubicacion-actual-uselocation",
@@ -204,7 +204,10 @@
               "id": "action",
               "title": "Manejar acciones de formularios (action)"
             },
-            { "id": "errores-por-ruta", "title": "Manejar errores por ruta" }
+            { "id": "errores-por-ruta", "title": "Manejar errores por ruta" },
+            { "id": "lazy-loading", "title": "Lazy loading de rutas" },
+            { "id": "redirecciones", "title": "Redirecciones desde el router" },
+            { "id": "historial", "title": "Integración con el historial del navegador" }
           ]
         },
         {

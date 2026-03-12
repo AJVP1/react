@@ -78,6 +78,49 @@ const rutasAnidadasRegistroCode = `<span class="keyword">import</span> { createB
   },
 ]);`;
 
+const lazyLoadingCode = `<span class="keyword">import</span> { createBrowserRouter } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+<span class="keyword">import</span> { lazy, Suspense } <span class="keyword">from</span> <span class="string">"react"</span>;
+
+<span class="keyword">const</span> Dashboard = <span class="function">lazy</span>(() => <span class="keyword">import</span>(<span class="string">"./pages/Dashboard"</span>));
+
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/dashboard"</span>,
+    element: (
+      &lt;Suspense fallback={&lt;p&gt;Cargando...&lt;/p&gt;}&gt;
+        &lt;Dashboard /&gt;
+      &lt;/Suspense&gt;
+    ),
+  },
+]);`;
+
+const redirectCode = `<span class="keyword">import</span> { createBrowserRouter, redirect } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/admin"</span>,
+    element: &lt;Admin /&gt;,
+    loader: <span class="keyword">async</span> () =&gt; {
+      <span class="keyword">const</span> autenticado = <span class="keyword">await</span> <span class="function">verificarSesion</span>();
+      <span class="keyword">if</span> (!autenticado) <span class="keyword">return</span> <span class="function">redirect</span>(<span class="string">"/login"</span>);
+      <span class="keyword">return</span> <span class="keyword">null</span>;
+    },
+  },
+]);`;
+
+const historyCode = `<span class="keyword">import</span> { useNavigate } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">function</span> <span class="function">Navegacion</span>() {
+  <span class="keyword">const</span> navigate = <span class="function">useNavigate</span>();
+
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; <span class="function">navigate</span>(-1)}&gt;Atrás&lt;/button&gt;
+      &lt;button onClick={() =&gt; <span class="function">navigate</span>(1)}&gt;Adelante&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}`;
+
 const loaderCode = `<span class="comment">// router/index.tsx</span>
 <span class="keyword">import</span> { createBrowserRouter } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
 
@@ -235,55 +278,65 @@ export const Rutas = () => {
         Estructura
       </h2>
       <p className="text-base leading-7 text-[#141414] my-6">
-        La estructura básica de React Router se compone de varios elementos
-        fundamentales que trabajan en conjunto:
+        Con{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          createBrowserRouter
+        </code>
+        , la estructura se define como un array de objetos y se conecta a la
+        aplicación mediante{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          RouterProvider
+        </code>
+        . Sus elementos principales son:
       </p>
 
       <ul className="list-disc list-inside space-y-3 text-base leading-7 text-[#141414] my-6 ml-4">
         <li>
-          <span className="font-semibold">Router (Provider):</span> El
-          componente contenedor principal (BrowserRouter, HashRouter, etc.) que
-          proporciona el contexto de navegación a toda la aplicación. Similar a
-          React Context, permite que los componentes hijos accedan a la
-          información de rutas.
-        </li>
-        <li>
-          <span className="font-semibold">Routes:</span> Contenedor que agrupa
-          todas las rutas de la aplicación. Solo renderiza la primera ruta que
-          coincida con la URL actual.
-        </li>
-        <li>
-          <span className="font-semibold">Route:</span> Define una ruta
-          específica usando las props{" "}
+          <span className="font-semibold">createBrowserRouter:</span> Recibe un
+          array de objetos de ruta, cada uno con{" "}
           <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
             path
           </code>{" "}
-          (URL) y{" "}
+          y{" "}
           <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
             element
-          </code>{" "}
-          (componente a renderizar).
-        </li>
-        <li>
-          <span className="font-semibold">Link/NavLink:</span> En lugar de
-          etiquetas{" "}
-          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-            &lt;a&gt;
           </code>
-          , React Router usa estos componentes para crear enlaces que navegan
-          sin recargar la página.
+          . También admite{" "}
+          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+            loader
+          </code>
+          ,{" "}
+          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+            action
+          </code>
+          ,{" "}
+          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+            children
+          </code>{" "}
+          y{" "}
+          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+            errorElement
+          </code>{" "}
+          por ruta.
         </li>
         <li>
-          <span className="font-semibold">Outlet:</span> Placeholder para
-          renderizar rutas anidadas dentro de un componente padre.
+          <span className="font-semibold">RouterProvider:</span> Componente que
+          recibe el router creado y lo conecta a la aplicación. Reemplaza al
+          clásico{" "}
+          <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+            &lt;BrowserRouter&gt;
+          </code>
+          .
+        </li>
+        <li>
+          <span className="font-semibold">Link/NavLink:</span> Componentes para
+          navegar entre rutas sin recargar la página.
+        </li>
+        <li>
+          <span className="font-semibold">Outlet:</span> Marca el lugar dentro
+          de un layout donde se renderiza la ruta hija activa.
         </li>
       </ul>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Además, los Routers permiten incluir componentes persistentes como Menús
-        o Footers que se mantienen visibles en todas las vistas, asegurando una
-        estructura consistente en la aplicación.
-      </p>
 
       <h2
         id="instalacion"
@@ -760,6 +813,74 @@ export const Rutas = () => {
         De esta forma, cada sección de la aplicación puede manejar sus errores
         de forma independiente.
       </p>
+
+      <h2
+        id="lazy-loading"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Lazy loading de rutas
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Con <span className="font-semibold">lazy loading</span> puedes cargar
+        componentes de rutas solo cuando se necesitan. Esto ayuda a reducir el
+        tamaño inicial de la aplicación.
+      </p>
+
+      <Codeblock code={lazyLoadingCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Esta estrategia mejora el rendimiento inicial, especialmente en
+        aplicaciones grandes con muchas vistas.
+      </p>
+
+      <h2
+        id="redirecciones"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Redirecciones desde el router
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Las redirecciones pueden hacerse directamente desde loaders o actions
+        usando la función{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">redirect</code>.
+      </p>
+
+      <Codeblock code={redirectCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Esto es útil para proteger rutas, reenviar usuarios no autenticados o
+        moverlos a otra página después de una acción.
+      </p>
+
+      <h2
+        id="historial"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Integración con el historial del navegador
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        <span className="font-semibold">createBrowserRouter</span> utiliza la
+        API de historial del navegador, lo que permite navegar hacia atrás,
+        adelante y mantener URLs limpias sin usar hash.
+      </p>
+
+      <Codeblock code={historyCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Esto hace que la navegación se sienta natural para el usuario y que la
+        aplicación funcione de manera similar a un sitio multipágina tradicional.
+      </p>
+
+      <Note title="Buena práctica">
+        Usa <span className="font-semibold">createBrowserRouter</span> cuando
+        quieras una configuración de rutas más completa, especialmente si tu app
+        necesita <span className="font-semibold">loaders</span>,{" "}
+        <span className="font-semibold">actions</span>, manejo de errores por
+        ruta y división de código por página.
+      </Note>
     </DocsLayout>
   );
 };
