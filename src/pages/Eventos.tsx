@@ -38,15 +38,11 @@ const pasarFuncionesCode = `<span class="keyword">function</span> Boton({ onSalu
 const formularioCode = `<span class="keyword">function</span> Formulario() {
   <span class="keyword">const</span> [nombre, setNombre] = useState(<span class="string">""</span>);
 
-  <span class="keyword">const</span> manejarCambio = (e) =&gt; {
-    setNombre(e.target.value);
-  };
-
   <span class="keyword">return</span> (
     &lt;input
       type=<span class="string">"text"</span>
       value={nombre}
-      onChange={manejarCambio}
+      onChange={(e) =&gt; setNombre(e.target.value)}
     /&gt;
   );
 }`;
