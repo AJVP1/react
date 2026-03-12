@@ -146,28 +146,47 @@ const accionesAsincronasStoreCode = `<span class="keyword">import</span> { creat
 <span class="keyword">type</span> UserStore = {
   user: User | <span class="keyword">null</span>;
   loading: boolean;
+  error: string | <span class="keyword">null</span>;
+  abortFetch: () =&gt; void;
   fetchUser: (id: number) =&gt; <span class="function">Promise</span>&lt;void&gt;;
 };
 
-<span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="function">create</span>&lt;UserStore&gt;((set) =&gt; ({
-  user: <span class="keyword">null</span>,
-  loading: <span class="keyword">false</span>,
-  fetchUser: <span class="keyword">async</span> (id) =&gt; {
-    <span class="function">set</span>({ loading: <span class="keyword">true</span> });
-    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"/api/users/"</span> + id);
-    <span class="keyword">const</span> data = <span class="keyword">await</span> res.<span class="function">json</span>();
-    <span class="function">set</span>({ user: data, loading: <span class="keyword">false</span> });
-  },
-}));`;
+<span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="function">create</span>&lt;UserStore&gt;((set) =&gt; {
+  <span class="keyword">let</span> controller: AbortController | <span class="keyword">null</span> = <span class="keyword">null</span>;
+
+  <span class="keyword">return</span> {
+    user: <span class="keyword">null</span>,
+    loading: <span class="keyword">false</span>,
+    error: <span class="keyword">null</span>,
+    abortFetch: () =&gt; controller?.<span class="function">abort</span>(),
+    fetchUser: <span class="keyword">async</span> (id) =&gt; {
+      controller?.<span class="function">abort</span>();
+      controller = <span class="keyword">new</span> <span class="function">AbortController</span>();
+      <span class="function">set</span>({ loading: <span class="keyword">true</span>, error: <span class="keyword">null</span> });
+      <span class="keyword">try</span> {
+        <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"/api/users/"</span> + id, { signal: controller.signal });
+        <span class="keyword">if</span> (!res.ok) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="function">Error</span>(<span class="string">"Error al obtener el usuario"</span>);
+        <span class="keyword">const</span> data = <span class="keyword">await</span> res.<span class="function">json</span>();
+        <span class="function">set</span>({ user: data, loading: <span class="keyword">false</span> });
+      } <span class="keyword">catch</span> (err) {
+        <span class="keyword">if</span> (err <span class="keyword">instanceof</span> Error &amp;&amp; err.name === <span class="string">"AbortError"</span>) <span class="keyword">return</span>;
+        <span class="keyword">const</span> message = err <span class="keyword">instanceof</span> Error ? err.message : <span class="string">"Error desconocido"</span>;
+        <span class="function">set</span>({ error: message, loading: <span class="keyword">false</span> });
+      }
+    },
+  };
+});`;
 
 const accionesAsincronasUsoCode = `<span class="keyword">function</span> <span class="function">Profile</span>() {
-  <span class="keyword">const</span> { user, loading, fetchUser } = <span class="function">useUserStore</span>();
+  <span class="keyword">const</span> { user, loading, error, fetchUser, abortFetch } = <span class="function">useUserStore</span>();
 
   <span class="function">useEffect</span>(() =&gt; {
-    <span class="function">fetchUser</span>(<span class="number">1</span>);
+    <span class="function">fetchUser</span>(<span class="number">id</span>);
+    <span class="keyword">return</span> () =&gt; <span class="function">abortFetch</span>();
   }, []);
 
   <span class="keyword">if</span> (loading) <span class="keyword">return</span> &lt;p&gt;Cargando...&lt;/p&gt;;
+  <span class="keyword">if</span> (error) <span class="keyword">return</span> &lt;p&gt;{error}&lt;/p&gt;;
   <span class="keyword">return</span> &lt;h1&gt;{user?.name}&lt;/h1&gt;;
 }`;
 
@@ -217,9 +236,7 @@ export const Zustand = () => {
   return (
     <DocsLayout
       sidebar={<Sidebar />}
-      toc={
-        <TableOfContents items={modulosData.sidebar[3].items[3].toc} />
-      }
+      toc={<TableOfContents items={modulosData.sidebar[3].items[3].toc} />}
     >
       <h1 className="text-4xl font-extrabold tracking-tight text-[#141414] mb-4">
         Zustand
@@ -509,8 +526,12 @@ export const Zustand = () => {
       <p className="text-base leading-7 text-[#141414] my-6">
         Las acciones en Zustand pueden ser{" "}
         <span className="font-semibold text-[#141414]">async</span>. Basta con
-        declarar la función como <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">async</code>{" "}
-        dentro del store y usar <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">set</code>{" "}
+        declarar la función como{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          async
+        </code>{" "}
+        dentro del store y usar{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">set</code>{" "}
         antes y después de la operación para reflejar el estado de carga.
       </p>
 
@@ -518,7 +539,9 @@ export const Zustand = () => {
 
       <p className="text-base leading-7 text-[#141414] my-6">
         En el componente, consumes el store normalmente. El estado{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loading</code>{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          loading
+        </code>{" "}
         permite mostrar un indicador mientras se espera la respuesta.
       </p>
 
@@ -543,8 +566,10 @@ export const Zustand = () => {
           createBrowserRouter
         </code>{" "}
         de React Router, puedes proteger rutas desde el{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>.
-        Dentro del loader no puedes usar hooks, pero Zustand expone{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          loader
+        </code>
+        . Dentro del loader no puedes usar hooks, pero Zustand expone{" "}
         <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
           getState()
         </code>{" "}
@@ -554,17 +579,19 @@ export const Zustand = () => {
       <Codeblock code={protegerRutasStoreCode} title="TSX" />
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Con el store listo, configuras el router y lees el estado de autenticación
-        en el <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>{" "}
+        Con el store listo, configuras el router y lees el estado de
+        autenticación en el{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          loader
+        </code>{" "}
         de cada ruta protegida.
       </p>
 
       <Codeblock code={protegerRutasRouterCode} title="TSX" />
 
       <Note title="Idea clave">
-        Usa{" "}
-        <span className="font-semibold">useAuthStore.getState()</span> en los
-        loaders del router, ya que los loaders no son componentes React y no
+        Usa <span className="font-semibold">useAuthStore.getState()</span> en
+        los loaders del router, ya que los loaders no son componentes React y no
         pueden llamar hooks.
       </Note>
     </DocsLayout>
