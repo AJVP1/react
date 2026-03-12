@@ -7,214 +7,214 @@ import Codeblock from "../components/Codeblock.tsx";
 
 const instalacionCode = `npm install react-hook-form`;
 
-const useFormCode = `import { useForm } from "react-hook-form";
+const useFormCode = `<span class="keyword">import</span> { useForm } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-type LoginFormData = {
+<span class="keyword">type</span> LoginFormData = {
   email: string;
   password: string;
 };
 
-function LoginForm() {
-  const {
+<span class="keyword">function</span> <span class="function">LoginForm</span>() {
+  <span class="keyword">const</span> {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = <span class="function">useForm</span>&lt;LoginFormData&gt;();
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+  <span class="keyword">const</span> <span class="function">onSubmit</span> = (data: LoginFormData) => {
+    console.<span class="function">log</span>(data);
   };
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="email"
-        placeholder="Email"
-        {...register("email", {
-          required: "El email es obligatorio",
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit(onSubmit)}&gt;
+      &lt;input
+        type=<span class="string">"email"</span>
+        placeholder=<span class="string">"Email"</span>
+        {...register(<span class="string">"email"</span>, {
+          required: <span class="string">"El email es obligatorio"</span>,
         })}
-      />
-      {errors.email && <p>{errors.email.message}</p>}
+      /&gt;
+      {errors.email && &lt;p&gt;{errors.email.message}&lt;/p&gt;}
 
-      <input
-        type="password"
-        placeholder="Contraseña"
-        {...register("password", {
-          required: "La contraseña es obligatoria",
+      &lt;input
+        type=<span class="string">"password"</span>
+        placeholder=<span class="string">"Contraseña"</span>
+        {...register(<span class="string">"password"</span>, {
+          required: <span class="string">"La contraseña es obligatoria"</span>,
           minLength: {
-            value: 6,
-            message: "Mínimo 6 caracteres",
+            value: <span class="number">6</span>,
+            message: <span class="string">"Mínimo 6 caracteres"</span>,
           },
         })}
-      />
-      {errors.password && <p>{errors.password.message}</p>}
+      /&gt;
+      {errors.password && &lt;p&gt;{errors.password.message}&lt;/p&gt;}
 
-      <button type="submit">Entrar</button>
-    </form>
+      &lt;button type=<span class="string">"submit"</span>&gt;Entrar&lt;/button&gt;
+    &lt;/form&gt;
   );
 }`;
 
-const registerCode = `import { useForm } from "react-hook-form";
+const registerCode = `<span class="keyword">import</span> { useForm } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function Formulario() {
-  const { register } = useForm();
+<span class="keyword">function</span> <span class="function">Formulario</span>() {
+  <span class="keyword">const</span> { register } = <span class="function">useForm</span>();
 
-  return (
-    <form>
-      <input {...register("nombre")} placeholder="Nombre" />
-      <input {...register("apellido")} placeholder="Apellido" />
-    </form>
+  <span class="keyword">return</span> (
+    &lt;form&gt;
+      &lt;input {...register(<span class="string">"nombre"</span>)} placeholder=<span class="string">"Nombre"</span> /&gt;
+      &lt;input {...register(<span class="string">"apellido"</span>)} placeholder=<span class="string">"Apellido"</span> /&gt;
+    &lt;/form&gt;
   );
 }`;
 
-const validacionesCode = `import { useForm } from "react-hook-form";
+const validacionesCode = `<span class="keyword">import</span> { useForm } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function Registro() {
-  const {
+<span class="keyword">function</span> <span class="function">Registro</span>() {
+  <span class="keyword">const</span> {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = <span class="function">useForm</span>();
 
-  return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
-      <input
-        {...register("email", {
-          required: "El email es obligatorio",
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit((data) => console.<span class="function">log</span>(data))}&gt;
+      &lt;input
+        {...register(<span class="string">"email"</span>, {
+          required: <span class="string">"El email es obligatorio"</span>,
           pattern: {
             value: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,
-            message: "Formato de email inválido",
+            message: <span class="string">"Formato de email inválido"</span>,
           },
         })}
-        placeholder="Email"
-      />
-      {errors.email && <p>{errors.email.message as string}</p>}
+        placeholder=<span class="string">"Email"</span>
+      /&gt;
+      {errors.email && &lt;p&gt;{errors.email.message <span class="keyword">as</span> string}&lt;/p&gt;}
 
-      <button type="submit">Enviar</button>
-    </form>
+      &lt;button type=<span class="string">"submit"</span>&gt;Enviar&lt;/button&gt;
+    &lt;/form&gt;
   );
 }`;
 
-const controllerCode = `import { Controller, useForm } from "react-hook-form";
+const controllerCode = `<span class="keyword">import</span> { Controller, useForm } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function Formulario() {
-  const { control, handleSubmit } = useForm({
+<span class="keyword">function</span> <span class="function">Formulario</span>() {
+  <span class="keyword">const</span> { control, handleSubmit } = <span class="function">useForm</span>({
     defaultValues: {
-      categoria: "",
+      categoria: <span class="string">""</span>,
     },
   });
 
-  return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
-      <Controller
-        name="categoria"
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit((data) => console.<span class="function">log</span>(data))}&gt;
+      &lt;Controller
+        name=<span class="string">"categoria"</span>
         control={control}
         render={({ field }) => (
-          <select {...field}>
-            <option value="">Selecciona una categoría</option>
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-          </select>
+          &lt;select {...field}&gt;
+            &lt;option value=<span class="string">""</span>&gt;Selecciona una categoría&lt;/option&gt;
+            &lt;option value=<span class="string">"frontend"</span>&gt;Frontend&lt;/option&gt;
+            &lt;option value=<span class="string">"backend"</span>&gt;Backend&lt;/option&gt;
+          &lt;/select&gt;
         )}
-      />
+      /&gt;
 
-      <button type="submit">Guardar</button>
-    </form>
+      &lt;button type=<span class="string">"submit"</span>&gt;Guardar&lt;/button&gt;
+    &lt;/form&gt;
   );
 }`;
 
-const formProviderCode = `import {
+const formProviderCode = `<span class="keyword">import</span> {
   FormProvider,
   useForm,
   useFormContext,
-} from "react-hook-form";
+} <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function CampoNombre() {
-  const { register } = useFormContext();
+<span class="keyword">function</span> <span class="function">CampoNombre</span>() {
+  <span class="keyword">const</span> { register } = <span class="function">useFormContext</span>();
 
-  return <input {...register("nombre")} placeholder="Nombre" />;
+  <span class="keyword">return</span> &lt;input {...register(<span class="string">"nombre"</span>)} placeholder=<span class="string">"Nombre"</span> /&gt;;
 }
 
-function Formulario() {
-  const methods = useForm();
+<span class="keyword">function</span> <span class="function">Formulario</span>() {
+  <span class="keyword">const</span> methods = <span class="function">useForm</span>();
 
-  return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit((data) => console.log(data))}>
-        <CampoNombre />
-        <button type="submit">Enviar</button>
-      </form>
-    </FormProvider>
+  <span class="keyword">return</span> (
+    &lt;FormProvider {...methods}&gt;
+      &lt;form onSubmit={methods.handleSubmit((data) => console.<span class="function">log</span>(data))}&gt;
+        &lt;CampoNombre /&gt;
+        &lt;button type=<span class="string">"submit"</span>&gt;Enviar&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/FormProvider&gt;
   );
 }`;
 
-const fieldArrayCode = `import { useForm, useFieldArray } from "react-hook-form";
+const fieldArrayCode = `<span class="keyword">import</span> { useForm, useFieldArray } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function FormularioTelefonos() {
-  const { control, register, handleSubmit } = useForm({
+<span class="keyword">function</span> <span class="function">FormularioTelefonos</span>() {
+  <span class="keyword">const</span> { control, register, handleSubmit } = <span class="function">useForm</span>({
     defaultValues: {
-      telefonos: [{ numero: "" }],
+      telefonos: [{ numero: <span class="string">""</span> }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  <span class="keyword">const</span> { fields, append, remove } = <span class="function">useFieldArray</span>({
     control,
-    name: "telefonos",
+    name: <span class="string">"telefonos"</span>,
   });
 
-  return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit((data) => console.<span class="function">log</span>(data))}&gt;
       {fields.map((field, index) => (
-        <div key={field.id}>
-          <input
+        &lt;div key={field.id}&gt;
+          &lt;input
             {...register(\`telefonos.\${index}.numero\`)}
-            placeholder="Número"
-          />
-          <button type="button" onClick={() => remove(index)}>
+            placeholder=<span class="string">"Número"</span>
+          /&gt;
+          &lt;button type=<span class="string">"button"</span> onClick={() => remove(index)}&gt;
             Eliminar
-          </button>
-        </div>
+          &lt;/button&gt;
+        &lt;/div&gt;
       ))}
 
-      <button
-        type="button"
-        onClick={() => append({ numero: "" })}
-      >
+      &lt;button
+        type=<span class="string">"button"</span>
+        onClick={() => append({ numero: <span class="string">""</span> })}
+      &gt;
         Agregar teléfono
-      </button>
+      &lt;/button&gt;
 
-      <button type="submit">Guardar</button>
-    </form>
+      &lt;button type=<span class="string">"submit"</span>&gt;Guardar&lt;/button&gt;
+    &lt;/form&gt;
   );
 }`;
 
-const resetWatchCode = `import { useForm } from "react-hook-form";
+const resetWatchCode = `<span class="keyword">import</span> { useForm } <span class="keyword">from</span> <span class="string">"react-hook-form"</span>;
 
-function PerfilForm() {
-  const { register, handleSubmit, reset, watch } = useForm({
+<span class="keyword">function</span> <span class="function">PerfilForm</span>() {
+  <span class="keyword">const</span> { register, handleSubmit, reset, watch } = <span class="function">useForm</span>({
     defaultValues: {
-      nombre: "",
-      ciudad: "",
+      nombre: <span class="string">""</span>,
+      ciudad: <span class="string">""</span>,
     },
   });
 
-  const nombre = watch("nombre");
+  <span class="keyword">const</span> nombre = <span class="function">watch</span>(<span class="string">"nombre"</span>);
 
-  return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
-      <input {...register("nombre")} placeholder="Nombre" />
-      <input {...register("ciudad")} placeholder="Ciudad" />
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit((data) => console.<span class="function">log</span>(data))}&gt;
+      &lt;input {...register(<span class="string">"nombre"</span>)} placeholder=<span class="string">"Nombre"</span> /&gt;
+      &lt;input {...register(<span class="string">"ciudad"</span>)} placeholder=<span class="string">"Ciudad"</span> /&gt;
 
-      <p>Vista previa: {nombre}</p>
+      &lt;p&gt;Vista previa: {nombre}&lt;/p&gt;
 
-      <button type="submit">Guardar</button>
-      <button
-        type="button"
-        onClick={() => reset({ nombre: "", ciudad: "" })}
-      >
+      &lt;button type=<span class="string">"submit"</span>&gt;Guardar&lt;/button&gt;
+      &lt;button
+        type=<span class="string">"button"</span>
+        onClick={() => reset({ nombre: <span class="string">""</span>, ciudad: <span class="string">""</span> })}
+      &gt;
         Limpiar
-      </button>
-    </form>
+      &lt;/button&gt;
+    &lt;/form&gt;
   );
 }`;
 
