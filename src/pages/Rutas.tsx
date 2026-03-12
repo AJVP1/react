@@ -50,19 +50,6 @@ const rutasDinamicasDefinicionCode = `<span class="keyword">import</span> { crea
   { path: <span class="string">"/usuarios/:id"</span>, element: &lt;UsuarioDetalle /&gt; },
 ]);`;
 
-const rutasDinamicasJSXCode = `<span class="keyword">import</span> { BrowserRouter, Routes, Route } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
-
-<span class="keyword">function</span> <span class="function">App</span>() {
-  <span class="keyword">return</span> (
-    &lt;BrowserRouter&gt;
-      &lt;Routes&gt;
-        &lt;Route path=<span class="string">"/"</span> element={&lt;Home /&gt;} /&gt;
-        &lt;Route path=<span class="string">"/usuarios/:id"</span> element={&lt;UsuarioDetalle /&gt;} /&gt;
-      &lt;/Routes&gt;
-    &lt;/BrowserRouter&gt;
-  );
-}`;
-
 const rutasAnidadasCode = `<span class="keyword">import</span> { Outlet } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
 
 <span class="keyword">function</span> <span class="function">DashboardLayout</span>() {
@@ -77,22 +64,6 @@ const rutasAnidadasCode = `<span class="keyword">import</span> { Outlet } <span 
   );
 }`;
 
-const rutasAnidadasJSXCode = `<span class="keyword">import</span> { BrowserRouter, Routes, Route } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
-
-<span class="keyword">function</span> <span class="function">App</span>() {
-  <span class="keyword">return</span> (
-    &lt;BrowserRouter&gt;
-      &lt;Routes&gt;
-        &lt;Route path=<span class="string">"/dashboard"</span> element={&lt;DashboardLayout /&gt;}&gt;
-          &lt;Route path=<span class="string">"inicio"</span> element={&lt;Inicio /&gt;} /&gt;
-          &lt;Route path=<span class="string">"perfil"</span> element={&lt;Perfil /&gt;} /&gt;
-          &lt;Route path=<span class="string">"ajustes"</span> element={&lt;Ajustes /&gt;} /&gt;
-        &lt;/Route&gt;
-      &lt;/Routes&gt;
-    &lt;/BrowserRouter&gt;
-  );
-}`;
-
 const rutasAnidadasRegistroCode = `<span class="keyword">import</span> { createBrowserRouter, RouterProvider } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
 
 <span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
@@ -104,6 +75,79 @@ const rutasAnidadasRegistroCode = `<span class="keyword">import</span> { createB
       { path: <span class="string">"perfil"</span>, element: &lt;Perfil /&gt; },
       { path: <span class="string">"ajustes"</span>, element: &lt;Ajustes /&gt; },
     ],
+  },
+]);`;
+
+const loaderCode = `<span class="comment">// router/index.tsx</span>
+<span class="keyword">import</span> { createBrowserRouter } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/usuarios/:id"</span>,
+    element: &lt;UsuarioDetalle /&gt;,
+    loader: <span class="keyword">async</span> ({ params }) =&gt; {
+      <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">\`/api/usuarios/\${params.id}\`</span>);
+      <span class="keyword">return</span> res.<span class="function">json</span>();
+    },
+  },
+]);
+
+<span class="comment">// UsuarioDetalle.tsx</span>
+<span class="keyword">import</span> { useLoaderData } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">function</span> <span class="function">UsuarioDetalle</span>() {
+  <span class="keyword">const</span> usuario = <span class="function">useLoaderData</span>();
+
+  <span class="keyword">return</span> &lt;h2&gt;{usuario.nombre}&lt;/h2&gt;;
+}`;
+
+const actionCode = `<span class="comment">// router/index.tsx</span>
+<span class="keyword">import</span> { createBrowserRouter, redirect } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/contacto"</span>,
+    element: &lt;Contacto /&gt;,
+    action: <span class="keyword">async</span> ({ request }) =&gt; {
+      <span class="keyword">const</span> data = <span class="keyword">await</span> request.<span class="function">formData</span>();
+      <span class="keyword">await</span> <span class="function">enviarMensaje</span>(data);
+      <span class="keyword">return</span> <span class="function">redirect</span>(<span class="string">"/gracias"</span>);
+    },
+  },
+]);
+
+<span class="comment">// Contacto.tsx</span>
+<span class="keyword">import</span> { Form } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">function</span> <span class="function">Contacto</span>() {
+  <span class="keyword">return</span> (
+    &lt;Form method=<span class="string">"post"</span>&gt;
+      &lt;input name=<span class="string">"mensaje"</span> /&gt;
+      &lt;button type=<span class="string">"submit"</span>&gt;Enviar&lt;/button&gt;
+    &lt;/Form&gt;
+  );
+}`;
+
+const errorBoundaryCode = `<span class="keyword">import</span> { useRouteError } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+
+<span class="keyword">function</span> <span class="function">ErrorPage</span>() {
+  <span class="keyword">const</span> error = <span class="function">useRouteError</span>();
+
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Algo salió mal&lt;/h2&gt;
+      &lt;p&gt;{error.message}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="comment">// router/index.tsx</span>
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/usuarios/:id"</span>,
+    element: &lt;UsuarioDetalle /&gt;,
+    loader: fetchUsuario,
+    errorElement: &lt;ErrorPage /&gt;,
   },
 ]);`;
 
@@ -368,93 +412,10 @@ export const Rutas = () => {
       </div>
 
       <h2
-        id="enlaces-link-y-navlink"
-        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
-      >
-        Enlaces (Link y NavLink)
-      </h2>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Para moverte entre rutas se usan componentes como{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">Link</code>{" "}
-        y{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          NavLink
-        </code>
-        .
-      </p>
-
-      <Codeblock code={linkNavLinkCode} title="TSX" />
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        <span className="font-semibold">Link</span> permite navegar sin recargar
-        la página, mientras que <span className="font-semibold">NavLink</span>{" "}
-        añade información útil para detectar si la ruta actual está activa.
-      </p>
-
-      <h2
-        id="rutas-dinamicas-useparams"
-        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
-      >
-        Rutas dinámicas (useParams)
-      </h2>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Las rutas dinámicas permiten capturar partes variables de la URL usando
-        el prefijo{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">:</code>.
-        Son útiles para páginas de detalle como perfiles de usuario, artículos o
-        productos.
-      </p>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Puedes definir la ruta con el segmento dinámico de dos formas. Con{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          &lt;Route&gt;
-        </code>{" "}
-        en JSX:
-      </p>
-
-      <Codeblock code={rutasDinamicasJSXCode} title="App.tsx" />
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        O usando{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          createBrowserRouter
-        </code>{" "}
-        con un array de objetos:
-      </p>
-
-      <Codeblock code={rutasDinamicasDefinicionCode} title="router/index.tsx" />
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Luego, dentro del componente, usas el hook{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          useParams
-        </code>{" "}
-        para leer el valor capturado:
-      </p>
-
-      <Codeblock code={rutasDinamicasCode} title="TSX" />
-
-      <Note title="Tip">
-        Puedes tener múltiples segmentos dinámicos en una misma ruta, por
-        ejemplo{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          /equipos/:equipoId/jugadores/:jugadorId
-        </code>
-        . Cada uno estará disponible como una clave en el objeto que devuelve{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          useParams
-        </code>
-        .
-      </Note>
-
-      <h2
         id="create-browser-router"
         className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
       >
-        Browser Router
+        Create Browser Router
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
@@ -490,6 +451,18 @@ export const Rutas = () => {
         <span className="font-semibold">&lt;BrowserRouter&gt;</span> sigue
         siendo válida.
       </Note>
+      <Note title="createHashRouter y createMemoryRouter">
+        Se pueden crear routers de tipo hash o memory usando{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          createHashRouter
+        </code>{" "}
+        y{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          createMemoryRouter
+        </code>
+        respectivamente, siguiendo la misma estructura de rutas. Se usan las
+        mismas características avanzadas que con createBrowserRouter.
+      </Note>
 
       <h2
         id="rutas-anidadas-outlet"
@@ -509,25 +482,10 @@ export const Rutas = () => {
         <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
           Outlet
         </code>{" "}
-        para marcar dónde se renderizará la ruta hija. Este es el mismo en ambas
-        formas:
+        para marcar dónde se renderizará la ruta hija:
       </p>
 
       <Codeblock code={rutasAnidadasCode} title="DashboardLayout.tsx" />
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Sin{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          BrowserRouter
-        </code>
-        , las rutas hijas se anidan como elementos{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          &lt;Route&gt;
-        </code>{" "}
-        dentro del padre:
-      </p>
-
-      <Codeblock code={rutasAnidadasJSXCode} title="App.tsx" />
 
       <p className="text-base leading-7 text-[#141414] my-6">
         Con{" "}
@@ -562,6 +520,79 @@ export const Rutas = () => {
         </code>
         .
       </Note>
+
+      <h2
+        id="rutas-dinamicas-useparams"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Rutas dinámicas (useParams)
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Las rutas dinámicas permiten capturar partes variables de la URL usando
+        el prefijo{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">:</code>.
+        Son útiles para páginas de detalle como perfiles de usuario, artículos o
+        productos.
+      </p>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Puedes definirla con{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          createBrowserRouter
+        </code>{" "}
+        usando un array de objetos:
+      </p>
+
+      <Codeblock code={rutasDinamicasDefinicionCode} title="router/index.tsx" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Luego, dentro del componente, usas el hook{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          useParams
+        </code>{" "}
+        para leer el valor capturado:
+      </p>
+
+      <Codeblock code={rutasDinamicasCode} title="TSX" />
+
+      <Note title="Tip">
+        Puedes tener múltiples segmentos dinámicos en una misma ruta, por
+        ejemplo{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          /equipos/:equipoId/jugadores/:jugadorId
+        </code>
+        . Cada uno estará disponible como una clave en el objeto que devuelve{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          useParams
+        </code>
+        .
+      </Note>
+
+      <h2
+        id="enlaces-link-y-navlink"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Enlaces (Link y NavLink)
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Para moverte entre rutas se usan componentes como{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">Link</code>{" "}
+        y{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          NavLink
+        </code>
+        .
+      </p>
+
+      <Codeblock code={linkNavLinkCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        <span className="font-semibold">Link</span> permite navegar sin recargar
+        la página, mientras que <span className="font-semibold">NavLink</span>{" "}
+        añade información útil para detectar si la ruta actual está activa.
+      </p>
 
       <h2
         id="direccionar-usenavigate"
@@ -666,6 +697,69 @@ export const Rutas = () => {
         lógica, y <span className="font-semibold">Navigate</span> cuando
         necesites una redirección declarativa en el render.
       </Note>
+
+      <h2
+        id="loader"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Cargar datos antes del render (loader)
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Una de las ventajas principales de este router es que permite cargar
+        datos antes de renderizar una ruta usando la propiedad{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>.
+      </p>
+
+      <Codeblock code={loaderCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        El loader se ejecuta antes del render de la página, por lo que el
+        componente puede recibir la información ya preparada.
+      </p>
+
+      <h2
+        id="action"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Manejar acciones de formularios (action)
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        React Router también permite manejar envíos de formularios con la
+        propiedad{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">action</code>.
+        Esto resulta útil para procesar datos, validar formularios o redirigir
+        después de un envío.
+      </p>
+
+      <Codeblock code={actionCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        En este enfoque, la lógica del formulario queda asociada directamente a
+        la ruta.
+      </p>
+
+      <h2
+        id="errores-por-ruta"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Manejar errores por ruta
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Cada ruta puede definir su propia interfaz de error usando{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">errorElement</code>.
+        Esto permite mostrar mensajes específicos cuando falla un loader, un
+        action o el render de la ruta.
+      </p>
+
+      <Codeblock code={errorBoundaryCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        De esta forma, cada sección de la aplicación puede manejar sus errores
+        de forma independiente.
+      </p>
     </DocsLayout>
   );
 };

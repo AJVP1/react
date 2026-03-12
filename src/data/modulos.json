@@ -170,22 +170,22 @@
             { "id": "estructura", "title": "Estructura" },
             { "id": "instalacion", "title": "Instalación" },
             { "id": "tipos-de-routers", "title": "Tipos de routers" },
-            {
-              "id": "enlaces-link-y-navlink",
-              "title": "Enlaces (Link y NavLink)"
-            },
-            {
-              "id": "rutas-dinamicas-useparams",
-              "title": "Rutas dinámicas (useParams)"
-            },
-            { "id": "create-browser-router", "title": "Browser Router" },
+            { "id": "create-browser-router", "title": "Create Browser Router" },
             {
               "id": "rutas-anidadas-outlet",
               "title": "Rutas anidadas (Outlet)"
             },
             {
+              "id": "rutas-dinamicas-useparams",
+              "title": "Rutas dinámicas (useParams)"
+            },
+            {
               "id": "direccionar-usenavigate",
               "title": "Direccionar (useNavigate)"
+            },
+            {
+              "id": "enlaces-link-y-navlink",
+              "title": "Enlaces (Link y NavLink)"
             },
             {
               "id": "ubicacion-actual-uselocation",
@@ -195,7 +195,16 @@
             {
               "id": "parametros-de-busqueda-usesearchparams",
               "title": "Parámetros de búsqueda (useSearchParams)"
-            }
+            },
+            {
+              "id": "loader",
+              "title": "Cargar datos antes del render (loader)"
+            },
+            {
+              "id": "action",
+              "title": "Manejar acciones de formularios (action)"
+            },
+            { "id": "errores-por-ruta", "title": "Manejar errores por ruta" }
           ]
         },
         {
