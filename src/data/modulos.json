@@ -241,7 +241,9 @@
             },
             { "id": "middlewares", "title": "Usar middlewares" },
             { "id": "typescript", "title": "Integración con TypeScript" },
-            { "id": "global-y-local", "title": "Manejar estado global y local" }
+            { "id": "global-y-local", "title": "Manejar estado global y local" },
+            { "id": "acciones-asincronas", "title": "Acciones asíncronas" },
+            { "id": "proteger-rutas", "title": "Proteger rutas con createBrowserRouter" }
           ]
         }
       ]

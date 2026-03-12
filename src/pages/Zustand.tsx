@@ -141,6 +141,65 @@ const typescriptCode = `<span class="keyword">import</span> { create } <span cla
   clearUser: () =&gt; <span class="function">set</span>({ user: <span class="keyword">null</span> }),
 }));`;
 
+const accionesAsincronasStoreCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
+
+<span class="keyword">type</span> UserStore = {
+  user: User | <span class="keyword">null</span>;
+  loading: boolean;
+  fetchUser: (id: number) =&gt; <span class="function">Promise</span>&lt;void&gt;;
+};
+
+<span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="function">create</span>&lt;UserStore&gt;((set) =&gt; ({
+  user: <span class="keyword">null</span>,
+  loading: <span class="keyword">false</span>,
+  fetchUser: <span class="keyword">async</span> (id) =&gt; {
+    <span class="function">set</span>({ loading: <span class="keyword">true</span> });
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">"/api/users/"</span> + id);
+    <span class="keyword">const</span> data = <span class="keyword">await</span> res.<span class="function">json</span>();
+    <span class="function">set</span>({ user: data, loading: <span class="keyword">false</span> });
+  },
+}));`;
+
+const accionesAsincronasUsoCode = `<span class="keyword">function</span> <span class="function">Profile</span>() {
+  <span class="keyword">const</span> { user, loading, fetchUser } = <span class="function">useUserStore</span>();
+
+  <span class="function">useEffect</span>(() =&gt; {
+    <span class="function">fetchUser</span>(<span class="number">1</span>);
+  }, []);
+
+  <span class="keyword">if</span> (loading) <span class="keyword">return</span> &lt;p&gt;Cargando...&lt;/p&gt;;
+  <span class="keyword">return</span> &lt;h1&gt;{user?.name}&lt;/h1&gt;;
+}`;
+
+const protegerRutasStoreCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
+
+<span class="keyword">type</span> AuthStore = {
+  user: string | <span class="keyword">null</span>;
+  login: (user: string) =&gt; void;
+  logout: () =&gt; void;
+};
+
+<span class="keyword">export</span> <span class="keyword">const</span> useAuthStore = <span class="function">create</span>&lt;AuthStore&gt;((set) =&gt; ({
+  user: <span class="keyword">null</span>,
+  login: (user) =&gt; <span class="function">set</span>({ user }),
+  logout: () =&gt; <span class="function">set</span>({ user: <span class="keyword">null</span> }),
+}));`;
+
+const protegerRutasRouterCode = `<span class="keyword">import</span> { createBrowserRouter, redirect } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
+<span class="keyword">import</span> { useAuthStore } <span class="keyword">from</span> <span class="string">"./stores/authStore"</span>;
+
+<span class="keyword">const</span> router = <span class="function">createBrowserRouter</span>([
+  {
+    path: <span class="string">"/dashboard"</span>,
+    element: &lt;Dashboard /&gt;,
+    loader: () =&gt; {
+      <span class="keyword">const</span> user = useAuthStore.<span class="function">getState</span>().user;
+      <span class="keyword">if</span> (!user) <span class="keyword">return</span> <span class="function">redirect</span>(<span class="string">"/login"</span>);
+      <span class="keyword">return</span> <span class="keyword">null</span>;
+    },
+  },
+]);`;
+
 const globalLocalCode = `<span class="keyword">function</span> <span class="function">ProductPage</span>() {
   <span class="keyword">const</span> user = <span class="function">useUserStore</span>((state) =&gt; state.user);
   <span class="keyword">const</span> [quantity, setQuantity] = <span class="function">useState</span>(<span class="number">1</span>);
@@ -438,6 +497,75 @@ export const Zustand = () => {
         Usa Zustand para estado compartido y mantenlo dividido por dominios.
         Combínalo con estado local cuando una pieza de información no necesite
         salir del componente.
+      </Note>
+
+      <h2
+        id="acciones-asincronas"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Acciones asíncronas
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Las acciones en Zustand pueden ser{" "}
+        <span className="font-semibold text-[#141414]">async</span>. Basta con
+        declarar la función como <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">async</code>{" "}
+        dentro del store y usar <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">set</code>{" "}
+        antes y después de la operación para reflejar el estado de carga.
+      </p>
+
+      <Codeblock code={accionesAsincronasStoreCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        En el componente, consumes el store normalmente. El estado{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loading</code>{" "}
+        permite mostrar un indicador mientras se espera la respuesta.
+      </p>
+
+      <Codeblock code={accionesAsincronasUsoCode} title="TSX" />
+
+      <Note title="Sin middleware extra">
+        No necesitas librerías adicionales para manejar async en Zustand. Las
+        acciones asíncronas funcionan de forma nativa con{" "}
+        <span className="font-semibold">async/await</span>.
+      </Note>
+
+      <h2
+        id="proteger-rutas"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Proteger rutas con createBrowserRouter
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Al usar{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          createBrowserRouter
+        </code>{" "}
+        de React Router, puedes proteger rutas desde el{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>.
+        Dentro del loader no puedes usar hooks, pero Zustand expone{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          getState()
+        </code>{" "}
+        para acceder al estado directamente sin hooks.
+      </p>
+
+      <Codeblock code={protegerRutasStoreCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Con el store listo, configuras el router y lees el estado de autenticación
+        en el <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>{" "}
+        de cada ruta protegida.
+      </p>
+
+      <Codeblock code={protegerRutasRouterCode} title="TSX" />
+
+      <Note title="Idea clave">
+        Usa{" "}
+        <span className="font-semibold">useAuthStore.getState()</span> en los
+        loaders del router, ya que los loaders no son componentes React y no
+        pueden llamar hooks.
       </Note>
     </DocsLayout>
   );
