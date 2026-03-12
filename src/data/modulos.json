@@ -136,18 +136,6 @@
       "title": "Avanzado",
       "items": [
         {
-          "to": "/renderizado",
-          "label": "Renderizado",
-          "icon": "visibility",
-          "toc": [
-            { "id": "ciclo-render", "title": "Ciclo de renderizado" },
-            { "id": "re-render", "title": "¿Qué provoca un re-render?" },
-            { "id": "memo", "title": "React.memo" },
-            { "id": "usememo-usecallback", "title": "useMemo y useCallback" },
-            { "id": "optimizar-render", "title": "Optimización de render" }
-          ]
-        },
-        {
           "to": "/rutas",
           "label": "React Router",
           "icon": "route",

@@ -10,7 +10,6 @@ import { Estado } from "./pages/Estado";
 import { Eventos } from "./pages/Eventos";
 import { UseEffect } from "./pages/Efectos";
 import { UseRef } from "./pages/Referencia";
-import { Renderizado } from "./pages/Renderizado";
 import { Rutas } from "./pages/Rutas";
 import { Formularios } from "./pages/Formularios";
 import { Zustand } from "./pages/Zustand";
@@ -27,7 +26,6 @@ function App() {
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/use-effect" element={<UseEffect />} />
         <Route path="/use-ref" element={<UseRef />} />
-        <Route path="/renderizado" element={<Renderizado />} />
         <Route path="/rutas" element={<Rutas />} />
         <Route path="/formularios" element={<Formularios />}></Route>
         <Route path="/zustand" element={<Zustand />} />

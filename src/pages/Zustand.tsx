@@ -238,7 +238,7 @@ export const Zustand = () => {
   return (
     <DocsLayout
       sidebar={<Sidebar />}
-      toc={<TableOfContents items={modulosData.sidebar[3].items[3].toc} />}
+      toc={<TableOfContents items={modulosData.sidebar[3].items[2].toc} />}
     >
       <h1 className="text-4xl font-extrabold tracking-tight text-[#141414] mb-4">
         Zustand

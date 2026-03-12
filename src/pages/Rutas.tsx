@@ -246,7 +246,7 @@ export const Rutas = () => {
   return (
     <DocsLayout
       sidebar={<Sidebar />}
-      toc={<TableOfContents items={modulosData.sidebar[3].items[1].toc} />}
+      toc={<TableOfContents items={modulosData.sidebar[3].items[0].toc} />}
     >
       <h1 className="text-4xl font-extrabold tracking-tight text-[#141414] mb-4">
         React Router
