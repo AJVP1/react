@@ -9,12 +9,11 @@ import { Componentes } from "./pages/Componentes";
 import { Estado } from "./pages/Estado";
 import { Eventos } from "./pages/Eventos";
 import { UseEffect } from "./pages/Efectos";
-import { UseContext } from "./pages/Contexto";
 import { UseRef } from "./pages/Referencia";
 import { Renderizado } from "./pages/Renderizado";
 import { Rutas } from "./pages/Rutas";
 import { Formularios } from "./pages/Formularios";
-import { EstadoGlobal } from "./pages/Global";
+import { Zustand } from "./pages/Zustand";
 
 function App() {
   return (
@@ -27,12 +26,11 @@ function App() {
         <Route path="/estado" element={<Estado />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/use-effect" element={<UseEffect />} />
-        <Route path="/use-context" element={<UseContext />} />
         <Route path="/use-ref" element={<UseRef />} />
         <Route path="/renderizado" element={<Renderizado />} />
         <Route path="/rutas" element={<Rutas />} />
         <Route path="/formularios" element={<Formularios />}></Route>
-        <Route path="/estado-global" element={<EstadoGlobal />} />
+        <Route path="/zustand" element={<Zustand />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>

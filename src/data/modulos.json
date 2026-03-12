@@ -116,21 +116,6 @@
           ]
         },
         {
-          "to": "/use-context",
-          "label": "useContext",
-          "icon": "hub",
-          "toc": [
-            { "id": "que-es-context", "title": "¿Qué es Context?" },
-            { "id": "crear-contexto", "title": "Crear un contexto" },
-            { "id": "provider", "title": "Provider" },
-            {
-              "id": "consumir-contexto",
-              "title": "Consumir contexto con useContext"
-            },
-            { "id": "casos-de-uso", "title": "Casos de uso" }
-          ]
-        },
-        {
           "to": "/use-ref",
           "label": "useRef",
           "icon": "push_pin",
@@ -206,8 +191,7 @@
             },
             { "id": "errores-por-ruta", "title": "Manejar errores por ruta" },
             { "id": "lazy-loading", "title": "Lazy loading de rutas" },
-            { "id": "redirecciones", "title": "Redirecciones desde el router" },
-            { "id": "historial", "title": "Integración con el historial del navegador" }
+            { "id": "redirecciones", "title": "Redirecciones desde el router" }
           ]
         },
         {
@@ -223,15 +207,41 @@
           ]
         },
         {
-          "to": "/estado-global",
-          "label": "Estado global",
+          "to": "/zustand",
+          "label": "Zustand",
           "icon": "account_tree",
           "toc": [
-            { "id": "context-api", "title": "Context API" },
-            { "id": "reducer", "title": "useReducer" },
-            { "id": "redux-intro", "title": "Introducción a Redux" },
-            { "id": "zustand-intro", "title": "Introducción a Zustand" },
-            { "id": "elegir-opcion", "title": "¿Qué opción elegir?" }
+            {
+              "id": "stores-globales",
+              "title": "Crear stores globales simples"
+            },
+            {
+              "id": "estado-y-acciones",
+              "title": "Definir estado y acciones en un mismo lugar"
+            },
+            {
+              "id": "sin-providers",
+              "title": "Acceder al estado sin providers"
+            },
+            {
+              "id": "actualizacion-reactiva",
+              "title": "Actualizar el estado de forma reactiva"
+            },
+            {
+              "id": "sin-prop-drilling",
+              "title": "Compartir estado sin prop drilling"
+            },
+            {
+              "id": "multiples-stores",
+              "title": "Crear múltiples stores independientes"
+            },
+            {
+              "id": "persistencia",
+              "title": "Persistir estado con localStorage o sessionStorage"
+            },
+            { "id": "middlewares", "title": "Usar middlewares" },
+            { "id": "typescript", "title": "Integración con TypeScript" },
+            { "id": "global-y-local", "title": "Manejar estado global y local" }
           ]
         }
       ]
