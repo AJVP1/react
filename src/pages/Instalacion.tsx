@@ -8,7 +8,7 @@ import Codeblock from "../components/Codeblock.tsx";
 const verificarNode = `node -v # Verificar versión de Node.js
 pnpm -v # Verificar versión de pnpm`;
 
-const crearProyectoCode = `pnpm create vite@latest mi-proyecto-react`;
+const crearProyectoCode = `pnpm create vite@latest`;
 
 const estructuraInicialCode = `mi-proyecto-react/
 ├── public/
