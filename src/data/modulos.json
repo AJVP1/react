@@ -199,11 +199,15 @@
           "label": "Formularios",
           "icon": "article",
           "toc": [
-            { "id": "inputs-controlados", "title": "Inputs controlados" },
-            { "id": "textarea-select", "title": "Textarea y select" },
-            { "id": "validaciones", "title": "Validaciones básicas" },
-            { "id": "manejo-submit", "title": "Manejo de submit" },
-            { "id": "librerias-form", "title": "Librerías de formularios" }
+            { "id": "que-es-react-hook-form", "title": "¿Qué es React Hook Form?" },
+            { "id": "instalacion", "title": "Instalación" },
+            { "id": "useform", "title": "useForm" },
+            { "id": "register", "title": "Registrar inputs con register" },
+            { "id": "validaciones", "title": "Validaciones" },
+            { "id": "controller", "title": "Controller" },
+            { "id": "formprovider", "title": "FormProvider y useFormContext" },
+            { "id": "usefieldarray", "title": "useFieldArray" },
+            { "id": "reset-watch", "title": "reset y watch" }
           ]
         },
         {

@@ -5,94 +5,218 @@ import modulosData from "../data/modulos.json";
 import Note from "../components/Notes.tsx";
 import Codeblock from "../components/Codeblock.tsx";
 
-const inputsControladosCode = `<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">"react"</span>;
+const instalacionCode = `npm install react-hook-form`;
 
-<span class="keyword">function</span> Formulario() {
-  <span class="keyword">const</span> [nombre, setNombre] = useState(<span class="string">""</span>);
+const useFormCode = `import { useForm } from "react-hook-form";
 
-  <span class="keyword">return</span> (
-    &lt;input
-      type=<span class="string">"text"</span>
-      value={nombre}
-      onChange={(e) =&gt; setNombre(e.target.value)}
-      placeholder=<span class="string">"Escribe tu nombre"</span>
-    /&gt;
-  );
-}`;
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
-const textareaSelectCode = `<span class="keyword">import</span> { useState } <span class="keyword">from</span> <span class="string">"react"</span>;
+function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
 
-<span class="keyword">function</span> Formulario() {
-  <span class="keyword">const</span> [mensaje, setMensaje] = useState(<span class="string">""</span>);
-  <span class="keyword">const</span> [pais, setPais] = useState(<span class="string">"argentina"</span>);
-
-  <span class="keyword">return</span> (
-    &lt;form&gt;
-      &lt;textarea
-        value={mensaje}
-        onChange={(e) =&gt; setMensaje(e.target.value)}
-      /&gt;
-
-      &lt;select
-        value={pais}
-        onChange={(e) =&gt; setPais(e.target.value)}
-      &gt;
-        &lt;option value=<span class="string">"argentina"</span>&gt;Argentina&lt;/option&gt;
-        &lt;option value=<span class="string">"mexico"</span>&gt;México&lt;/option&gt;
-        &lt;option value=<span class="string">"colombia"</span>&gt;Colombia&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/form&gt;
-  );
-}`;
-
-const validacionesCode = `<span class="keyword">function</span> Formulario() {
-  <span class="keyword">const</span> [email, setEmail] = useState(<span class="string">""</span>);
-  <span class="keyword">const</span> [error, setError] = useState(<span class="string">""</span>);
-
-  <span class="keyword">const</span> validar = () =&gt; {
-    <span class="keyword">if</span> (!email.includes(<span class="string">"@"</span>)) {
-      setError(<span class="string">"Ingresa un email válido"</span>);
-      <span class="keyword">return</span> <span class="keyword">false</span>;
-    }
-
-    setError(<span class="string">""</span>);
-    <span class="keyword">return</span> <span class="keyword">true</span>;
+  const onSubmit = (data: LoginFormData) => {
+    console.log(data);
   };
 
-  <span class="keyword">return</span> (
-    &lt;div&gt;
-      &lt;input
-        type=<span class="string">"email"</span>
-        value={email}
-        onChange={(e) =&gt; setEmail(e.target.value)}
-      /&gt;
-      {error &amp;&amp; &lt;p&gt;{error}&lt;/p&gt;}
-      &lt;button onClick={validar}&gt;Validar&lt;/button&gt;
-    &lt;/div&gt;
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        type="email"
+        placeholder="Email"
+        {...register("email", {
+          required: "El email es obligatorio",
+        })}
+      />
+      {errors.email && <p>{errors.email.message}</p>}
+
+      <input
+        type="password"
+        placeholder="Contraseña"
+        {...register("password", {
+          required: "La contraseña es obligatoria",
+          minLength: {
+            value: 6,
+            message: "Mínimo 6 caracteres",
+          },
+        })}
+      />
+      {errors.password && <p>{errors.password.message}</p>}
+
+      <button type="submit">Entrar</button>
+    </form>
   );
 }`;
 
-const manejoSubmitCode = `<span class="keyword">function</span> Formulario() {
-  <span class="keyword">const</span> [nombre, setNombre] = useState(<span class="string">""</span>);
+const registerCode = `import { useForm } from "react-hook-form";
 
-  <span class="keyword">const</span> manejarSubmit = (e) =&gt; {
-    e.preventDefault();
-    console.log(<span class="string">"Formulario enviado:"</span>, nombre);
-  };
+function Formulario() {
+  const { register } = useForm();
 
-  <span class="keyword">return</span> (
-    &lt;form onSubmit={manejarSubmit}&gt;
-      &lt;input
-        type=<span class="string">"text"</span>
-        value={nombre}
-        onChange={(e) =&gt; setNombre(e.target.value)}
-      /&gt;
-      &lt;button type=<span class="string">"submit"</span>&gt;Enviar&lt;/button&gt;
-    &lt;/form&gt;
+  return (
+    <form>
+      <input {...register("nombre")} placeholder="Nombre" />
+      <input {...register("apellido")} placeholder="Apellido" />
+    </form>
   );
 }`;
 
-const libreriasFormCode = `npm install react-hook-form`;
+const validacionesCode = `import { useForm } from "react-hook-form";
+
+function Registro() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <input
+        {...register("email", {
+          required: "El email es obligatorio",
+          pattern: {
+            value: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,
+            message: "Formato de email inválido",
+          },
+        })}
+        placeholder="Email"
+      />
+      {errors.email && <p>{errors.email.message as string}</p>}
+
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}`;
+
+const controllerCode = `import { Controller, useForm } from "react-hook-form";
+
+function Formulario() {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      categoria: "",
+    },
+  });
+
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <Controller
+        name="categoria"
+        control={control}
+        render={({ field }) => (
+          <select {...field}>
+            <option value="">Selecciona una categoría</option>
+            <option value="frontend">Frontend</option>
+            <option value="backend">Backend</option>
+          </select>
+        )}
+      />
+
+      <button type="submit">Guardar</button>
+    </form>
+  );
+}`;
+
+const formProviderCode = `import {
+  FormProvider,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
+
+function CampoNombre() {
+  const { register } = useFormContext();
+
+  return <input {...register("nombre")} placeholder="Nombre" />;
+}
+
+function Formulario() {
+  const methods = useForm();
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit((data) => console.log(data))}>
+        <CampoNombre />
+        <button type="submit">Enviar</button>
+      </form>
+    </FormProvider>
+  );
+}`;
+
+const fieldArrayCode = `import { useForm, useFieldArray } from "react-hook-form";
+
+function FormularioTelefonos() {
+  const { control, register, handleSubmit } = useForm({
+    defaultValues: {
+      telefonos: [{ numero: "" }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "telefonos",
+  });
+
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      {fields.map((field, index) => (
+        <div key={field.id}>
+          <input
+            {...register(\`telefonos.\${index}.numero\`)}
+            placeholder="Número"
+          />
+          <button type="button" onClick={() => remove(index)}>
+            Eliminar
+          </button>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() => append({ numero: "" })}
+      >
+        Agregar teléfono
+      </button>
+
+      <button type="submit">Guardar</button>
+    </form>
+  );
+}`;
+
+const resetWatchCode = `import { useForm } from "react-hook-form";
+
+function PerfilForm() {
+  const { register, handleSubmit, reset, watch } = useForm({
+    defaultValues: {
+      nombre: "",
+      ciudad: "",
+    },
+  });
+
+  const nombre = watch("nombre");
+
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <input {...register("nombre")} placeholder="Nombre" />
+      <input {...register("ciudad")} placeholder="Ciudad" />
+
+      <p>Vista previa: {nombre}</p>
+
+      <button type="submit">Guardar</button>
+      <button
+        type="button"
+        onClick={() => reset({ nombre: "", ciudad: "" })}
+      >
+        Limpiar
+      </button>
+    </form>
+  );
+}`;
 
 export const Formularios = () => {
   return (
@@ -101,151 +225,221 @@ export const Formularios = () => {
       toc={<TableOfContents items={modulosData.sidebar[3].items[2].toc} />}
     >
       <h1 className="text-4xl font-extrabold tracking-tight text-[#141414] mb-4">
-        Formularios
+        React Hook Form
       </h1>
 
       <p className="text-xl text-[#757575] leading-relaxed">
-        Los formularios en React permiten capturar, validar y enviar datos del
-        usuario. Generalmente se controlan mediante el estado del componente.
+        React Hook Form es una librería para manejar formularios en React con un
+        enfoque simple, buen rendimiento y una API basada en hooks. Su hook
+        principal es <span className="font-semibold">useForm</span>, y también
+        ofrece utilidades como <span className="font-semibold">Controller</span>
+        , <span className="font-semibold">FormProvider</span> y{" "}
+        <span className="font-semibold">useFieldArray</span>.
       </p>
 
       <h2
-        id="inputs-controlados"
+        id="que-es-react-hook-form"
         className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
       >
-        Inputs controlados
+        ¿Qué es React Hook Form?
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Un input controlado es aquel cuyo valor depende del estado de React.
-        Cada cambio en el campo actualiza el estado, y el estado vuelve a
-        reflejarse en la interfaz.
+        Esta librería permite registrar campos, validar datos, manejar envío de
+        formularios y trabajar con estructuras complejas sin tener que escribir
+        demasiada lógica manual. Además, la documentación oficial destaca que{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          useForm
+        </code>{" "}
+        es el hook central para administrar el formulario.
       </p>
 
-      <Codeblock code={inputsControladosCode} title="TSX" />
-
       <Note title="Idea clave">
-        En un componente controlado, React mantiene el{" "}
-        <span className="font-semibold">control del valor del input</span>.
+        React Hook Form busca simplificar la gestión de formularios usando{" "}
+        <span className="font-semibold">hooks</span>, validaciones y utilidades
+        reutilizables.
       </Note>
 
       <h2
-        id="textarea-select"
+        id="instalacion"
         className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
       >
-        Textarea y select
+        Instalación
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        El mismo enfoque se aplica a elementos como{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          textarea
-        </code>{" "}
-        y{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          select
-        </code>
-        . Ambos pueden vincularse al estado usando{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          value
-        </code>{" "}
-        y{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          onChange
-        </code>
-        .
+        Para empezar, instala la librería en tu proyecto:
       </p>
 
-      <Codeblock code={textareaSelectCode} title="TSX" />
+      <Codeblock code={instalacionCode} title="Terminal" />
+
+      <h2
+        id="useform"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        useForm
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        <span className="font-semibold">useForm</span> es el hook principal.
+        Proporciona utilidades como{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          register
+        </code>
+        ,{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          handleSubmit
+        </code>{" "}
+        y{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          formState
+        </code>{" "}
+        para controlar el formulario.
+      </p>
+
+      <Codeblock code={useFormCode} title="TSX" />
+
+      <h2
+        id="register"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Registrar inputs con register
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        La función{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          register
+        </code>{" "}
+        conecta los inputs con React Hook Form. Así la librería puede leer sus
+        valores y aplicar validaciones.
+      </p>
+
+      <Codeblock code={registerCode} title="TSX" />
 
       <h2
         id="validaciones"
         className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
       >
-        Validaciones básicas
+        Validaciones
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Antes de enviar un formulario, es habitual validar que los datos tengan
-        el formato esperado. Por ejemplo, verificar que un email incluya un
-        símbolo{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">@</code>.
+        Puedes definir reglas de validación directamente en{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          register
+        </code>
+        , como campos obligatorios, longitud mínima o patrones personalizados.
       </p>
 
       <Codeblock code={validacionesCode} title="TSX" />
 
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Las validaciones pueden mostrar mensajes de error y evitar el envío
-        hasta que los datos sean correctos.
-      </p>
-
-      <h2
-        id="manejo-submit"
-        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
-      >
-        Manejo de submit
-      </h2>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Para controlar el envío del formulario se utiliza el evento{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          onSubmit
-        </code>
-        . Normalmente se llama a{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          preventDefault()
-        </code>{" "}
-        para evitar que el navegador recargue la página.
-      </p>
-
-      <Codeblock code={manejoSubmitCode} title="TSX" />
-
-      <h2
-        id="librerias-form"
-        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
-      >
-        Librerías de formularios
-      </h2>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        En formularios simples, useState suele ser suficiente. Pero en
-        formularios grandes o complejos, muchas aplicaciones usan librerías
-        especializadas para manejar validaciones, errores y envío de datos.
-      </p>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Una de las más populares es{" "}
-        <span className="font-semibold">react-hook-form</span>.
-      </p>
-
-      <Codeblock code={libreriasFormCode} title="Terminal" />
-
       <div className="grid md:grid-cols-2 gap-6 my-8">
         <div className="p-6 border border-[#f2f2f2] rounded-xl">
           <h3 className="font-bold text-lg mb-2 text-[#141414]">
-            Formularios simples
+            Menos boilerplate
           </h3>
           <p className="text-sm text-[#757575]">
-            Puedes controlarlos fácilmente con useState y algunos manejadores de
-            eventos.
+            Gran parte de la validación se define junto al campo.
           </p>
         </div>
 
         <div className="p-6 border border-[#f2f2f2] rounded-xl">
           <h3 className="font-bold text-lg mb-2 text-[#141414]">
-            Formularios complejos
+            Errores claros
           </h3>
           <p className="text-sm text-[#757575]">
-            Librerías como react-hook-form ayudan a reducir código repetitivo y
-            mejorar la escalabilidad.
+            Los mensajes se leen desde <code>formState.errors</code>.
           </p>
         </div>
       </div>
 
+      <h2
+        id="controller"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Controller
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        La documentación oficial indica que{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          Controller
+        </code>{" "}
+        es útil cuando trabajas con componentes controlados externos, como
+        selects avanzados o librerías UI que no usan inputs nativos de forma
+        directa.
+      </p>
+
+      <Codeblock code={controllerCode} title="TSX" />
+
+      <h2
+        id="formprovider"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        FormProvider y useFormContext
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        <span className="font-semibold">FormProvider</span> permite compartir
+        los métodos del formulario por contexto, y{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          useFormContext
+        </code>{" "}
+        sirve para consumirlos en componentes anidados. Esto ayuda cuando el
+        formulario está dividido en varias partes.
+      </p>
+
+      <Codeblock code={formProviderCode} title="TSX" />
+
+      <h2
+        id="usefieldarray"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        useFieldArray
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        <span className="font-semibold">useFieldArray</span> es el hook pensado
+        para manejar campos dinámicos, por ejemplo listas de teléfonos,
+        direcciones o productos.
+      </p>
+
+      <Codeblock code={fieldArrayCode} title="TSX" />
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Con este hook puedes agregar y eliminar bloques de campos sin tener que
+        manejar toda la lógica manualmente.
+      </p>
+
+      <h2
+        id="reset-watch"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        reset y watch
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        También puedes usar utilidades como{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          reset
+        </code>{" "}
+        para restaurar valores y{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          watch
+        </code>{" "}
+        para observar campos en tiempo real desde el formulario. Estas APIs
+        forman parte de <span className="font-semibold">useForm</span>.
+      </p>
+
+      <Codeblock code={resetWatchCode} title="TSX" />
+
       <Note title="Buena práctica">
-        Empieza con formularios controlados simples. Cuando el formulario crece
-        en complejidad, evalúa usar una librería como{" "}
-        <span className="font-semibold">react-hook-form</span>.
+        Usa <span className="font-semibold">register</span> con inputs nativos,
+        <span className="font-semibold"> Controller</span> con componentes
+        controlados externos y{" "}
+        <span className="font-semibold">FormProvider</span> cuando el formulario
+        esté dividido en componentes profundos.
       </Note>
     </DocsLayout>
   );
