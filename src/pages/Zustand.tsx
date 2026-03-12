@@ -5,6 +5,8 @@ import modulosData from "../data/modulos.json";
 import Note from "../components/Notes.tsx";
 import Codeblock from "../components/Codeblock.tsx";
 
+const instalacionCode = `pnpm add zustand`;
+
 const storeSimpleCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
 
 <span class="keyword">type</span> CounterStore = {
@@ -247,6 +249,25 @@ export const Zustand = () => {
         crear stores globales con muy poco código, sin necesidad de providers, y
         con una API simple basada en hooks.
       </p>
+
+      <h2
+        id="instalacion-zustand"
+        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
+      >
+        Instalación
+      </h2>
+
+      <p className="text-base leading-7 text-[#141414] my-6">
+        Zustand se instala como una dependencia normal. No requiere ninguna
+        configuración adicional ni providers.
+      </p>
+
+      <Codeblock code={instalacionCode} title="bash" />
+
+      <Note title="Tamaño mínimo">
+        Zustand pesa menos de <span className="font-semibold">1 KB</span> y no
+        tiene dependencias externas.
+      </Note>
 
       <h2
         id="stores-globales"

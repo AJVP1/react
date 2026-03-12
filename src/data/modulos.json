@@ -211,6 +211,7 @@
           "label": "Zustand",
           "icon": "account_tree",
           "toc": [
+            { "id": "instalacion-zustand", "title": "Instalación" },
             {
               "id": "stores-globales",
               "title": "Crear stores globales simples"
