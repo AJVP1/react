@@ -108,19 +108,6 @@ const redirectCode = `<span class="keyword">import</span> { createBrowserRouter,
   },
 ]);`;
 
-const historyCode = `<span class="keyword">import</span> { useNavigate } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
-
-<span class="keyword">function</span> <span class="function">Navegacion</span>() {
-  <span class="keyword">const</span> navigate = <span class="function">useNavigate</span>();
-
-  <span class="keyword">return</span> (
-    &lt;div&gt;
-      &lt;button onClick={() =&gt; <span class="function">navigate</span>(-1)}&gt;Atrás&lt;/button&gt;
-      &lt;button onClick={() =&gt; <span class="function">navigate</span>(1)}&gt;Adelante&lt;/button&gt;
-    &lt;/div&gt;
-  );
-}`;
-
 const loaderCode = `<span class="comment">// router/index.tsx</span>
 <span class="keyword">import</span> { createBrowserRouter } <span class="keyword">from</span> <span class="string">"react-router-dom"</span>;
 
@@ -761,7 +748,10 @@ export const Rutas = () => {
       <p className="text-base leading-7 text-[#141414] my-6">
         Una de las ventajas principales de este router es que permite cargar
         datos antes de renderizar una ruta usando la propiedad{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">loader</code>.
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          loader
+        </code>
+        .
       </p>
 
       <Codeblock code={loaderCode} title="TSX" />
@@ -781,8 +771,10 @@ export const Rutas = () => {
       <p className="text-base leading-7 text-[#141414] my-6">
         React Router también permite manejar envíos de formularios con la
         propiedad{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">action</code>.
-        Esto resulta útil para procesar datos, validar formularios o redirigir
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          action
+        </code>
+        . Esto resulta útil para procesar datos, validar formularios o redirigir
         después de un envío.
       </p>
 
@@ -802,8 +794,10 @@ export const Rutas = () => {
 
       <p className="text-base leading-7 text-[#141414] my-6">
         Cada ruta puede definir su propia interfaz de error usando{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">errorElement</code>.
-        Esto permite mostrar mensajes específicos cuando falla un loader, un
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          errorElement
+        </code>
+        . Esto permite mostrar mensajes específicos cuando falla un loader, un
         action o el render de la ruta.
       </p>
 
@@ -844,7 +838,10 @@ export const Rutas = () => {
       <p className="text-base leading-7 text-[#141414] my-6">
         Las redirecciones pueden hacerse directamente desde loaders o actions
         usando la función{" "}
-        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">redirect</code>.
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          redirect
+        </code>
+        .
       </p>
 
       <Codeblock code={redirectCode} title="TSX" />
@@ -853,34 +850,6 @@ export const Rutas = () => {
         Esto es útil para proteger rutas, reenviar usuarios no autenticados o
         moverlos a otra página después de una acción.
       </p>
-
-      <h2
-        id="historial"
-        className="text-2xl font-bold mt-12 mb-4 text-[#141414] scroll-mt-20"
-      >
-        Integración con el historial del navegador
-      </h2>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        <span className="font-semibold">createBrowserRouter</span> utiliza la
-        API de historial del navegador, lo que permite navegar hacia atrás,
-        adelante y mantener URLs limpias sin usar hash.
-      </p>
-
-      <Codeblock code={historyCode} title="TSX" />
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Esto hace que la navegación se sienta natural para el usuario y que la
-        aplicación funcione de manera similar a un sitio multipágina tradicional.
-      </p>
-
-      <Note title="Buena práctica">
-        Usa <span className="font-semibold">createBrowserRouter</span> cuando
-        quieras una configuración de rutas más completa, especialmente si tu app
-        necesita <span className="font-semibold">loaders</span>,{" "}
-        <span className="font-semibold">actions</span>, manejo de errores por
-        ruta y división de código por página.
-      </Note>
     </DocsLayout>
   );
 };
