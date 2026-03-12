@@ -167,11 +167,35 @@
           "label": "React Router",
           "icon": "route",
           "toc": [
-            { "id": "que-es-react-router", "title": "¿Qué es React Router?" },
-            { "id": "definir-rutas", "title": "Definir rutas" },
-            { "id": "link-navlink", "title": "Link y NavLink" },
-            { "id": "parametros", "title": "Parámetros de ruta" },
-            { "id": "rutas-anidadas", "title": "Rutas anidadas" }
+            { "id": "estructura", "title": "Estructura" },
+            { "id": "instalacion", "title": "Instalación" },
+            { "id": "tipos-de-routers", "title": "Tipos de routers" },
+            {
+              "id": "enlaces-link-y-navlink",
+              "title": "Enlaces (Link y NavLink)"
+            },
+            {
+              "id": "rutas-dinamicas-useparams",
+              "title": "Rutas dinámicas (useParams)"
+            },
+            { "id": "create-browser-router", "title": "Browser Router" },
+            {
+              "id": "rutas-anidadas-outlet",
+              "title": "Rutas anidadas (Outlet)"
+            },
+            {
+              "id": "direccionar-usenavigate",
+              "title": "Direccionar (useNavigate)"
+            },
+            {
+              "id": "ubicacion-actual-uselocation",
+              "title": "Ubicación actual (useLocation)"
+            },
+            { "id": "redireccion-navigate", "title": "Redirección (Navigate)" },
+            {
+              "id": "parametros-de-busqueda-usesearchparams",
+              "title": "Parámetros de búsqueda (useSearchParams)"
+            }
           ]
         },
         {
