@@ -5,152 +5,152 @@ import modulosData from "../data/modulos.json";
 import Note from "../components/Notes.tsx";
 import Codeblock from "../components/Codeblock.tsx";
 
-const storeSimpleCode = `import { create } from "zustand";
+const storeSimpleCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
 
-type CounterStore = {
+<span class="keyword">type</span> CounterStore = {
   count: number;
-  increment: () => void;
-  decrement: () => void;
+  increment: () =&gt; void;
+  decrement: () =&gt; void;
 };
 
-export const useCounterStore = create<CounterStore>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  decrement: () => set((state) => ({ count: state.count - 1 })),
+<span class="keyword">export</span> <span class="keyword">const</span> useCounterStore = <span class="function">create</span>&lt;CounterStore&gt;((set) =&gt; ({
+  count: <span class="number">0</span>,
+  increment: () =&gt; <span class="function">set</span>((state) =&gt; ({ count: state.count + <span class="number">1</span> })),
+  decrement: () =&gt; <span class="function">set</span>((state) =&gt; ({ count: state.count - <span class="number">1</span> })),
 }));`;
 
-const estadoAccionesCode = `import { create } from "zustand";
+const estadoAccionesCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
 
-type ThemeStore = {
-  theme: "light" | "dark";
-  toggleTheme: () => void;
+<span class="keyword">type</span> ThemeStore = {
+  theme: <span class="string">"light"</span> | <span class="string">"dark"</span>;
+  toggleTheme: () =&gt; void;
 };
 
-export const useThemeStore = create<ThemeStore>((set) => ({
-  theme: "light",
-  toggleTheme: () =>
-    set((state) => ({
-      theme: state.theme === "light" ? "dark" : "light",
+<span class="keyword">export</span> <span class="keyword">const</span> useThemeStore = <span class="function">create</span>&lt;ThemeStore&gt;((set) =&gt; ({
+  theme: <span class="string">"light"</span>,
+  toggleTheme: () =&gt;
+    <span class="function">set</span>((state) =&gt; ({
+      theme: state.theme === <span class="string">"light"</span> ? <span class="string">"dark"</span> : <span class="string">"light"</span>,
     })),
 }));`;
 
-const sinProviderCode = `import { useCounterStore } from "../stores/counterStore";
+const sinProviderCode = `<span class="keyword">import</span> { useCounterStore } <span class="keyword">from</span> <span class="string">"../stores/counterStore"</span>;
 
-function Counter() {
-  const count = useCounterStore((state) => state.count);
-  const increment = useCounterStore((state) => state.increment);
+<span class="keyword">function</span> <span class="function">Counter</span>() {
+  <span class="keyword">const</span> count = <span class="function">useCounterStore</span>((state) =&gt; state.count);
+  <span class="keyword">const</span> increment = <span class="function">useCounterStore</span>((state) =&gt; state.increment);
 
-  return (
-    <button onClick={increment}>
+  <span class="keyword">return</span> (
+    &lt;button onClick={increment}&gt;
       Count: {count}
-    </button>
+    &lt;/button&gt;
   );
 }`;
 
-const reactivoHooksCode = `function CounterInfo() {
-  const count = useCounterStore((state) => state.count);
+const reactivoHooksCode = `<span class="keyword">function</span> <span class="function">CounterInfo</span>() {
+  <span class="keyword">const</span> count = <span class="function">useCounterStore</span>((state) =&gt; state.count);
 
-  return <p>Valor actual: {count}</p>;
+  <span class="keyword">return</span> &lt;p&gt;Valor actual: {count}&lt;/p&gt;;
 }
 
-function CounterButtons() {
-  const increment = useCounterStore((state) => state.increment);
+<span class="keyword">function</span> <span class="function">CounterButtons</span>() {
+  <span class="keyword">const</span> increment = <span class="function">useCounterStore</span>((state) =&gt; state.increment);
 
-  return <button onClick={increment}>Sumar</button>;
+  <span class="keyword">return</span> &lt;button onClick={increment}&gt;Sumar&lt;/button&gt;;
 }`;
 
-const propDrillingCode = `function Header() {
-  const theme = useThemeStore((state) => state.theme);
-  return <h1>Tema actual: {theme}</h1>;
+const propDrillingCode = `<span class="keyword">function</span> <span class="function">Header</span>() {
+  <span class="keyword">const</span> theme = <span class="function">useThemeStore</span>((state) =&gt; state.theme);
+  <span class="keyword">return</span> &lt;h1&gt;Tema actual: {theme}&lt;/h1&gt;;
 }
 
-function SidebarMenu() {
-  const toggleTheme = useThemeStore((state) => state.toggleTheme);
-  return <button onClick={toggleTheme}>Cambiar tema</button>;
+<span class="keyword">function</span> <span class="function">SidebarMenu</span>() {
+  <span class="keyword">const</span> toggleTheme = <span class="function">useThemeStore</span>((state) =&gt; state.toggleTheme);
+  <span class="keyword">return</span> &lt;button onClick={toggleTheme}&gt;Cambiar tema&lt;/button&gt;;
 }`;
 
-const multiplesStoresCode = `import { create } from "zustand";
+const multiplesStoresCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
 
-export const useAuthStore = create((set) => ({
-  user: null,
-  login: (user) => set({ user }),
-  logout: () => set({ user: null }),
+<span class="keyword">export</span> <span class="keyword">const</span> useAuthStore = <span class="function">create</span>((set) =&gt; ({
+  user: <span class="keyword">null</span>,
+  login: (user) =&gt; <span class="function">set</span>({ user }),
+  logout: () =&gt; <span class="function">set</span>({ user: <span class="keyword">null</span> }),
 }));
 
-export const useCartStore = create((set) => ({
+<span class="keyword">export</span> <span class="keyword">const</span> useCartStore = <span class="function">create</span>((set) =&gt; ({
   items: [],
-  addItem: (item) => set((state) => ({ items: [...state.items, item] })),
-  clearCart: () => set({ items: [] }),
+  addItem: (item) =&gt; <span class="function">set</span>((state) =&gt; ({ items: [...state.items, item] })),
+  clearCart: () =&gt; <span class="function">set</span>({ items: [] }),
 }));`;
 
-const persistCode = `import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+const persistCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
+<span class="keyword">import</span> { persist, createJSONStorage } <span class="keyword">from</span> <span class="string">"zustand/middleware"</span>;
 
-type SessionStore = {
-  token: string | null;
-  setToken: (token: string) => void;
-  clearToken: () => void;
+<span class="keyword">type</span> SessionStore = {
+  token: string | <span class="keyword">null</span>;
+  setToken: (token: string) =&gt; void;
+  clearToken: () =&gt; void;
 };
 
-export const useSessionStore = create<SessionStore>()(
-  persist(
-    (set) => ({
-      token: null,
-      setToken: (token) => set({ token }),
-      clearToken: () => set({ token: null }),
+<span class="keyword">export</span> <span class="keyword">const</span> useSessionStore = <span class="function">create</span>&lt;SessionStore&gt;()(
+  <span class="function">persist</span>(
+    (set) =&gt; ({
+      token: <span class="keyword">null</span>,
+      setToken: (token) =&gt; <span class="function">set</span>({ token }),
+      clearToken: () =&gt; <span class="function">set</span>({ token: <span class="keyword">null</span> }),
     }),
     {
-      name: "session-storage",
-      storage: createJSONStorage(() => sessionStorage),
+      name: <span class="string">"session-storage"</span>,
+      storage: <span class="function">createJSONStorage</span>(() =&gt; sessionStorage),
     }
   )
 );`;
 
-const middlewaresCode = `import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+const middlewaresCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
+<span class="keyword">import</span> { devtools, persist } <span class="keyword">from</span> <span class="string">"zustand/middleware"</span>;
 
-export const useAppStore = create()(
-  devtools(
-    persist(
-      (set) => ({
-        sidebarOpen: false,
-        toggleSidebar: () =>
-          set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+<span class="keyword">export</span> <span class="keyword">const</span> useAppStore = <span class="function">create</span>()(
+  <span class="function">devtools</span>(
+    <span class="function">persist</span>(
+      (set) =&gt; ({
+        sidebarOpen: <span class="keyword">false</span>,
+        toggleSidebar: () =&gt;
+          <span class="function">set</span>((state) =&gt; ({ sidebarOpen: !state.sidebarOpen })),
       }),
-      { name: "app-store" }
+      { name: <span class="string">"app-store"</span> }
     )
   )
 );`;
 
-const typescriptCode = `import { create } from "zustand";
+const typescriptCode = `<span class="keyword">import</span> { create } <span class="keyword">from</span> <span class="string">"zustand"</span>;
 
-type User = {
+<span class="keyword">type</span> User = {
   id: number;
   name: string;
 };
 
-type UserStore = {
-  user: User | null;
-  setUser: (user: User) => void;
-  clearUser: () => void;
+<span class="keyword">type</span> UserStore = {
+  user: User | <span class="keyword">null</span>;
+  setUser: (user: User) =&gt; void;
+  clearUser: () =&gt; void;
 };
 
-export const useUserStore = create<UserStore>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+<span class="keyword">export</span> <span class="keyword">const</span> useUserStore = <span class="function">create</span>&lt;UserStore&gt;((set) =&gt; ({
+  user: <span class="keyword">null</span>,
+  setUser: (user) =&gt; <span class="function">set</span>({ user }),
+  clearUser: () =&gt; <span class="function">set</span>({ user: <span class="keyword">null</span> }),
 }));`;
 
-const globalLocalCode = `function ProductPage() {
-  const user = useUserStore((state) => state.user);
-  const [quantity, setQuantity] = useState(1);
+const globalLocalCode = `<span class="keyword">function</span> <span class="function">ProductPage</span>() {
+  <span class="keyword">const</span> user = <span class="function">useUserStore</span>((state) =&gt; state.user);
+  <span class="keyword">const</span> [quantity, setQuantity] = <span class="function">useState</span>(<span class="number">1</span>);
 
-  return (
-    <div>
-      <p>Usuario: {user?.name}</p>
-      <p>Cantidad local: {quantity}</p>
-      <button onClick={() => setQuantity(quantity + 1)}>+</button>
-    </div>
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;p&gt;Usuario: {user?.name}&lt;/p&gt;
+      &lt;p&gt;Cantidad local: {quantity}&lt;/p&gt;
+      &lt;button onClick={() =&gt; <span class="function">setQuantity</span>(quantity + <span class="number">1</span>)}&gt;+&lt;/button&gt;
+    &lt;/div&gt;
   );
 }`;
 
@@ -184,7 +184,10 @@ export const Zustand = () => {
         <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
           create
         </code>
-        . Allí defines el estado global y las funciones que lo modifican.
+        . Allí defines el{" "}
+        <span className="font-semibold text-[#141414]">estado global</span> y
+        las <span className="font-semibold text-[#141414]">funciones</span> que
+        lo modifican.
       </p>
 
       <Codeblock code={storeSimpleCode} title="TSX" />
@@ -203,9 +206,11 @@ export const Zustand = () => {
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        Una de las ventajas de Zustand es que puedes definir el estado y sus
-        acciones dentro del mismo store. Esto hace que la lógica sea más fácil
-        de leer y mantener.
+        Una de las ventajas de Zustand es que puedes definir el{" "}
+        <span className="font-semibold text-[#141414]">estado</span> y sus{" "}
+        <span className="font-semibold text-[#141414]">acciones</span> dentro
+        del mismo store. Esto hace que la lógica sea más fácil de leer y
+        mantener.
       </p>
 
       <Codeblock code={estadoAccionesCode} title="TSX" />
