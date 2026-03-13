@@ -129,6 +129,18 @@
             { "id": "focus-input", "title": "Enfocar un input" },
             { "id": "cuando-usarlo", "title": "¿Cuándo usarlo?" }
           ]
+        },
+        {
+          "to": "/use-id",
+          "label": "useId",
+          "icon": "id_card",
+          "toc": [
+            { "id": "que-es-useid", "title": "¿Qué es useId?" },
+            { "id": "uso-basico", "title": "Uso básico" },
+            { "id": "multiples-ids", "title": "Generar múltiples ids" },
+            { "id": "componentes-reutilizables", "title": "Componentes reutilizables" },
+            { "id": "accesibilidad", "title": "Accesibilidad" }
+          ]
         }
       ]
     },
@@ -187,7 +199,10 @@
           "label": "Formularios",
           "icon": "article",
           "toc": [
-            { "id": "que-es-react-hook-form", "title": "¿Qué es React Hook Form?" },
+            {
+              "id": "que-es-react-hook-form",
+              "title": "¿Qué es React Hook Form?"
+            },
             { "id": "instalacion", "title": "Instalación" },
             { "id": "useform", "title": "useForm" },
             { "id": "register", "title": "Registrar inputs con register" },
@@ -234,9 +249,15 @@
             },
             { "id": "middlewares", "title": "Usar middlewares" },
             { "id": "typescript", "title": "Integración con TypeScript" },
-            { "id": "global-y-local", "title": "Manejar estado global y local" },
+            {
+              "id": "global-y-local",
+              "title": "Manejar estado global y local"
+            },
             { "id": "acciones-asincronas", "title": "Acciones asíncronas" },
-            { "id": "proteger-rutas", "title": "Proteger rutas con createBrowserRouter" }
+            {
+              "id": "proteger-rutas",
+              "title": "Proteger rutas con createBrowserRouter"
+            }
           ]
         }
       ]
