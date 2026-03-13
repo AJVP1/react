@@ -273,6 +273,17 @@
             { "id": "crear-componente", "title": "Crear el componente" },
             { "id": "usar-componente", "title": "Usar el componente" }
           ]
+        },
+        {
+          "to": "/filtro-texto",
+          "label": "Filtro Texto",
+          "icon": "search",
+          "toc": [
+            { "id": "que-es-filter-text", "title": "¿Qué es FilterText?" },
+            { "id": "como-funciona", "title": "Cómo funciona" },
+            { "id": "crear-componente", "title": "Crear el componente" },
+            { "id": "usar-componente", "title": "Usar el componente" }
+          ]
         }
       ]
     }
