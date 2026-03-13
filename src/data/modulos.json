@@ -284,6 +284,17 @@
             { "id": "crear-componente", "title": "Crear el componente" },
             { "id": "usar-componente", "title": "Usar el componente" }
           ]
+        },
+        {
+          "to": "/mathjax",
+          "label": "MathJax",
+          "icon": "functions",
+          "toc": [
+            { "id": "que-es-mathjax", "title": "¿Qué es MathJax?" },
+            { "id": "instalacion", "title": "Instalación" },
+            { "id": "configurar-contexto", "title": "Configurar el contexto" },
+            { "id": "usar-mathjax", "title": "Usar MathJax" }
+          ]
         }
       ]
     }

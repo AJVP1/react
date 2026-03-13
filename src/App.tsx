@@ -16,6 +16,7 @@ import { Formularios } from "./pages/Formularios";
 import { Zustand } from "./pages/Zustand";
 import { FilterSelectDocs } from "./pages/Select";
 import { FilterTextDocs } from "./pages/Texto";
+import { MathJaxDocs } from "./pages/Mathjax";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/zustand" element={<Zustand />} />
         <Route path="/filtro-select" element={<FilterSelectDocs />} />
         <Route path="/filtro-texto" element={<FilterTextDocs />} />
+        <Route path="/mathjax" element={<MathJaxDocs />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>
