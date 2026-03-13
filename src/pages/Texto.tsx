@@ -14,7 +14,9 @@ const codeComponent = `<span class="keyword">import</span> { ChangeEvent, useEff
   debounceMs?: <span class="keyword">number</span>;
 };
 
-<span class="keyword">export const</span> <span class="function">FilterText</span> = ({ param, placeholder = <span class="string">"Buscar..."</span>, debounceMs = <span class="number">500</span> }: FilterTextProps) => {
+<span class="keyword">export const</span> <span class="function">FilterText</span> = (
+  { param, placeholder = <span class="string">"Buscar..."</span>, debounceMs = <span class="number">500</span> }: FilterTextProps
+) => {
 
   <span class="keyword">const</span> [searchParams, setSearchParams] = <span class="function">useSearchParams</span>();
 
@@ -59,14 +61,11 @@ const codeComponent = `<span class="keyword">import</span> { ChangeEvent, useEff
 const codeUsage = `<span class="keyword">import</span> { FilterText } <span class="keyword">from</span> <span class="string">"./components/FilterText"</span>;
 
 <span class="keyword">export default function</span> <span class="function">Page</span>() {
-
   <span class="keyword">return</span> (
-
     &lt;<span class="function">FilterText</span>
       param=<span class="string">"search"</span>
       placeholder=<span class="string">"Buscar artículo"</span>
     /&gt;
-
   );
 }`;
 
