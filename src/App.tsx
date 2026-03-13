@@ -14,6 +14,7 @@ import { UseId } from "./pages/Identificacion";
 import { Rutas } from "./pages/Rutas";
 import { Formularios } from "./pages/Formularios";
 import { Zustand } from "./pages/Zustand";
+import { FilterSelectDocs } from "./pages/Select";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/rutas" element={<Rutas />} />
         <Route path="/formularios" element={<Formularios />}></Route>
         <Route path="/zustand" element={<Zustand />} />
+        <Route path="/filtro-select" element={<FilterSelectDocs />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>

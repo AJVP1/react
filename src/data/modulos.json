@@ -138,7 +138,10 @@
             { "id": "que-es-useid", "title": "¿Qué es useId?" },
             { "id": "uso-basico", "title": "Uso básico" },
             { "id": "multiples-ids", "title": "Generar múltiples ids" },
-            { "id": "componentes-reutilizables", "title": "Componentes reutilizables" },
+            {
+              "id": "componentes-reutilizables",
+              "title": "Componentes reutilizables"
+            },
             { "id": "accesibilidad", "title": "Accesibilidad" }
           ]
         }
@@ -258,6 +261,17 @@
               "id": "proteger-rutas",
               "title": "Proteger rutas con createBrowserRouter"
             }
+          ]
+        },
+        {
+          "to": "/filtro-select",
+          "label": "Filtro Select",
+          "icon": "filter_alt",
+          "toc": [
+            { "id": "que-es-filter-select", "title": "¿Qué es FilterSelect?" },
+            { "id": "como-funciona", "title": "Cómo funciona" },
+            { "id": "crear-componente", "title": "Crear el componente" },
+            { "id": "usar-componente", "title": "Usar el componente" }
           ]
         }
       ]
