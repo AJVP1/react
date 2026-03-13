@@ -19,7 +19,9 @@ const codeComponent = `<span class="keyword">import</span> { ChangeEvent } <span
   placeholder?: <span class="keyword">string</span>;
 };
 
-<span class="keyword">export const</span> <span class="function">FilterSelect</span> = ({ param, options, placeholder = <span class="string">"Seleccionar"</span> }: FilterSelectProps) => {
+<span class="keyword">export const</span> <span class="function">FilterSelect</span> = (
+  { param, options, placeholder = <span class="string">"Seleccionar"</span> }: FilterSelectProps
+) => {
 
   <span class="keyword">const</span> [searchParams, setSearchParams] = <span class="function">useSearchParams</span>();
 
@@ -58,9 +60,7 @@ const codeComponent = `<span class="keyword">import</span> { ChangeEvent } <span
 const codeUsage = `<span class="keyword">import</span> { FilterSelect } <span class="keyword">from</span> <span class="string">"./components/FilterSelect"</span>;
 
 <span class="keyword">export default function</span> <span class="function">Page</span>() {
-
   <span class="keyword">return</span> (
-
     &lt;<span class="function">FilterSelect</span>
       param=<span class="string">"categoria"</span>
       placeholder=<span class="string">"Filtrar categoría"</span>
@@ -70,7 +70,6 @@ const codeUsage = `<span class="keyword">import</span> { FilterSelect } <span cl
         { value: <span class="string">"frontend"</span>, label: <span class="string">"Frontend"</span> }
       ]}
     /&gt;
-
   );
 }`;
 
@@ -78,11 +77,7 @@ export const FilterSelectDocs = () => {
   return (
     <DocsLayout
       sidebar={<Sidebar />}
-      toc={
-        <TableOfContents
-          items={modulosData.sidebar[3].items[3].toc}
-        />
-      }
+      toc={<TableOfContents items={modulosData.sidebar[3].items[3].toc} />}
     >
       <h1 className="text-4xl font-extrabold tracking-tight text-[#141414] mb-4">
         Filter Select
@@ -131,22 +126,16 @@ export const FilterSelectDocs = () => {
       </h2>
 
       <p className="text-base leading-7 text-[#141414] my-6">
-        El componente utiliza el hook{" "}
+        El componente lee el valor actual del parámetro desde la URL con{" "}
         <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
-          useSearchParams
+          searchParams.get(param)
         </code>{" "}
-        para leer y actualizar los parámetros de la URL.
+        y lo actualiza con{" "}
+        <code className="bg-[#f7f7f7] px-1.5 py-0.5 rounded text-sm">
+          setSearchParams
+        </code>{" "}
+        al cambiar el select. Si el valor está vacío, elimina el parámetro de la URL en lugar de dejarlo con valor vacío.
       </p>
-
-      <p className="text-base leading-7 text-[#141414] my-6">
-        Cuando el usuario cambia el valor del select:
-      </p>
-
-      <ul className="list-disc pl-6 text-base text-[#141414] space-y-2">
-        <li>Se obtiene el valor seleccionado</li>
-        <li>Se actualizan los parámetros de la URL</li>
-        <li>React Router actualiza la navegación automáticamente</li>
-      </ul>
 
       <h2
         id="crear-componente"
@@ -175,6 +164,12 @@ export const FilterSelectDocs = () => {
       </p>
 
       <Codeblock code={codeUsage} title="Ejemplo de uso" />
+
+      <Note title="Buena práctica">
+        Usa <span className="font-semibold">FilterSelect</span> cuando quieras
+        que los filtros persistan en la URL. Esto permite compartir enlaces con
+        los filtros ya aplicados y mantener el estado al recargar la página.
+      </Note>
     </DocsLayout>
   );
 };
