@@ -297,6 +297,23 @@
           ]
         }
       ]
+    },
+    {
+      "title": "Deploy",
+      "items": [
+        {
+          "to": "/github-pages",
+          "label": "GitHub Pages",
+          "icon": "cloud_upload",
+          "toc": [
+            { "id": "que-es-github-pages", "title": "¿Qué es GitHub Pages?" },
+            { "id": "instalar-gh-pages", "title": "Instalar gh-pages" },
+            { "id": "configurar-vite", "title": "Configurar Vite" },
+            { "id": "configurar-scripts", "title": "Configurar scripts" },
+            { "id": "publicar", "title": "Publicar el proyecto" }
+          ]
+        }
+      ]
     }
   ]
 }
