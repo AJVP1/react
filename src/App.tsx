@@ -18,6 +18,7 @@ import { FilterSelectDocs } from "./pages/Select";
 import { FilterTextDocs } from "./pages/Texto";
 import { MathJaxDocs } from "./pages/Mathjax";
 import { GithubPagesDocs } from "./pages/Pages";
+import { Typescript } from "./pages/Typescript";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/filtro-texto" element={<FilterTextDocs />} />
         <Route path="/mathjax" element={<MathJaxDocs />} />
         <Route path="/github-pages" element={<GithubPagesDocs />} />
+        <Route path="/typescript" element={<Typescript />} />
 
         <Route path="*" element={<p>Página no encontrada</p>} />
       </Routes>

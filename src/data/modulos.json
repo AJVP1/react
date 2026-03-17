@@ -97,6 +97,18 @@
             { "id": "formularios", "title": "Eventos en formularios" },
             { "id": "prevent-default", "title": "preventDefault" }
           ]
+        },
+        {
+          "to": "/typescript",
+          "label": "TypeScript",
+          "icon": "code",
+          "toc": [
+            { "id": "que-es-typescript", "title": "¿Qué es TypeScript?" },
+            { "id": "tipos-basicos", "title": "Tipos básicos" },
+            { "id": "tipar-componentes", "title": "Tipar componentes" },
+            { "id": "hooks", "title": "TypeScript con hooks" },
+            { "id": "api", "title": "Tipar datos de API" }
+          ]
         }
       ]
     },
