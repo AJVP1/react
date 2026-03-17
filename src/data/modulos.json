@@ -105,6 +105,11 @@
           "toc": [
             { "id": "que-es-typescript", "title": "¿Qué es TypeScript?" },
             { "id": "tipos-basicos", "title": "Tipos básicos" },
+            { "id": "union-types", "title": "Union Types" },
+            { "id": "arrays", "title": "Arrays" },
+            { "id": "objetos", "title": "Objetos" },
+            { "id": "readonly", "title": "Readonly" },
+            { "id": "intersection-types", "title": "Intersection Types" },
             { "id": "tipar-componentes", "title": "Tipar componentes" },
             { "id": "hooks", "title": "TypeScript con hooks" },
             { "id": "api", "title": "Tipar datos de API" }
